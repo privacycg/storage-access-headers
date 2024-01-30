@@ -30,7 +30,9 @@ These costs and constraints can be avoided by supporting a few new headers.
 
 ## Example
 
-### Status quo
+### Embedded `<iframe>`
+
+#### Status quo
 
 As an illustrative example, consider a calendar widget on calendar.com, embedded in example.com. During the user's first-ever visit to the example.com page, the flow of events is the following:
 
@@ -48,7 +50,7 @@ This is working as intended, since the user agent may choose to delegate the dec
 
 However, consider a subsequent visit to the example.com page, after the `storage-access` permission has already been granted by the user or user agent. Without this proposal, the flow on the subsequent visit looks exactly the same as the flow on the first visit. However, the user does not need to grant permission this time, since they have already granted permission. This means that the latency and network traffic incurred by the first iframe load, the `document.requestStorageAccess()` script execution, and the subsequent reload are entirely unnecessary.
 
-### New flow
+#### New flow
 
 Instead, we can imagine a different flow, where the user agent recognizes that the calendar widget already has `storage-access` permission and somehow knows that the widget wants to opt in to using it, so it loads the iframe with access to unpartitioned cookies. This would avoid unnecessary latency and power drain due to network traffic and script execution, leading to a better user experience. So, the flow could be:
 
@@ -66,6 +68,18 @@ Instead, we can imagine a different flow, where the user agent recognizes that t
 This flow avoids loading the widget twice, and avoids executing script solely for the `document.requestStorageAccess()` call to activate the existing permission grant. It also avoids the network transmission of the "placeholder" version of the widget.
 
 Additionally, the use of HTTP headers removes the requirement for JavaScript execution. This enables non-iframe resources to take full advantage of existing `storage-access` permission grants.
+
+### Embedded non-`<iframe>`
+
+Consider a document that includes an image (e.g.) which happens to be served by a different (unrelated) site.
+
+At present, no web platform API allows loading this image via a credentialed fetch in browsers that block third-party cookies by default. So, if the image requires the user's credentials (i.e. unpartitioned cookies), then this is broken.
+
+However, if the browser supports the headers described below (and if the user has already granted the `storage-access` permission to the appropriate `<site, site>` pair somehow - e.g. via an iframe at some point in the recent past), then this scenario is supported by the browser as in the following sequence:
+
+![sequence diagram of network requests with Storage Access request and response headers for an embedded cross-site image](./images/embedded_image.png)
+
+Browsers that do not support the proposed headers will still receive the appropriate `401 Unauthorized` response. However, browsers that do support the proposed headers are able to retry the fetch and can send the user's credentials, since the user has already given permission for this (by assumption).
 
 ## Proposed headers
 
