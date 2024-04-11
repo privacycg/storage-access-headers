@@ -162,6 +162,15 @@ The new header does expose some user-specific state in network requests which wa
 
 Servers that begin using the `Activate-Storage-Access` header should include `Sec-Fetch-Storage-Access` in the response's [Vary](https://www.rfc-editor.org/rfc/rfc9110#field.vary) header. This prevents user agents from receiving fallback content for requests that included `Sec-Fetch-Storage-Access: active`.
 
+## Alternative designs
+### Preflight requests
+
+It is tempting to design a preflight mechanism, so that non-idempotent (or perhaps non-[simple](https://developer.mozilla.org/en-US/docs/Web/HTTP/CORS#simple_requests)) cross-site requests can avoid ambiguity (e.g. the server would support the request if it had just included cookies, so the server responds with the `Activate-Storage-Access: retry` header). However, this idea misinterprets the purpose of CORS preflights.
+
+CORS preflights are a security mechanism, to ensure that servers which *don't* support CORS (and likely don't expect cross-origin PUT/DELETE/etc. requests) don't receive those "dangerous" requests. In other words, the preflights play the role of a handshake, after which the server has shown that it knows how to handle non-simple cross-origin requests. (Beyond the rollout of CORS and upgrades of old non-CORS-aware servers, CORS preflights still have a role in ensuring that any cross-origin request with a custom header gets preflighted for security reasons, as well.) This is important because before CORS existed, the Same Origin Policy forbade UAs from sending non-simple cross-origin requests; so servers might reasonably assume that any non-simple request they receive must be same-origin. After CORS became available, non-simple cross-origin requests were allowed by the SOP, which breaks the server's assumption *unless* those non-simple cross-origin requests are preceded by a preflight "handshake", which older servers wouldn't support (and therefore the request would fail in a safe way).
+
+However, the `Sec-Fetch-Storage-Access` and `Activate-Storage-Access` headers do not enable the UA to send novel, risky requests in the same way that CORS did. The `Sec-Fetch-Storage-Access` header is purely informational; it doesn't change the properties of the request. The `Activate-Storage-Access` header allows re-inclusion of cross-site cookies, which *does* have security implications - but since not all major browsers have made third-party cookies unavailable by default, servers are already written under the assumption that incoming requests may carry cross-site cookies. Therefore, no preceding preflight "handshake" is needed as a security protection.
+
 ## Stakeholder feedback/opposition
 
 * Chrome: Implementing
