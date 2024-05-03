@@ -171,6 +171,18 @@ CORS preflights are a security mechanism, to ensure that servers which *don't* s
 
 However, the `Sec-Fetch-Storage-Access` and `Activate-Storage-Access` headers do not enable the UA to send novel, risky requests in the same way that CORS did. The `Sec-Fetch-Storage-Access` header is purely informational; it doesn't change the properties of the request. The `Activate-Storage-Access` header allows re-inclusion of cross-site cookies, which *does* have security implications - but since not all major browsers have made third-party cookies unavailable by default, servers are already written under the assumption that incoming requests may carry cross-site cookies. Therefore, no preceding preflight "handshake" is needed as a security protection.
 
+### CORS integration
+
+It is tempting to design this functionality such that it piggy-backs and/or integrates with CORS directly, since CORS intuitively feels like it is menat to address a similar problem of enabling cross-origin functionality. However, this would be undesirable for a few reasons:
+
+* If CORS (and the relevant SAA permission, of course) were a "sufficient" condition for attaching unpartitioned cookies...
+  * Then this would allow the top-level site to attack the embedded site by sending (CORS-enabled) credentialed requests to arbitrary endpoints on the embedded site, without requiring any opt-in from the embedded site before it received those requests. This would make CSRF attacks against the embedded site more feasible. This is undesirable for security reasons.
+* If CORS were *required* for the user agent to attach unpartitioned cookies to the request...
+  * Then this would mean the embedded site would be required to allow the top-level site to read the bytes of its responses and response headers, just so that the user agent would include cookies when fetching the embedded resource. This is a more powerful capability than simply attaching unpartitioned cookies, so this would expose the embedded site to unnecessary attack vectors from the top-level site. This is undesirable for security reasons.
+  * This would also mean that in order to fix an embedded widget on some page, the top-level site must perform some action to enable CORS; the embedded site alone would be unable to update the page and fix the widget. This is undesirable from a developer usability / composability standpoint.
+
+Therefore, CORS ought to be neither necessary nor sufficient for attaching unpartitioned cookies to a cross-site request. We will therefore design the unpartitioned-cookies-opt-in mechanism as a new thing, completely indepedent from CORS.
+
 ## Stakeholder feedback/opposition
 
 * Chrome: Implementing
