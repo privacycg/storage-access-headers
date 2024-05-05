@@ -173,7 +173,7 @@ However, the `Sec-Fetch-Storage-Access` and `Activate-Storage-Access` headers do
 
 ### CORS integration
 
-It is tempting to design this functionality such that it piggy-backs and/or integrates with CORS directly, since CORS intuitively feels like it is menat to address a similar problem of enabling cross-origin functionality. However, this would be undesirable for a few reasons:
+It is tempting to design this functionality such that it piggy-backs and/or integrates with CORS directly, since CORS intuitively feels like it is meant to address a similar problem of enabling cross-origin functionality. However, this would be undesirable for a few reasons:
 
 * If CORS (and the relevant SAA permission, of course) were a "sufficient" condition for attaching unpartitioned cookies...
   * Then this would allow the top-level site to attack the embedded site by sending (CORS-enabled) credentialed requests to arbitrary endpoints on the embedded site, without requiring any opt-in from the embedded site before it received those requests. This would make CSRF attacks against the embedded site more feasible. This is undesirable for security reasons.
