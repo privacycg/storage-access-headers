@@ -102,7 +102,7 @@ Activate-Storage-Access: <token>
 ```
 This is a [structured header](https://datatracker.ietf.org/doc/html/rfc8941) whose value is a [token](https://datatracker.ietf.org/doc/html/rfc8941#section-3.3.4) which is one of the following:
 * `load`: the server requests that the user agent activate the `storage-access` permission before continuing with the load of the resource.
-* `retry`: the server requests that the user agent activate the `storage-access` permission, then retry the request. The retried request must include the `Sec-Fetch-Storage-Access: active` header. (This token may be ignored if the previous request did not include `Sec-Fetch-Storage-Access: inactive`.)
+* `retry`: the server requests that the user agent activate the `storage-access` permission, then retry the request. The retried request must include the `Sec-Fetch-Storage-Access: active` header. (The user agent must ignore the token if permission is not already granted or if unpartitioned cookies are already accessible. In other words, the user agent must ignore the token if the previous request did not include the `Sec-Fetch-Storage-Access: inactive` header.)
 
 If the request did not include `Sec-Fetch-Storage-Access: inactive` or `Sec-Fetch-Storage-Access: active`, the user agent may ignore this header (both tokens).
 
