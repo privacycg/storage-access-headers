@@ -89,11 +89,11 @@ Browsers that do not support the proposed headers will still receive the appropr
 Sec-Fetch-Storage-Access: <access-status>
 ```
 This is a [fetch metadata request header](https://developer.mozilla.org/en-US/docs/Glossary/Fetch_metadata_request_header) (with a [forbidden header name](https://developer.mozilla.org/en-US/docs/Glossary/Forbidden_header_name)), where the `<access-status>` directive is one of the following:
-* `none`: the fetch's context does not have access to unpartitioned cookies, and does not have the `storage-access` permission. The header may also be omitted as a whole in this case.
+* `none`: the fetch's context does not have access to unpartitioned cookies, and does not have the `storage-access` permission.
 * `inactive`: the fetch's context has the `storage-access` permission, but has not opted into using it; and does not have unpartitioned cookie access through some other means.
 * `active`: the fetch's context has unpartitioned cookie access.
 
-The user agent may omit this header on same-site requests, since those requests do not involve cross-site cookies.
+The user agent may omit this header on same-site requests, since those requests cannot involve cross-site cookies. The user agent must include this header on cross-site requests.
 
 ### Response headers
 
