@@ -89,9 +89,11 @@ Browsers that do not support the proposed headers will still receive the appropr
 Sec-Fetch-Storage-Access: <access-status>
 ```
 This is a [fetch metadata request header](https://developer.mozilla.org/en-US/docs/Glossary/Fetch_metadata_request_header) (with a [forbidden header name](https://developer.mozilla.org/en-US/docs/Glossary/Forbidden_header_name)), where the `<access-status>` directive is one of the following:
-* `none`: the fetch's context does not have the `storage-access` permission. The header may also be omitted as a whole in this case.
-* `inactive`: the fetch's context has the `storage-access` permission, but has not opted into using it.
-* `active`: the fetch's context has the `storage-access` permission and has opted into using it.
+* `none`: the fetch's context does not have access to unpartitioned cookies, and does not have the `storage-access` permission.
+* `inactive`: the fetch's context has the `storage-access` permission, but has not opted into using it; and does not have unpartitioned cookie access through some other means.
+* `active`: the fetch's context has unpartitioned cookie access.
+
+The user agent may omit this header on same-site requests, since those requests cannot involve cross-site cookies. The user agent must include this header on cross-site requests.
 
 ### Response headers
 
@@ -100,9 +102,9 @@ Activate-Storage-Access: <token>
 ```
 This is a [structured header](https://datatracker.ietf.org/doc/html/rfc8941) whose value is a [token](https://datatracker.ietf.org/doc/html/rfc8941#section-3.3.4) which is one of the following:
 * `load`: the server requests that the user agent activate the `storage-access` permission before continuing with the load of the resource.
-* `retry`: the server requests that the user agent activate the `storage-access` permission, then retry the request. The retried request must include the `Sec-Fetch-Storage-Access: active` header.
+* `retry`: the server requests that the user agent activate the `storage-access` permission, then retry the request. The retried request must include the `Sec-Fetch-Storage-Access: active` header. (The user agent must ignore the token if permission is not already granted or if unpartitioned cookies are already accessible. In other words, the user agent must ignore the token if the previous request did not include the `Sec-Fetch-Storage-Access: inactive` header.)
 
-If the request did not include `Sec-Fetch-Storage-Access: inactive`, the user agent may ignore this header.
+If the request did not include `Sec-Fetch-Storage-Access: inactive` or `Sec-Fetch-Storage-Access: active`, the user agent may ignore this header (both tokens).
 
 If the response includes this header, the user agent may renew the `storage-access` permission associated with the request context, since this is a clear signal that the embedded site is relying on the permission.
 
