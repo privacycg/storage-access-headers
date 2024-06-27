@@ -1,4 +1,4 @@
-# Storage Access API Headers
+# Storage Access Headers
 
 ## Authors
 
