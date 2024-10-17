@@ -16,13 +16,215 @@ WPT Display: closed
 Include MDN Panels: if possible
 Include Can I Use Panels: yes
 </pre>
+<pre class="biblio">
+{
+  "I-D.structured-field-values-for-http": {
+    "authors": [ "Mark Nottingham", "Poul-Henning Kamp" ],
+    "href": "https://datatracker.ietf.org/doc/html/rfc8941",
+    "title": "Structured Field Values for HTTP",
+    "status": "ID",
+    "publisher": "IETF"
+  }
+}
+</pre>
+
+<pre class="anchors">
+urlPrefix: https://datatracker.ietf.org/doc/html/rfc8941; spec: I-D.structured-field-values-for-http
+    type: dfn
+        text: structured field; url: #
+    for: structured field
+        type: dfn
+            text: item; url: #name-items
+            text: string; url: #name-strings
+            text: token; url: #name-tokens
+    type: abstract-op
+        text: serialize Structured Header; url: #section-4.1
+urlPrefix: https://html.spec.whatwg.org/multipage/browsing-the-web.html;
+    type: dfn
+        text: create navigation params by fetching; url: #create-navigation-params-by-fetching
+urlPrefix: https://https://privacycg.github.io/storage-access/
+    type: dfn
+        text: determine whether the user agent explicitly allows unpartitioned cookie access; url: #determine-whether-the-user-agent-explicitly-allows-unpartitioned-cookie-access
+</pre>
 
 Introduction {#intro}
 =====================
 
-For now, see the [explainer]([REPOSITORYURL]).
+For now, see the [explainer](https://github.com/privacycg/storage-access-headers).
 
 See [https://garykac.github.io/procspec/](https://garykac.github.io/procspec/),
 [https://dlaliberte.github.io/bikeshed-intro/index.html](https://dlaliberte.github.io/bikeshed-intro/index.html),
 and [https://speced.github.io/bikeshed/](https://speced.github.io/bikeshed/) to get started on your
 specificaton.
+
+Storage-Access Introspection {#introspection}
+=========================================
+
+A <dfn>storage access status</dfn> is one of "`none`", "`inactive`", or "`active`".
+
+TODO: request needs a storage access flag. Maybe two?
+
+To <dfn for=request>compute the storage access status</dfn> for a [=request=] |r|, run the following steps. This algorithm returns null or a [=storage access status=].
+    1. Let |sameSiteMode| be the result of determining |r|'s same-site mode.
+    1. If |sameSiteMode| is not "None", return null.
+    1. Let |allowed|, a [=boolean=], be the result of determining whether the user agent's cookie store allows unpartitioned cookies to be attached to |r|.
+    1. If |allowed|, return "`active`".
+    1. Let |r'| be a copy of |r| with the storage-access flag set.
+    1. Set |allowed| to be the result of determining whether the user agent's cookie store allows unpartitioned cookies to be attached to |r'|.
+    1. If |allowed|, return "`inactive`".
+    1. Return "`none`".
+
+
+Storage-Access Headers {#headers}
+===================================
+
+The following sections define a request and response header. The request header
+exposes information about the [=request=]'s access to cookies to a server. The
+response header allows a server to opt into accessing cross-site cookies on a
+particular request or when loading a resource. 
+
+The `Sec-Fetch-Storage-Access` HTTP Request Header {#sec-fetch-storage-access-header}
+-----------------------------------------------------------------
+
+The <dfn http-header export>`Sec-Fetch-Storage-Access`</dfn> HTTP request header exposes a [=request=]'s
+ability to access cookies to a server. It is a [=Structured Field=] [=structured field/item=] whose value MUST be a
+[=structured field/token=]. [[!I-D.structured-field-values-for-http]] Its ABNF is:
+
+```
+Sec-Fetch-Storage-Access = sf-token
+```
+
+Valid `Sec-Fetch-Storage-Access` values include "`none`", "`inactive`", and
+"`active`". In order to support forward-compatibility with as-yet-unknown
+semantics, servers SHOULD ignore this header if it contains an invalid value.
+
+<pre class="example" id="sec-fetch-storage-access-usage">
+
+// When the request's credentials mode is "`omit`", the header is omitted:
+
+
+// When the request is same-site, the header is omitted:
+
+
+// When the request has no access to cross-site cookies, the header is "none":
+Sec-Fetch-Storage-Access: none
+
+// When the request has no access to cross-site cookies, but access is trivially
+// allowable via the Storage Access API, the header is "inactive":
+Sec-Fetch-Storage-Access: inactive
+
+// When the request has no access to cross-site cookies, the header is "none":
+Sec-Fetch-Storage-Access: active
+
+</pre>
+
+To <dfn export>set the `Sec-Fetch-Storage-Access` header</dfn> for a [=request=] |r|:
+
+<ol class="algorithm">
+    1.  Assert: |r|'s [=request/url=] is a [=potentially trustworthy URL=].
+
+    1.  Let |access| be the result of [=request/compute the storage access status|computing the storage access status=] given |r|.
+
+    1.  If |access| is null, abort these steps.
+
+    1.  Let |value| be a [=Structured Field=] value whose value is a [=structured field/token=].
+
+    1.  Set |value|'s value to |access|.
+
+    1.  [=header list/Set a structured field value=] given ("`Sec-Fetch-Storage-Access`", |value|) in |r|'s [=request/header list=].
+</ol>
+
+
+The `Activate-Storage-Access` HTTP Response Header {#activate-storage-access-header}
+-------------------------------------------------------------------------------------
+
+The <dfn http-header export>`Activate-Storage-Access`</dfn> HTTP response header
+allows a server to opt in to accessing its cookies in a cross-site request
+context. It is a [=Structured Field=] [=structured field/item=] whose value MUST be a [=structured
+field/token=]. [[!I-D.structured-field-values-for-http]] Its ABNF is:
+
+```
+Activate-Storage-Access = sf-item
+```
+
+Valid `Activate-Storage-Access` values include "`load`" and "`retry`". In order
+to support forward-compatibility with as-yet-unknown semantics, servers SHOULD
+ignore this header if it contains an invalid value.
+
+The following parameter is defined:
+
+* A parameter whose key is "`allowed-origin`", and whose value is a [=structured field/string=]. See below for processing requirements.
+
+<pre class="example" id="activate-storage-access-usage">
+
+// The server's response requests that the user agent activate storage access
+// before continuing with the load of the resource.
+Activate-Storage-Access: load
+
+// The server's response requests that the user agent activate storage access,
+// then retry the request. The "allowed-origin" parameter allowlists the
+// request's origin.
+Activate-Storage-Access: retry; allowed-origin="https://foo.bar"
+
+// Same as above, but using a wildcard instead of explicitly naming the request's Origin.
+Activate-Storage-Access: retry; allowed-origin=*
+</pre>
+
+To <dfn export>perform a storage access retry check</dfn> for a [=request=] |request| and [=response=] |response|, run the following steps:
+
+<ol class="algorithm">
+    1. Let |credentialsMode| be |request|'s [=request/credentials mode=].
+
+    1. If |credentialsMode| is not "`include`", return failure.
+
+    1. Let |storageAccessStatus| be the result of [=request/compute the storage access status|computing the storage access status=] given |request|.
+
+    1. If |storageAccessStatus| is not "`inactive`", return failure.
+
+    1. Let |parsedHeader| be the result of [=header list/get a structured field value|getting a structured field value=] given "`Activate-Storage-Access`" and "`item`" from |response|'s [=response/header list=].
+
+    1. If |parsedHeader| is null, return failure.
+
+    1. Let (|value|, |params|) be |parsedHeader|.
+
+    1. If |value| is not a Token, return failure.
+
+    1. If |value| is not "`retry`", return failure.
+
+    1. If |params|["allowed-origin"] does not exist, return failure.
+
+    1. Let |allowedOrigin| be |params|["allowed-origin"].
+
+    1. If |allowedOrigin| is a Token whose value is "`*`", return success.
+
+    1. If |allowedOrigin| is not a String, return failure.
+
+    1. Let |expectedOrigin| be the result of [=header list/get|getting=] "`Origin`" from |request|'s [=request/header list=].
+
+    1. If |expectedOrigin| is null, return failure.
+
+    1. If |allowedOrigin|'s value is equal to |expectedOrigin|, return success.
+
+    1. Return failure.
+</ol>
+
+
+To <dfn export>perform a storage access load check</dfn> for a [=request=] |request| and [=response=] |response|, run the following steps:
+
+<ol class="algorithm">
+    1. Let |storageAccessStatus| be the result of [=request/compute the storage access status|computing the storage access status=] given |request|.
+
+    1. If |storageAccessStatus| is not one of "`inactive`" or "`active`", return failure.
+
+    1. Let |parsedHeader| be the result of [=header list/get a structured field value|getting a structured field value=] given "`Activate-Storage-Access`" and "`item`" from |response|'s [=response/header list=].
+
+    1. If |parsedHeader| is null, return failure.
+
+    1. Let (|value|, |params|) be |parsedHeader|.
+
+    1. If |value| is not a Token, return failure.
+
+    1. If |value| is not "`load`", return failure.
+
+    1. Return success.
+</ol>
