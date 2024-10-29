@@ -37,7 +37,7 @@ These costs and constraints can be avoided by supporting a few new headers.
 As an illustrative example, consider a calendar widget on calendar.com, embedded in example.com. During the user's first-ever visit to the example.com page, the flow of events is the following:
 
 1. The user agent requests the calendar widget's content.
-   * The fetch of this content is uncredentialed, as the user agent is blocking third-party cookies by default (by assumption). As a result, the server must respond with a placeholder that only requests unpartitioned cookie access, and then fetches the real widget.
+   * The fetch of this content is uncredentialed, as the user agent is blocking third-party cookies by default (by assumption). As a result, the server must respond with a placeholder that only has unpartitioned cookie access.
 1. The user agent loads the placeholder widget, without giving access to unpartitioned cookies.
 1. The widget placeholder calls `document.requestStorageAccess()`.
    * Note: this proposal does not include any changes to the existing requirements for obtaining permission.
