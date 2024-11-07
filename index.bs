@@ -369,7 +369,7 @@ In particular, modify the changes when creating the request's [=request/reserved
     1. Set |request|'s [=request/reserved client=]'s [=environment/has storage access=] to the result of executing |compute has storage access|.
 </div>
 
-Security and Privacy Considerations {#security-privacy-considerations}
+Security Considerations {#security-considerations}
 ======================================================================
 
 ## Opt-In signal ## {#security-opt-in}
@@ -391,6 +391,17 @@ It is tempting to design this specification such that it piggy-backs and/or inte
     * This would also mean that in order to fix an embedded widget on some page, the top-level site must perform some action to enable CORS; the embedded site alone would be unable to update the page and fix the widget. This is undesirable from a developer usability / composability standpoint.
 
 Therefore, CORS ought to be neither necessary nor sufficient for attaching unpartitioned cookies to a cross-site request. This specification is therefore designed to be orthogonal to CORS.
+
+Privacy Considerations {#privacy-considerations}
+================================================
+
+This specification simplifies some ways in which developers can use an API that allows access to cross-site data. However, it does not meaningfully change the privacy characteristics of the Storage Access API [[!STORAGE-ACCESS]]: sites are still able to ask for the ability to access cross-site cookies; user agents are still able to handle those requests how they see fit. Importantly, if the <a permission><code>storage-access</code></a> permission is not granted by the user or user agent, then this specification does not allow use of unpartitioned cross-site data.
+
+The [:Sec-Fetch-Storage-Access:] header does expose some user-specific state in network requests which was not previously available there, namely the state of the <a permission><code>storage-access</code></a> permission. However, this information is not considered privacy-sensitive, for a few reasons:
+
+* The embedded site could have learned this information anyway by calling {{Permissions/query}} and/or {{Document/requestStorageAccess()}} in an embedded iframe. These APIs are not treated as privacy-sensitive.
+* The [:Sec-Fetch-Storage-Access:] header's value is "`none`" unless the relevant context would be able to access unpartitioned state after calling {{Document/requestStorageAccess()}} without triggering a user prompt. Thus, in the cases where the [:Sec-Fetch-Storage-Access:] header conveys interesting information (i.e. "`inactive`" or "`active`"), the site in question already has the ability to access unpartitioned state, by assumption. So, there is zero privacy benefit to omitting the [:Sec-Fetch-Storage-Access:] header altogether in those cases.
+    * Conversely, since the [:Sec-Fetch-Storage-Access:] header only has one valid non-active and non-inactive state (namely "`none`"), there's no privacy benefit to omitting the [:Sec-Fetch-Storage-Access:] header when its value is neither "`inactive`" nor "`active`".
 
 Deployment Considerations {#deployment-considerations}
 ============================================================
