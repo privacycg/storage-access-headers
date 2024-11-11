@@ -79,7 +79,7 @@ urlPrefix: https://fetch.spec.whatwg.org/
 Introduction {#intro}
 =====================
 
-The [Storage Access API](https://github.com/privacycg/storage-access) supports "authenticated embeds" by providing a way request access to unpartitioned cookies in an embedded context. This currently requires an explicit call to a ECMAScript API (namely {{Document/requestStorageAccess()}}) to:
+The [Storage Access API](https://github.com/privacycg/storage-access) supports "authenticated embeds" by providing a way to request access to unpartitioned cookies in an embedded context. This currently requires an explicit call to a ECMAScript API (namely {{Document/requestStorageAccess()}}) to:
 1. Potentially prompt the user for permission; and
 1. Explicitly indicate the embedded resource's interest in using unpartitioned cookies (as a protection against CSRF attacks by an embedder).
 
