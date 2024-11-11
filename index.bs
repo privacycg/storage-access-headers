@@ -108,13 +108,13 @@ In addition to the new headers themselves, this document introduces some new inf
 
 A <dfn>cookie access flagset</dfn> is a struct that holds data related to the cookie accesses allowable in a given context.
 
-A [=cookie access flagset=] has a boolean [=struct/item=] <dfn for="cookie access flagset">eligible for storage-access</dfn>. This indicates whether the relevant third-party site allows the relevant "<a permission><code>storage-access</code></a>" permission grant to be used to allow access to cookies, if it exists. Unless stated otherwise it is unset.
-
-NOTE: The [=user agent=] is expected to read this struct, and in particular the [=cookie access flagset/eligible for storage-access=] boolean, when attaching cookies to an outgoing [=request=]. It is not yet possible to specify this, since the cookie store has no defined interface that specs can interact with.
+A [=cookie access flagset=] has a boolean [=struct/item=] <dfn for="cookie access flagset">eligible for storage-access</dfn>. This indicates whether the relevant third-party site allows the relevant "<a permission><code>storage-access</code></a>" permission grant to be used to allow access to cookies, if it exists. Unless stated otherwise it is false.
 
 A [=request=] has an associated <dfn for="request">cookie access flagset</dfn>, a [=cookie access flagset=].
 
-NOTE: A [=request=] also has a [=request/client=], which is an [=environment settings object=] (a kind of [=environment=]) and therefore has a [=environment/has storage access=] boolean. That value is distinct from the [=request=]'s [=request/cookie access flagset=]'s [=cookie access flagset/eligible for storage-access=] boolean.
+NOTE: The [=user agent=] is expected to read a [=request=]'s [=request/cookie access flagset=], and in particular the [=cookie access flagset/eligible for storage-access=] boolean, when attaching cookies to an outgoing [=request=]. It is not yet possible to specify this, since the cookie store has no defined interface that specs can interact with.
+
+NOTE: A [=request=] also has a [=request/client=], which is an [=environment settings object=] (a kind of [=environment=]) and therefore has a [=environment/has storage access=] boolean. That value is distinct from the value of the [=request=]'s [=request/cookie access flagset=]'s [=cookie access flagset/eligible for storage-access=] boolean.
 
 A [=request=] has an associated <dfn for="request">single-hop cache mode</dfn>, whose value is null or a [=request/cache mode=]. 
 
@@ -297,9 +297,8 @@ Handling these headers requires modifications to a few different parts of Fetch.
 When making a decision on whether to retry a request and force it to include cross-site cookies, a server ought to be informed as to the initiator of the request. I.e., the request ought to include the [:Origin:] header whenever it also includes the `Sec-Fetch-Storage-Access: inactive` header. Modify the definition of [=append a request Origin header=] by rewriting step 4 as:
 
 <div algorithm="modified append a request Origin header">
-    4. Let |storageAccessStatus| be |request|'s [=request/storage access status=].
-    5. If at least one of the following conditions is true:
-         * |storageAccessStatus| is "`inactive`" and |request|'s [=request/credentials mode=] is "`include`"
+    4. If at least one of the following conditions is true:
+         * |request|'s [=request/storage access status=] is "`inactive`" and |request|'s [=request/credentials mode=] is "`include`"
          * |request|'s [=request/method=] is neither \``GET`\` nor \``HEAD`\`
 
         Then:
@@ -373,12 +372,12 @@ Security Considerations {#security-considerations}
 ======================================================================
 
 ## Opt-In signal ## {#security-opt-in}
-The biggest security concerns to keep in mind for this proposal are those laid out in [privacycg/storage-access#113](https://github.com/privacycg/storage-access/issues/113). Namely: since the Storage Access API makes cross-site cookies available even after those cookies have been blocked by default, it is crucial that the Storage Access API not preserve the security concerns traditionally associated with cross-site cookies, like CSRF. The principal way that the Storage Access API addresses these security concerns is by requiring an embedded cross-site resource (e.g. an iframe) to explicitly opt in to accessing cross-site cookies by invoking {{Document/requestStorageAccess()}}.
+The primary security concerns for this specification are those laid out in [privacycg/storage-access#113](https://github.com/privacycg/storage-access/issues/113). Namely: since the Storage Access API makes cross-site cookies available even after those cookies have been blocked by default, it is crucial that the Storage Access API not preserve the security concerns traditionally associated with cross-site cookies, like CSRF. The principal way that the Storage Access API addresses these security concerns is by requiring an embedded cross-site resource (e.g. an iframe) to explicitly opt in to accessing cross-site cookies by invoking {{Document/requestStorageAccess()}}.
 
-Storage Access Headers continues in that vein by requiring embedded cross-site resources (or their servers) to explicitly opt-in to accessing cross-site cookies (by supplying an HTTP response header), before any cross-site cookies are included on the request. When a server opts in by sending the `Activate-Storage-Access: retry` header, it also must explicitly name the origin that it grants the ability to send credentialed requests (via the "`allowed-origin`" parameter). This fails closed by blocking credentialed requests, in the event of an origin mismatch.
+Storage Access Headers continues in the same vein by requiring embedded cross-site resources (or rather, their servers) to explicitly opt-in to accessing cross-site cookies (by supplying an HTTP response header), before any cross-site cookies are included on the request. When a server opts in by sending the `Activate-Storage-Access: retry` header, it also must explicitly name the origin that it grants the ability to send credentialed requests (via the "`allowed-origin`" parameter). This fails closed by blocking credentialed requests, in the event of an origin mismatch.
 
 ## Forbidden header name ## {#forbidden-header-name}
-This proposal uses a new forbidden name for the [:Sec-Fetch-Storage-Access:] header to prevent programmatic modification of the header value. This is primarily for reasons of coherence, rather than security, but there is a security reason to make this choice. If a script could modify the value of the header, it could lie to a server about the state of the storage-access permission in the requesting context and indicate that the state is active, even if the requesting context has not opted in to using the permission grant. This could mislead the server into inferring that the request context is more trusted/safe than it actually is (e.g., perhaps the requesting context has intentionally not opted into accessing its cross-site cookies because it cannot conclude it's safe to do so). This could lead the server to make different decisions than it would have if it had received the correct header value (none or inactive). Thus the value of this header ought to be trustworthy, so it ought to be up to the user agent to set it.
+This proposal uses a new forbidden name for the [:Sec-Fetch-Storage-Access:] header to prevent programmatic modification of the header value. This is primarily for reasons of coherence, rather than security, but there is a security reason to make this choice. If a script could modify the value of the header, it could lie to a server about the state of the <a permission><code>storage-access</code></a> permission in the requesting context and indicate that the state is active, even if the requesting context has not opted in to using the permission grant. This could mislead the server into inferring that the request context is more trusted/safe than it actually is (e.g., perhaps the requesting context has intentionally not opted into accessing its cross-site cookies because it cannot conclude it's safe to do so). This could lead the server to make different decisions than it would have if it had received the correct header value ("`none`" or "`inactive`"). Thus the value of this header ought to be trustworthy, so it ought to be up to the user agent to set it.
 
 ## Deeper CORS Integration ## {#deeper-cors-integration}
 
@@ -401,14 +400,14 @@ The [:Sec-Fetch-Storage-Access:] header does expose some user-specific state in 
 
 * The embedded site could have learned this information anyway by calling {{Permissions/query}} and/or {{Document/requestStorageAccess()}} in an embedded iframe. These APIs are not treated as privacy-sensitive.
 * The [:Sec-Fetch-Storage-Access:] header's value is "`none`" unless the relevant context would be able to access unpartitioned state after calling {{Document/requestStorageAccess()}} without triggering a user prompt. Thus, in the cases where the [:Sec-Fetch-Storage-Access:] header conveys interesting information (i.e. "`inactive`" or "`active`"), the site in question already has the ability to access unpartitioned state, by assumption. So, there is zero privacy benefit to omitting the [:Sec-Fetch-Storage-Access:] header altogether in those cases.
-    * Conversely, since the [:Sec-Fetch-Storage-Access:] header only has one valid non-active and non-inactive state (namely "`none`"), there's no privacy benefit to omitting the [:Sec-Fetch-Storage-Access:] header when its value is neither "`inactive`" nor "`active`".
+    * Conversely, since the [:Sec-Fetch-Storage-Access:] header only has one valid non-"`active`" and non-"`inactive`" state (namely "`none`"), there's no privacy benefit to omitting the [:Sec-Fetch-Storage-Access:] header when its value is neither "`inactive`" nor "`active`".
 
 Deployment Considerations {#deployment-considerations}
 ============================================================
 
 ## Vary ## {#vary}
 
-If a given endpoint may use the [:Activate-Storage-Access:] header, then developers should include [:Sec-Fetch-Storage-Access:] in the response's `Vary` header [[!RFC9110]], to ensure that caches handle the response appropriately. For example, `Vary: Accept-Encoding, Sec-Fetch-Storage-Access`.
+If a given endpoint might use the [:Activate-Storage-Access:] header, then developers should include [:Sec-Fetch-Storage-Access:] in the response's `Vary` header [[!RFC9110]], to ensure that caches handle the response appropriately. For example, `Vary: Accept-Encoding, Sec-Fetch-Storage-Access`.
 
 ## `Origin` Header Interoperability ## {#origin-header-interop}
 
@@ -416,7 +415,7 @@ Some servers misbehave if they receive the [:Origin:] header when they weren't e
 
 ## `Sec-` Prefix ## {#sec-prefix}
 
-The [:Sec-Fetch-Storage-Access:] header's name is prefixed with `Sec-` because only the [=user agent=] is permitted to set such headers as they are [=forbidden request-headers=]). Therefore, the [:Sec-Fetch-Storage-Access:] name is guaranteed to not conflict with any preexisting headers in use on the web.
+The [:Sec-Fetch-Storage-Access:] header's name is prefixed with `Sec-` because only the [=user agent=] is permitted to set such headers (as they are [=forbidden request-headers=]). Therefore, the [:Sec-Fetch-Storage-Access:] name is guaranteed to not conflict with any preexisting headers in use on the web.
 
 ## Header Compression ## {#header-compression}
 
@@ -460,4 +459,4 @@ The permanent message header field registry should be updated with the following
 Acknowledgements {#acknowledgements}
 =========================================
 
-Thanks to Johann Hoffman, Artur Janc, Ben VanderSloot, Dom Farolino, Matt Menke, and Adam Rice, who all provided valuable insight and support in the design of this mechanism.
+Thanks to Johann Hoffman, Artur Janc, Ben VanderSloot, Dom Farolino, Matt Menke, Adam Rice, and Maks Orlovich, who all provided valuable insight and support in the design of this mechanism.
