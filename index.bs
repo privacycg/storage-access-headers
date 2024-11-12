@@ -125,7 +125,7 @@ This document redefines a [=request=]'s <dfn for="request" export>cache mode</df
 A <dfn>storage access status</dfn> is one of "`none`", "`inactive`", or "`active`".
 
 <div algorithm>
-    The <dfn for=request>storage access status</dfn> of a [=request=] is the [=storage access status=], or null, returned by running the following steps:
+    The <dfn for=request>storage access status</dfn> of a [=request=] |request| is the [=storage access status=], or null, returned by running the following steps:
         1. If the user agent's cookie store would attach cookies with the `SameSite=Strict` attribute to |request|, return null. [[!COOKIES]]
         1. Let |allowed| be a [=boolean=], initially set to the result of determining whether the user agent's cookie store allows unpartitioned cookies to be attached to |request|.
         1. If |allowed| is true, return "`active`".
