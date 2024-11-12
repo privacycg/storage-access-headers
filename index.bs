@@ -106,11 +106,13 @@ Storage-Access Request Infrastructure {#request-infrastructure}
 
 In addition to the new headers themselves, this document introduces some new infrastructure to store and convey metadata in the [=user agent=], particularly on a [=request=].
 
-A [=request=] has a boolean [=struct/item=] <dfn for="request">eligible for storage-access</dfn>. This indicates whether the relevant third-party site allows the relevant "<a permission><code>storage-access</code></a>" permission grant to be used to allow access to cookies, if it exists. Unless stated otherwise it is false.
+A [=request=] has a boolean <dfn for="request">eligible for storage-access</dfn>. Unless stated otherwise, it is false.
 
-NOTE: The [=user agent=] is expected to read a [=request=]'s [=request/eligible for storage-access=] boolean when attaching cookies to an outgoing [=request=]. It is not yet possible to specify this, since the cookie store has no defined interface that specs can interact with.
+    Note: The [=request/eligible for storage-access=] boolean indicates whether the user agent is allowed to [=get a permission store entry=] given a {{PermissionDescriptor}} with {{PermissionDescriptor/name}} initialized to "`storage-access`" and a [=permission key=] of <code>(the site [=obtain a site|obtained=] from [=request=]'s [=request/client=]'s [=environment/top-level origin=], the site [=obtain a site|obtained=] from [=request=]'s [=request/url=]'s [=url/origin=])</code>, and if the result's [=permission store entry/state=] is "`granted`", include unpartitioned cookies when sending the [=request=].
 
-NOTE: A [=request=] also has a [=request/client=], which is an [=environment settings object=] (a kind of [=environment=]) and therefore has a [=environment/has storage access=] boolean. That value is distinct from the value of the [=request=]'s [=request/eligible for storage-access=] boolean.
+    Issue: It is not yet possible to specify how the [=user agent=] is expected to read a [=request=]'s [=request/eligible for storage-access=] boolean when attaching cookies to an outgoing [=request=], since the cookie store has no defined interface that specs can interact with.
+
+    Note: A [=request=] also has a [=request/client=], which is an [=environment settings object=] (a kind of [=environment=]) and therefore has a [=environment/has storage access=] boolean. That value is distinct from the value of the [=request=]'s [=request/eligible for storage-access=] boolean. Both represent an "opt in" signal for accessing unpartitioned cookies in a cross-site context, but the signal comes from different [=origin=]s. The [=request=]'s [=request/client=]'s [=environment/has storage access=] field represents whether the [=site=] [=obtain a site|obtained=] from the [=environment=]'s [=environment settings object/origin=] has opted in. The [=request=]'s [=request/eligible for storage-access=] field represents whether the [=site=] [=obtain a site|obtained=] from the [=request=]'s [=request/url=]'s [=url/origin=] has opted in.
 
 A [=request=] has an associated <dfn for="request">single-hop cache mode</dfn>, whose value is null or a [=request/cache mode=]. 
 
@@ -122,22 +124,25 @@ This document redefines a [=request=]'s <dfn for="request" export>cache mode</df
     1. Return |request|'s [=request/internal cache mode=].
 </div>
 
-A <dfn>storage access status</dfn> is one of "`none`", "`inactive`", or "`active`".
+A <dfn>storage access status</dfn> is one of "<dfn for="storage access status">none</dfn>", "<dfn for="storage access status">inactive</dfn>", or "<dfn for="storage access status">active</dfn>".
 
 <div algorithm>
     The <dfn for=request>storage access status</dfn> of a [=request=] |request| is the [=storage access status=], or null, returned by running the following steps:
         1. If the user agent's cookie store would attach cookies with the `SameSite=Strict` attribute to |request|, return null. [[!COOKIES]]
         1. Let |allowed| be a [=boolean=], initially set to the result of determining whether the user agent's cookie store allows unpartitioned cookies to be attached to |request|.
-        1. If |allowed| is true, return "`active`".
+
+            Issue: The cookie store is expected to [=get a permission store entry=] given a {{PermissionDescriptor}} with {{PermissionDescriptor/name}} initialized to "`storage-access`" and a [=permission key=] of <code>(the site [=obtain a site|obtained=] from [=request=]'s [=request/client=]'s [=environment/top-level origin=], the site [=obtain a site|obtained=] from [=request=]'s [=request/url=]'s [=url/origin=])</code>, and to examine |request|'s [=request/eligible for storage-access=] field and |request|'s [=request/client=]'s [=environment/has storage access=] field, when running the above step. There is currently no way to specify this because the cookie store has no specification.
+
+        1. If |allowed| is true, return "<code>[=storage access status/active=]</code>".
         1. If |request|'s [=request/eligible for storage-access=] is false, then:
             1. Set |request|'s [=request/eligible for storage-access=] to true.
             1. Set |allowed| to be the result of determining whether the user agent's cookie store allows unpartitioned cookies to be attached to |request|.
-
-            NOTE: The cookie store is expected to [=get the current permission state=] given "`storage-access`" and |request|'s [=request/client=], and to examine |request|'s [=request/eligible for storage-access=] field and |request|'s [=request/client=]'s [=environment/has storage access=] field, when running the above step.
-
             1. Set |request|'s [=request/eligible for storage-access=] to false.
-            1. If |allowed| is true, return "`inactive`".
-        1. Return "`none`".
+            1. If |allowed| is true, return "<code>[=storage access status/inactive=]</code>".
+
+                Note: |allowed| will be true in the above step if the [=permission store entry=] obtained by [=getting a permission store entry=] given a {{PermissionDescriptor}} with {{PermissionDescriptor/name}} initialized to "`storage-access`" and a [=permission key=] of <code>(the site [=obtain a site|obtained=] from [=request=]'s [=request/client=]'s [=environment/top-level origin=], the site [=obtain a site|obtained=] from [=request=]'s [=request/url=]'s [=url/origin=])</code> has a [=permission store entry/state=] of "`granted`". Otherwise, |allowed| will remain false.
+
+        1. Return "<code>[=storage access status/none=]</code>".
 </div>
 
 Issue: The Fetch specification does not yet provide an interface through which other specifications can interact with the cookie store, so it is not yet possible to express the above algorithm with the appropriate level of rigor. Once the cookie store has a well-defined interface that is usable from other specifications, this algorithm can make use of it.
@@ -159,8 +164,8 @@ ability or inability to access cookies to a server. It is a [=Structured Field=]
 Sec-Fetch-Storage-Access = sf-token
 ```
 
-Valid `Sec-Fetch-Storage-Access` values include "`none`", "`inactive`", and
-"`active`". In order to support forward-compatibility with as-yet-unknown
+Valid `Sec-Fetch-Storage-Access` values include "<code>[=storage access status/none=]</code>", "<code>[=storage access status/inactive=]</code>", and
+"<code>[=storage access status/active=]</code>". In order to support forward-compatibility with as-yet-unknown
 semantics, servers SHOULD ignore this header if it contains an invalid value.
 
 <pre class="example" id="sec-fetch-storage-access-usage">
@@ -171,15 +176,15 @@ semantics, servers SHOULD ignore this header if it contains an invalid value.
 // When the request is same-site, the header is omitted:
 
 
-// When the request has no access to cross-site cookies, the header is "none":
+// When the request has no access to cross-site cookies, the header is "<code>[=storage access status/none=]</code>":
 Sec-Fetch-Storage-Access: none
 
 // When the request has no access to cross-site cookies, but
 // 'storage-access' permission has already been granted, the header is
-// "inactive":
+// "<code>[=storage access status/inactive=]</code>":
 Sec-Fetch-Storage-Access: inactive
 
-// When the request has access to cross-site cookies, the header is "active":
+// When the request has access to cross-site cookies, the header is "<code>[=storage access status/active=]</code>":
 Sec-Fetch-Storage-Access: active
 
 </pre>
@@ -241,7 +246,7 @@ Activate-Storage-Access: retry; allowed-origin=*
         1. If |request|'s [=request/credentials mode=] [=string/is=] not "`include`", return failure.
         1. If |request|'s [=request/eligible for storage-access=] is true, return failure.
         1. Let |storageAccessStatus| be |request|'s [=request/storage access status=].
-        1. If |storageAccessStatus| [=string/is=] not "`inactive`", return failure.
+        1. If |storageAccessStatus| [=string/is=] not "<code>[=storage access status/inactive=]</code>", return failure.
         1. Let |parsedHeader| be the result of [=header list/get a structured field value|getting a structured field value=] given "`Activate-Storage-Access`" and "`item`" from |response|'s [=response/header list=].
         1. If |parsedHeader| is null, return failure.
         1. Let (|value|, |params|) be |parsedHeader|.
@@ -264,7 +269,7 @@ Activate-Storage-Access: retry; allowed-origin=*
 
     <ol class="algorithm">
         1. Let |storageAccessStatus| be |request|'s [=request/storage access status=].
-        1. If |storageAccessStatus| [=string/is=] not one of "`inactive`" or "`active`", return failure.
+        1. If |storageAccessStatus| [=string/is=] not one of "<code>[=storage access status/inactive=]</code>" or "<code>[=storage access status/active=]</code>", return failure.
         1. Let |parsedHeader| be the result of [=header list/get a structured field value|getting a structured field value=] given "`Activate-Storage-Access`" and "`item`" from |response|'s [=response/header list=].
         1. If |parsedHeader| is null, return failure.
         1. Let (|value|, <var ignore>params</var>) be |parsedHeader|.
@@ -294,7 +299,7 @@ When making a decision on whether to retry a request and force it to include cro
 
 <div algorithm="modified append a request Origin header">
     4. If at least one of the following conditions is true:
-         * |request|'s [=request/storage access status=] is "`inactive`" and |request|'s [=request/credentials mode=] is "`include`"
+         * |request|'s [=request/storage access status=] is "<code>[=storage access status/inactive=]</code>" and |request|'s [=request/credentials mode=] is "`include`"
          * |request|'s [=request/method=] is neither \``GET`\` nor \``HEAD`\`
 
         Then:
@@ -322,14 +327,14 @@ The rest of the algorithm is unmodified.
     To <dfn export>HTTP-storage-access-retry-fetch</dfn> given a [=fetch params=] |fetchParams|, run the following steps:
 
     1. Let |request| be |fetchParams|'s [=request=].
-    1. Assert: |request|'s [=request/storage access status=] [=string/is=] "`inactive`".
+    1. Assert: |request|'s [=request/storage access status=] [=string/is=] "<code>[=storage access status/inactive=]</code>".
     1. Assert: |request|'s [=request/eligible for storage-access=] is false.
     1. If |request|'s [=request/redirect count=] is 20, then return a [=network error=].
     1. Increase |request|'s [=request/redirect count=] by 1.
     1. [=list/Append=] |request|'s [=request/url=] to |request|'s [=request/URL list=].
     1. Set |request|'s [=request/single-hop cache mode=] to "`reload`".
     1. Set |request|'s [=request/eligible for storage-access=] to true.
-    1. Assert: |request|'s [=request/storage access status=] [=string/is=] "`active`".
+    1. Assert: |request|'s [=request/storage access status=] [=string/is=] "<code>[=storage access status/active=]</code>".
     1. Let |recursive| be true.
     1. Return the result of running [=main fetch=] given |fetchParams| and |recursive|.
 </div>
@@ -373,7 +378,7 @@ The primary security concerns for this specification are those laid out in [priv
 Storage Access Headers continues in the same vein by requiring embedded cross-site resources (or rather, their servers) to explicitly opt-in to accessing cross-site cookies (by supplying an HTTP response header), before any cross-site cookies are included on the request. When a server opts in by sending the `Activate-Storage-Access: retry` header, it also must explicitly name the origin that it grants the ability to send credentialed requests (via the "`allowed-origin`" parameter). This fails closed by blocking credentialed requests, in the event of an origin mismatch.
 
 ## Forbidden header name ## {#forbidden-header-name}
-This proposal uses a new forbidden name for the [:Sec-Fetch-Storage-Access:] header to prevent programmatic modification of the header value. This is primarily for reasons of coherence, rather than security, but there is a security reason to make this choice. If a script could modify the value of the header, it could lie to a server about the state of the <a permission><code>storage-access</code></a> permission in the requesting context and indicate that the state is active, even if the requesting context has not opted in to using the permission grant. This could mislead the server into inferring that the request context is more trusted/safe than it actually is (e.g., perhaps the requesting context has intentionally not opted into accessing its cross-site cookies because it cannot conclude it's safe to do so). This could lead the server to make different decisions than it would have if it had received the correct header value ("`none`" or "`inactive`"). Thus the value of this header ought to be trustworthy, so it ought to be up to the user agent to set it.
+This proposal uses a new forbidden name for the [:Sec-Fetch-Storage-Access:] header to prevent programmatic modification of the header value. This is primarily for reasons of coherence, rather than security, but there is a security reason to make this choice. If a script could modify the value of the header, it could lie to a server about the state of the <a permission><code>storage-access</code></a> permission in the requesting context and indicate that the state is "<code>[=storage access status/active=]</code>", even if the requesting context has not opted in to using the permission grant. This could mislead the server into inferring that the request context is more trusted/safe than it actually is (e.g., perhaps the requesting context has intentionally not opted into accessing its cross-site cookies because it cannot conclude it's safe to do so). This could lead the server to make different decisions than it would have if it had received the correct header value ("<code>[=storage access status/none=]</code>" or "<code>[=storage access status/inactive=]</code>"). Thus the value of this header ought to be trustworthy, so it ought to be up to the user agent to set it.
 
 ## Deeper CORS Integration ## {#deeper-cors-integration}
 
@@ -395,8 +400,8 @@ This specification simplifies some ways in which developers can use an API that 
 The [:Sec-Fetch-Storage-Access:] header does expose some user-specific state in network requests which was not previously available there, namely the state of the <a permission><code>storage-access</code></a> permission. However, this information is not considered privacy-sensitive, for a few reasons:
 
 * The embedded site could have learned this information anyway by calling {{Permissions/query}} and/or {{Document/requestStorageAccess()}} in an embedded iframe. These APIs are not treated as privacy-sensitive.
-* The [:Sec-Fetch-Storage-Access:] header's value is "`none`" unless the relevant context would be able to access unpartitioned state after calling {{Document/requestStorageAccess()}} without triggering a user prompt. Thus, in the cases where the [:Sec-Fetch-Storage-Access:] header conveys interesting information (i.e. "`inactive`" or "`active`"), the site in question already has the ability to access unpartitioned state, by assumption. So, there is zero privacy benefit to omitting the [:Sec-Fetch-Storage-Access:] header altogether in those cases.
-    * Conversely, since the [:Sec-Fetch-Storage-Access:] header only has one valid non-"`active`" and non-"`inactive`" state (namely "`none`"), there's no privacy benefit to omitting the [:Sec-Fetch-Storage-Access:] header when its value is neither "`inactive`" nor "`active`".
+* The [:Sec-Fetch-Storage-Access:] header's value is "<code>[=storage access status/none=]</code>" unless the relevant context would be able to access unpartitioned state after calling {{Document/requestStorageAccess()}} without triggering a user prompt. Thus, in the cases where the [:Sec-Fetch-Storage-Access:] header conveys interesting information (i.e. "<code>[=storage access status/inactive=]</code>" or "<code>[=storage access status/active=]</code>"), the site in question already has the ability to access unpartitioned state, by assumption. So, there is zero privacy benefit to omitting the [:Sec-Fetch-Storage-Access:] header altogether in those cases.
+    * Conversely, since the [:Sec-Fetch-Storage-Access:] header only has one valid non-"<code>[=storage access status/active=]</code>" and non-"<code>[=storage access status/inactive=]</code>" state (namely "<code>[=storage access status/none=]</code>"), there's no privacy benefit to omitting the [:Sec-Fetch-Storage-Access:] header when its value is neither "<code>[=storage access status/inactive=]</code>" nor "<code>[=storage access status/active=]</code>".
 
 Deployment Considerations {#deployment-considerations}
 ============================================================
@@ -407,7 +412,7 @@ If a given endpoint might use the [:Activate-Storage-Access:] header, then devel
 
 ## `Origin` Header Interoperability ## {#origin-header-interop}
 
-Some servers misbehave if they receive the [:Origin:] header when they weren't expecting to. However, the [:Origin:] header conveys exactly the information that a server would need before making an informed choice on whether to respond with the `Activate-Storage-Access: retry` header, so it's a perfect candidate for reuse by this specification (rather than inventing some new `Origin2` header). This specification strives to minimize new breakage due to including the [:Origin:] header on more requests, by minimizing the set of requests that newly include the [:Origin:] header. In particular, the [:Origin:] header is only (newly) included on cross-site [=request=]s whose [=request/storage access status=] [=string/is=] "`inactive`" and whose [=request/credentials mode=] [=string/is=] "`include`".
+Some servers misbehave if they receive the [:Origin:] header when they weren't expecting to. However, the [:Origin:] header conveys exactly the information that a server would need before making an informed choice on whether to respond with the `Activate-Storage-Access: retry` header, so it's a perfect candidate for reuse by this specification (rather than inventing some new `Origin2` header). This specification strives to minimize new breakage due to including the [:Origin:] header on more requests, by minimizing the set of requests that newly include the [:Origin:] header. In particular, the [:Origin:] header is only (newly) included on cross-site [=request=]s whose [=request/storage access status=] [=string/is=] "<code>[=storage access status/inactive=]</code>" and whose [=request/credentials mode=] [=string/is=] "`include`".
 
 ## `Sec-` Prefix ## {#sec-prefix}
 
