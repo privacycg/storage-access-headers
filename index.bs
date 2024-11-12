@@ -106,15 +106,11 @@ Storage-Access Request Infrastructure {#request-infrastructure}
 
 In addition to the new headers themselves, this document introduces some new infrastructure to store and convey metadata in the [=user agent=], particularly on a [=request=].
 
-A <dfn>cookie access flagset</dfn> is a struct that holds data related to the cookie accesses allowable in a given context.
+A [=request=] has a boolean [=struct/item=] <dfn for="request">eligible for storage-access</dfn>. This indicates whether the relevant third-party site allows the relevant "<a permission><code>storage-access</code></a>" permission grant to be used to allow access to cookies, if it exists. Unless stated otherwise it is false.
 
-A [=cookie access flagset=] has a boolean [=struct/item=] <dfn for="cookie access flagset">eligible for storage-access</dfn>. This indicates whether the relevant third-party site allows the relevant "<a permission><code>storage-access</code></a>" permission grant to be used to allow access to cookies, if it exists. Unless stated otherwise it is false.
+NOTE: The [=user agent=] is expected to read a [=request=]'s [=request/eligible for storage-access=] boolean when attaching cookies to an outgoing [=request=]. It is not yet possible to specify this, since the cookie store has no defined interface that specs can interact with.
 
-A [=request=] has an associated <dfn for="request">cookie access flagset</dfn>, a [=cookie access flagset=].
-
-NOTE: The [=user agent=] is expected to read a [=request=]'s [=request/cookie access flagset=], and in particular the [=cookie access flagset/eligible for storage-access=] boolean, when attaching cookies to an outgoing [=request=]. It is not yet possible to specify this, since the cookie store has no defined interface that specs can interact with.
-
-NOTE: A [=request=] also has a [=request/client=], which is an [=environment settings object=] (a kind of [=environment=]) and therefore has a [=environment/has storage access=] boolean. That value is distinct from the value of the [=request=]'s [=request/cookie access flagset=]'s [=cookie access flagset/eligible for storage-access=] boolean.
+NOTE: A [=request=] also has a [=request/client=], which is an [=environment settings object=] (a kind of [=environment=]) and therefore has a [=environment/has storage access=] boolean. That value is distinct from the value of the [=request=]'s [=request/eligible for storage-access=] boolean.
 
 A [=request=] has an associated <dfn for="request">single-hop cache mode</dfn>, whose value is null or a [=request/cache mode=]. 
 
@@ -133,13 +129,13 @@ A <dfn>storage access status</dfn> is one of "`none`", "`inactive`", or "`active
         1. If the user agent's cookie store would attach cookies with the `SameSite=Strict` attribute to |request|, return null. [[!COOKIES]]
         1. Let |allowed| be a [=boolean=], initially set to the result of determining whether the user agent's cookie store allows unpartitioned cookies to be attached to |request|.
         1. If |allowed| is true, return "`active`".
-        1. If |request|'s [=request/cookie access flagset=]'s [=cookie access flagset/eligible for storage-access=] is false, then:
-            1. Set |request|'s [=request/cookie access flagset=]'s [=cookie access flagset/eligible for storage-access=] to true.
+        1. If |request|'s [=request/eligible for storage-access=] is false, then:
+            1. Set |request|'s [=request/eligible for storage-access=] to true.
             1. Set |allowed| to be the result of determining whether the user agent's cookie store allows unpartitioned cookies to be attached to |request|.
 
-            NOTE: The cookie store is expected to [=get the current permission state=] given "`storage-access`" and |request|'s [=request/client=], and to examine |request|'s [=request/cookie access flagset=]'s [=cookie access flagset/eligible for storage-access=] field and |request|'s [=request/client=]'s [=environment/has storage access=] field, when running the above step.
+            NOTE: The cookie store is expected to [=get the current permission state=] given "`storage-access`" and |request|'s [=request/client=], and to examine |request|'s [=request/eligible for storage-access=] field and |request|'s [=request/client=]'s [=environment/has storage access=] field, when running the above step.
 
-            1. Set |request|'s [=request/cookie access flagset=]'s [=cookie access flagset/eligible for storage-access=] to false.
+            1. Set |request|'s [=request/eligible for storage-access=] to false.
             1. If |allowed| is true, return "`inactive`".
         1. Return "`none`".
 </div>
@@ -243,7 +239,7 @@ Activate-Storage-Access: retry; allowed-origin=*
 
     <ol class="algorithm">
         1. If |request|'s [=request/credentials mode=] [=string/is=] not "`include`", return failure.
-        1. If |request|'s [=request/cookie access flagset=]'s [=cookie access flagset/eligible for storage-access=] is true, return failure.
+        1. If |request|'s [=request/eligible for storage-access=] is true, return failure.
         1. Let |storageAccessStatus| be |request|'s [=request/storage access status=].
         1. If |storageAccessStatus| [=string/is=] not "`inactive`", return failure.
         1. Let |parsedHeader| be the result of [=header list/get a structured field value|getting a structured field value=] given "`Activate-Storage-Access`" and "`item`" from |response|'s [=response/header list=].
@@ -327,12 +323,12 @@ The rest of the algorithm is unmodified.
 
     1. Let |request| be |fetchParams|'s [=request=].
     1. Assert: |request|'s [=request/storage access status=] [=string/is=] "`inactive`".
-    1. Assert: |request|'s [=request/cookie access flagset=]'s [=cookie access flagset/eligible for storage-access=] is false.
+    1. Assert: |request|'s [=request/eligible for storage-access=] is false.
     1. If |request|'s [=request/redirect count=] is 20, then return a [=network error=].
     1. Increase |request|'s [=request/redirect count=] by 1.
     1. [=list/Append=] |request|'s [=request/url=] to |request|'s [=request/URL list=].
     1. Set |request|'s [=request/single-hop cache mode=] to "`reload`".
-    1. Set |request|'s [=request/cookie access flagset=]'s [=cookie access flagset/eligible for storage-access=] to true.
+    1. Set |request|'s [=request/eligible for storage-access=] to true.
     1. Assert: |request|'s [=request/storage access status=] [=string/is=] "`active`".
     1. Let |recursive| be true.
     1. Return the result of running [=main fetch=] given |fetchParams| and |recursive|.
@@ -343,7 +339,7 @@ The rest of the algorithm is unmodified.
 Insert a new step after step 17 in [=HTTP-redirect fetch=]:
 
 <div algorithm="modified HTTP-redirect fetch">
-    18. If <var ignore>locationURL</var>'s [=url/origin=] is not [=same origin=] with |request|'s [=request/url=]'s [=url/origin=], set |request|'s [=request/cookie access flagset=]'s [=cookie access flagset/eligible for storage-access=] to false.
+    18. If <var ignore>locationURL</var>'s [=url/origin=] is not [=same origin=] with |request|'s [=request/url=]'s [=url/origin=], set |request|'s [=request/eligible for storage-access=] to false.
 </div>
 
 
