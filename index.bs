@@ -140,7 +140,7 @@ A <dfn>storage access status</dfn> is one of "`none`", "`inactive`", or "`active
         1. Return "`none`".
 </div>
 
-NOTE: The Fetch specification does not yet provide an interface through which other specifications can interact with the cookie store, so it is not yet possible to express the above algorithm with the appropriate level of rigor. Once the cookie store has a well-defined interface that is usable from other specifications, this algorithm can make use of it.
+Issue: The Fetch specification does not yet provide an interface through which other specifications can interact with the cookie store, so it is not yet possible to express the above algorithm with the appropriate level of rigor. Once the cookie store has a well-defined interface that is usable from other specifications, this algorithm can make use of it.
 
 
 Storage-Access Headers {#headers}
