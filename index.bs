@@ -47,25 +47,15 @@ urlPrefix: https://datatracker.ietf.org/doc/html/rfc8941; spec: I-D.structured-f
             text: item; url: #name-items
             text: string; url: #name-strings
             text: token; url: #name-tokens
-    type: abstract-op
-        text: serialize Structured Header; url: #section-4.1
 spec: html; urlPrefix: https://html.spec.whatwg.org/multipage/
     type: dfn
-        text: source snapshot params; url: browsing-the-web.html#source-snapshot-params
-        text: snapshotting source snapshot params; url: browsing-the-web.html#snapshotting-source-snapshot-params
         text: create navigation params by fetching; url: browsing-the-web.html#create-navigation-params-by-fetching
-        text: set up a window environment settings object; url: nav-history-apis.html#set-up-a-window-environment-settings-object
-        text: environment
-        text: content document; url:browsing-the-web.html#concept-bcc-content-document
 spec: storage-access; urlPrefix: https://privacycg.github.io/storage-access/
-    type: dfn
-        text: determine whether the user agent explicitly allows unpartitioned cookie access; url: #determine-whether-the-user-agent-explicitly-allows-unpartitioned-cookie-access
     for: environment
         type: dfn
             text: has storage access; url: #environment-has-storage-access
     for: source snapshot params
         type: dfn
-            text: has storage access; url: #source-snapshot-params-has-storage-access
             text: environment id; url: source-snapsnot-params-environment-id
 urlPrefix: https://fetch.spec.whatwg.org/
     type: dfn
