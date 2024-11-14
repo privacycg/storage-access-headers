@@ -119,6 +119,7 @@ A <dfn>storage access status</dfn> is one of "<dfn for="storage access status">n
 <div algorithm>
     The <dfn for=request>storage access status</dfn> of a [=request=] |request| is the [=storage access status=], or null, returned by running the following steps:
         1. If the user agent's cookie store would attach cookies with the `SameSite=Strict` attribute to |request|, return null. [[!COOKIES]]
+        1. If the result of running [$Should request be allowed to use feature?$] given "<code>storage-access</code>" and |request| is false, return "<code>[=storage access status/none=]</code>".
         1. Let |allowed| be a [=boolean=], initially set to the result of determining whether the user agent's cookie store allows unpartitioned cookies to be attached to |request|.
 
             Issue: The cookie store is expected to [=get a permission store entry=] given a {{PermissionDescriptor}} with {{PermissionDescriptor/name}} initialized to "`storage-access`" and a [=permission key=] of <code>(the site [=obtain a site|obtained=] from [=request=]'s [=request/client=]'s [=environment/top-level origin=], the site [=obtain a site|obtained=] from [=request=]'s [=request/url=]'s [=url/origin=])</code>, and to examine |request|'s [=request/eligible for storage-access=] field and |request|'s [=request/client=]'s [=environment/has storage access=] field, when running the above step. There is currently no way to specify this because the cookie store has no specification.
