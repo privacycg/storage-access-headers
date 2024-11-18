@@ -69,7 +69,7 @@ urlPrefix: https://fetch.spec.whatwg.org/
 Introduction {#intro}
 =====================
 
-The [Storage Access API](https://github.com/privacycg/storage-access) supports "authenticated embeds" by providing a way to request access to unpartitioned cookies in an embedded context. This currently requires an explicit call to a ECMAScript API (namely {{Document/requestStorageAccess()}}) to:
+The [Storage Access API](https://github.com/privacycg/storage-access) supports "authenticated embeds" by providing a way to request access to unpartitioned cookies in an embedded context. This currently requires an explicit call to an ECMAScript API (namely {{Document/requestStorageAccess()}}) to:
 1. Potentially prompt the user for permission; and
 1. Explicitly indicate the embedded resource's interest in using unpartitioned cookies (as a protection against CSRF attacks by an embedder).
 
@@ -84,7 +84,7 @@ The requirement to invoke {{Document/requestStorageAccess}} is therefore useful,
 These challenges can be mitigated by supporting a new pair of headers. In particular, this document introduces:
 
 * [:Sec-Fetch-Storage-Access:], a request header to convey information about whether cross-site cookies were included in the request, and possibly whether the <a permission><code>storage-access</code></a> permission has been granted.
-* [:Activate-Storage-Access:], a response header that can be used to activate an existing <a permission><code>storage-access</code></a> permission grant and "retry" the request, or to activate an existing <a permission><code>storage-access</code></a> prior to loading a [=Document=] (typically, an <{iframe}>).
+* [:Activate-Storage-Access:], a response header that can be used to activate an existing <a permission><code>storage-access</code></a> permission grant and "retry" the request, or to activate an existing <a permission><code>storage-access</code></a> permission prior to loading a [=Document=] (typically, an <{iframe}>).
 
 Infra {#infra}
 ==============
@@ -96,7 +96,7 @@ Storage-Access Request Infrastructure {#request-infrastructure}
 
 In addition to the new headers themselves, this document introduces some new infrastructure to store and convey metadata in the [=user agent=], particularly on a [=request=].
 
-A [=request=] has a boolean <dfn for="request">eligible for storage-access</dfn>. Unless stated otherwise, it is false.
+A [=request=] has a boolean <dfn for="request">eligible for storage-access</dfn>. It is initially false.
 
     Note: The [=request/eligible for storage-access=] boolean indicates whether the user agent is allowed to [=get a permission store entry=] given a {{PermissionDescriptor}} with {{PermissionDescriptor/name}} initialized to "`storage-access`" and a [=permission key=] of <code>(the site [=obtain a site|obtained=] from [=request=]'s [=request/client=]'s [=environment/top-level origin=], the site [=obtain a site|obtained=] from [=request=]'s [=request/url=]'s [=url/origin=])</code>, and if the result's [=permission store entry/state=] is "`granted`", include unpartitioned cookies when sending the [=request=].
 
@@ -185,7 +185,7 @@ Sec-Fetch-Storage-Access: active
 
     <ol class="algorithm">
         1.  Assert: |request|'s [=request/url=] is a [=potentially trustworthy URL=].
-        1. If |request|'s [=request/credentials mode=] [=string/is=] not "`include`", abort these steps.
+        1.  If |request|'s [=request/credentials mode=] [=string/is=] not "`include`", abort these steps.
         1.  Let |access| be |request|'s [=request/storage access status=].
         1.  If |access| is null, abort these steps.
         1.  Let |value| be a [=Structured Field=] value whose value is a [=structured field/token=].
@@ -199,7 +199,7 @@ The `Activate-Storage-Access` HTTP Response Header {#activate-storage-access-hea
 -------------------------------------------------------------------------------------
 
 The <dfn http-header export>`Activate-Storage-Access`</dfn> HTTP response header
-allows a server to opt in to accessing its cookies in a cross-site request
+allows a server to opt in to accessing its unpartitioned cookies in a cross-site request
 context. It is a [=Structured Field=] [=structured field/item=] whose value MUST be a [=structured
 field/token=]. [[!I-D.structured-field-values-for-http]] Its ABNF is:
 
@@ -451,4 +451,4 @@ The permanent message header field registry should be updated with the following
 Acknowledgements {#acknowledgements}
 =========================================
 
-Thanks to Johann Hoffman, Artur Janc, Ben VanderSloot, Dom Farolino, Matt Menke, Adam Rice, and Maks Orlovich, who all provided valuable insight and support in the design of this mechanism.
+Thanks to Johann Hofmann, Artur Janc, Ben VanderSloot, Dom Farolino, Matt Menke, Adam Rice, and Maks Orlovich, who all provided valuable insight and support in the design of this mechanism.
