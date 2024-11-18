@@ -70,7 +70,7 @@ urlPrefix: https://fetch.spec.whatwg.org/
 Introduction {#intro}
 =====================
 
-The [Storage Access API](https://github.com/privacycg/storage-access) supports "authenticated embeds" by providing a way to request access to unpartitioned cookies in an embedded context. This currently requires an explicit call to an ECMAScript API (namely {{Document/requestStorageAccess()}}) to:
+The [Storage Access API](https://github.com/privacycg/storage-access) supports "authenticated embeds" by providing a way to request access to unpartitioned cookies in an embedded context. This currently requires an explicit call to a JavaScript API (namely {{Document/requestStorageAccess()}}) to:
 1. Potentially prompt the user for permission; and
 1. Explicitly indicate the embedded resource's interest in using unpartitioned cookies (as a protection against CSRF attacks by an embedder).
 
@@ -80,7 +80,7 @@ As the above list suggests, this single API invocation is serving two orthogonal
 
 The requirement to invoke {{Document/requestStorageAccess}} is therefore useful, but it imposes some challenges:
 * Use of the Storage Access API may currently require multiple network round trips and multiple resource reloads before an <{iframe}> can work as expected, since the <{iframe}> must execute {{Document/requestStorageAccess()}} before fetching all of its embedded resources (presuming that they require access to unpartitioned cookies). In practice this means that the <{iframe}> loads, executes {{Document/requestStorageAccess()}}, then refreshes itself in order to re-do all of the embedded fetches (including unpartitioned cookies this time).
-* Embedded resources currently must execute ECMAScript in order to benefit from this API. This effectively means that the embedded resource must be an <{iframe}> that has the ability to run ECMAScript, or must be a subresource fetched by such an <{iframe}> (see the first bullet). This imposes an unnecessary burden on sites that serve access-controlled resources (i.e. resources that require authentication cookies) which are embedded in cross-site pages.
+* Embedded resources currently must execute JavaScript in order to benefit from this API. This effectively means that the embedded resource must be an <{iframe}> that has the ability to run JavaScript, or must be a subresource fetched by such an <{iframe}> (see the first bullet). This imposes an unnecessary burden on sites that serve access-controlled resources (i.e. resources that require authentication cookies) which are embedded in cross-site pages.
 
 These challenges can be mitigated by supporting a new pair of headers. In particular, this document introduces:
 
