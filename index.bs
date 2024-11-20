@@ -142,6 +142,9 @@ A <dfn>storage access status</dfn> is one of "<dfn for="storage access status">n
         1. Return false if all of the following conditions are false:
             * |eligible for storage-access| is true
             * |environment|'s [=environment/has storage access=] is true and the site [=obtain a site|obtained=] from |environment|'s [=environment settings object/origin=] and the site [=obtain a site|obtained=] from |url|'s [=url/origin=] are [=same site=]
+
+                Issue: This condition ought to check a boolean that is updated after cross-site HTTP redirects. I.e., it ought to read a boolean derived from the |environment|'s [=environment/has storage access=], not that value itself. See [storage-access#210](https://github.com/privacycg/storage-access/issues/210).
+
         1. Let |entry| be the result of  [=getting a permission store entry=] given a {{PermissionDescriptor}} with {{PermissionDescriptor/name}} initialized to "`storage-access`" and a [=permission key=] of |key|.
         1. If |entry|'s [=permission store entry/state=] is not "<code>[=permission/granted=]</code>", return false.
         1. Return true.
