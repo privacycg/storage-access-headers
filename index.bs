@@ -103,7 +103,7 @@ A [=request=] has a boolean <dfn for="request">eligible for storage-access</dfn>
 
     Issue: It is not yet possible to specify how the [=user agent=] is expected to read a [=request=]'s [=request/eligible for storage-access=] boolean when attaching cookies to an outgoing [=request=], since the cookie store has no defined interface that specs can interact with.
 
-    Note: A [=request=] also has a [=request/client=], which is an [=environment settings object=] (a kind of [=environment=]) and therefore has a [=environment/has storage access=] boolean. That value is distinct from the value of the [=request=]'s [=request/eligible for storage-access=] boolean. Both represent an "opt in" signal for accessing unpartitioned cookies in a cross-site context, but the signal comes from different [=origin=]s. The [=request=]'s [=request/client=]'s [=environment/has storage access=] field represents whether the [=site=] [=obtain a site|obtained=] from the [=environment=]'s [=environment settings object/origin=] has opted in. The [=request=]'s [=request/eligible for storage-access=] field represents whether the [=site=] [=obtain a site|obtained=] from the [=request=]'s [=request/url=]'s [=url/origin=] has opted in.
+    Note: A [=request=] also has a [=environment/has storage access=] boolean, indirectly through its [=request/client=]. That value is distinct from the [=request=]'s [=request/eligible for storage-access=] boolean. Both represent an "opt in" signal for accessing unpartitioned cookies in a cross-site context, but the signal comes from different [=origin=]s. The [=request=]'s [=request/client=]'s [=environment/has storage access=] field represents whether the [=site=] [=obtain a site|obtained=] from the [=environment=]'s [=environment settings object/origin=] has opted in. The [=request=]'s [=request/eligible for storage-access=] field represents whether the [=site=] [=obtain a site|obtained=] from the [=request=]'s [=request/url=]'s [=url/origin=] has opted in.
 
 A [=request=] has an associated <dfn for="request">single-hop cache mode</dfn>, whose value is null or a [=request/cache mode=]. It is initially set to null.
 
@@ -118,7 +118,7 @@ This document redefines a [=request=]'s <dfn for="request" export>cache mode</df
 A <dfn>storage access status</dfn> is one of "<dfn for="storage access status">none</dfn>", "<dfn for="storage access status">inactive</dfn>", or "<dfn for="storage access status">active</dfn>".
 
 <div algorithm>
-    The <dfn for=request>storage access status</dfn> of a [=request=] |request| is the [=storage access status=], or null, returned by running the following steps:
+    The <dfn for=request>storage access status</dfn> of a [=request=] |request| is the [=storage access status=]-or-null returned by running the following steps:
         1. If the user agent's cookie store would attach cookies with the `SameSite=Strict` attribute to |request|, return null. [[!COOKIES]]
         1. Let |allowed| be a [=boolean=], initially set to the result of determining whether the user agent's cookie store allows unpartitioned cookies to be attached to |request|.
 
@@ -128,7 +128,7 @@ A <dfn>storage access status</dfn> is one of "<dfn for="storage access status">n
         1. Let |allowedByPolicy| the result of running [$Should request be allowed to use feature?$] given "<code>storage-access</code>" and |request|.
         1. If |allowedByPolicy| is true and |request|'s [=request/eligible for storage-access=] is false, then:
             1. Set |request|'s [=request/eligible for storage-access=] to true.
-            1. Set |allowed| to be the result of determining whether the user agent's cookie store allows unpartitioned cookies to be attached to |request|.
+            1. Set |allowed| to the result of determining whether the user agent's cookie store allows unpartitioned cookies to be attached to |request|.
             1. Set |request|'s [=request/eligible for storage-access=] to false.
             1. If |allowed| is true, return "<code>[=storage access status/inactive=]</code>".
 
@@ -185,7 +185,7 @@ Sec-Fetch-Storage-Access: active
     To <dfn export lt="set-storage-access">set the `Sec-Fetch-Storage-Access` header</dfn> for a [=request=] |request|:
 
     <ol class="algorithm">
-        1.  Assert: |request|'s [=request/url=] is a [=potentially trustworthy URL=].
+        1.  [=Assert=]: |request|'s [=request/url=] is a [=potentially trustworthy URL=].
         1.  If |request|'s [=request/credentials mode=] is not "`include`", abort these steps.
         1.  Let |access| be |request|'s [=request/storage access status=].
         1.  If |access| is null, abort these steps.
@@ -228,7 +228,7 @@ Activate-Storage-Access: load
 // request's origin.
 Activate-Storage-Access: retry; allowed-origin="https://foo.bar"
 
-// Same as above, but using a wildcard instead of explicitly naming the request's Origin.
+// Same as above, but using a wildcard instead of explicitly naming the request's origin.
 Activate-Storage-Access: retry; allowed-origin=*
 </pre>
 
