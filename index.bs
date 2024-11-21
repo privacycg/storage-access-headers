@@ -110,7 +110,7 @@ A [=request=] has an associated <dfn for="request">single-hop cache mode</dfn>, 
 This document renames a [=request=]'s [=request/cache mode=] field to <dfn for="request">internal cache mode</dfn>.
 
 <div algorithm="request cache mode">
-This document redefines a [=request=]'s <dfn for="request" export>cache mode</dfn> as the cache mode returned by running the following steps, given a [=request=] |request|:
+This document redefines a [=request=]'s <dfn for="request">cache mode</dfn> as the cache mode returned by running the following steps, given a [=request=] |request|:
     1. If |request|'s [=request/single-hop cache mode=] is not null, return |request|'s [=request/single-hop cache mode=].
     1. Return |request|'s [=request/internal cache mode=].
 </div>
@@ -159,7 +159,7 @@ The following sections define a request header and a response header. The reques
 The `Sec-Fetch-Storage-Access` HTTP Request Header {#sec-fetch-storage-access-header}
 -----------------------------------------------------------------
 
-The <dfn http-header export>`Sec-Fetch-Storage-Access`</dfn> HTTP request header exposes a [=request=]'s
+The <dfn http-header>`Sec-Fetch-Storage-Access`</dfn> HTTP request header exposes a [=request=]'s
 ability or inability to access cookies to a server. It is a [=Structured Field=] [=structured field/item=] whose value MUST be a
 [=structured field/token=]. [[!I-D.structured-field-values-for-http]] Its ABNF is:
 
@@ -191,7 +191,7 @@ Sec-Fetch-Storage-Access: active
 </pre>
 
 <div algorithm>
-    To <dfn export lt="set-storage-access">set the `Sec-Fetch-Storage-Access` header</dfn> for a [=request=] |request|:
+    To <dfn lt="set-storage-access">set the `Sec-Fetch-Storage-Access` header</dfn> for a [=request=] |request|:
 
     <ol class="algorithm">
         1.  [=Assert=]: |request|'s [=request/url=] is a [=potentially trustworthy URL=].
@@ -208,7 +208,7 @@ Sec-Fetch-Storage-Access: active
 The `Activate-Storage-Access` HTTP Response Header {#activate-storage-access-header}
 -------------------------------------------------------------------------------------
 
-The <dfn http-header export>`Activate-Storage-Access`</dfn> HTTP response header
+The <dfn http-header>`Activate-Storage-Access`</dfn> HTTP response header
 allows a server to opt in to accessing its unpartitioned cookies in a cross-site request
 context. It is a [=Structured Field=] [=structured field/item=] whose value MUST be a [=structured
 field/token=]. [[!I-D.structured-field-values-for-http]] Its ABNF is:
@@ -217,7 +217,7 @@ field/token=]. [[!I-D.structured-field-values-for-http]] Its ABNF is:
 Activate-Storage-Access = sf-item
 ```
 
-Valid `Activate-Storage-Access` values include "`load`" and "`retry`". In order to support forward-compatibility with as-yet-unknown semantics, user agents SHOULD ignore this header if it contains an invalid value.
+Valid `Activate-Storage-Access` values include "`load`" and "`retry`".
 
 The following parameter is defined:
 
@@ -240,7 +240,7 @@ Activate-Storage-Access: retry; allowed-origin=*
 </pre>
 
 <div algorithm>
-    To <dfn export>perform a storage access retry check</dfn> for a [=request=] |request| and [=response=] |response|, run the following steps:
+    To <dfn>perform a storage access retry check</dfn> for a [=request=] |request| and [=response=] |response|, run the following steps:
 
     <ol class="algorithm">
         1. If |request|'s [=request/credentials mode=] is not "`include`", return failure.
@@ -263,7 +263,7 @@ Activate-Storage-Access: retry; allowed-origin=*
 
 
 <div algorithm>
-    To <dfn export>perform a storage access load check</dfn> for a [=request=] |request| and [=response=] |response|, run the following steps:
+    To <dfn>perform a storage access load check</dfn> for a [=request=] |request| and [=response=] |response|, run the following steps:
 
     <ol class="algorithm">
         1. Let |storageAccessStatus| be |request|'s [=request/storage access status=].
@@ -322,7 +322,7 @@ Insert a new step after step 6.1 (before "switch on request's redirect mode"):
 The rest of the algorithm is unmodified.
 
 <div algorithm>
-    To <dfn export>HTTP-storage-access-retry-fetch</dfn> given a [=fetch params=] |fetchParams|, run the following steps:
+    To <dfn>HTTP-storage-access-retry-fetch</dfn> given a [=fetch params=] |fetchParams|, run the following steps:
 
     1. Let |request| be |fetchParams|'s [=request=].
     1. Assert: |request|'s [=request/storage access status=] is "<code>[=storage access status/inactive=]</code>".
