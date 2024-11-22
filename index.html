@@ -5,10 +5,10 @@
   <title>Storage Access Headers</title>
   <meta content="UD" name="w3c-status">
   <link href="https://www.w3.org/StyleSheets/TR/2021/W3C-UD" rel="stylesheet">
-  <meta content="Bikeshed version 9e4e5f0f6, updated Mon Oct 28 14:51:59 2024 -0700" name="generator">
+  <meta content="Bikeshed version 742f3d674, updated Mon Nov 4 14:56:54 2024 -0800" name="generator">
   <link href="https://cfredric.github.io/storage-access-headers" rel="canonical">
   <link href="https://www.w3.org/2008/site/images/favicon.ico" rel="icon">
-  <meta content="c957afa710355a8a96c2674b5d6402fb11faa700" name="revision">
+  <meta content="7b02c6aab60b2ae9c83585785518d03d4e4ff3a6" name="revision">
   <meta content="dark light" name="color-scheme">
   <link href="https://www.w3.org/StyleSheets/TR/2021/dark.css" media="(prefers-color-scheme: dark)" rel="stylesheet" type="text/css">
 <style>/* Boilerplate: style-autolinks */
@@ -331,6 +331,130 @@ figcaption:not(.no-marker)::before {
     content: "Figure " counter(figure) " ";
 }
 </style>
+<style>/* Boilerplate: style-dfn-panel */
+:root {
+    --dfnpanel-bg: #ddd;
+    --dfnpanel-text: var(--text);
+    --dfnpanel-target-bg: #ffc;
+    --dfnpanel-target-outline: orange;
+}
+@media (prefers-color-scheme: dark) {
+    :root {
+        --dfnpanel-bg: #222;
+        --dfnpanel-text: var(--text);
+        --dfnpanel-target-bg: #333;
+        --dfnpanel-target-outline: silver;
+    }
+}
+.dfn-panel {
+    position: absolute;
+    z-index: 35;
+    width: 20em;
+    width: 300px;
+    height: auto;
+    max-height: 500px;
+    overflow: auto;
+    padding: 0.5em 0.75em;
+    font: small Helvetica Neue, sans-serif, Droid Sans Fallback;
+    background: var(--dfnpanel-bg);
+    color: var(--dfnpanel-text);
+    border: outset 0.2em;
+    white-space: normal; /* in case it's moved into a pre */
+}
+.dfn-panel:not(.on) { display: none; }
+.dfn-panel * { margin: 0; padding: 0; text-indent: 0; }
+.dfn-panel > b { display: block; }
+.dfn-panel a { color: var(--dfnpanel-text); }
+.dfn-panel a:not(:hover) { text-decoration: none !important; border-bottom: none !important; }
+.dfn-panel a:focus {
+    outline: 5px auto Highlight;
+    outline: 5px auto -webkit-focus-ring-color;
+}
+.dfn-panel > b + b { margin-top: 0.25em; }
+.dfn-panel ul { padding: 0 0 0 1em; list-style: none; }
+.dfn-panel li a {
+    max-width: calc(300px - 1.5em - 1em);
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.dfn-panel.activated {
+    display: inline-block;
+    position: fixed;
+    left: 8px;
+    bottom: 2em;
+    margin: 0 auto;
+    max-width: calc(100vw - 1.5em - .4em - .5em);
+    max-height: 30vh;
+    transition: left 1s ease-out, bottom 1s ease-out;
+}
+
+.dfn-panel .link-item:hover {
+    text-decoration: underline;
+}
+.dfn-panel .link-item .copy-icon {
+    opacity: 0;
+}
+.dfn-panel .link-item:hover .copy-icon,
+.dfn-panel .link-item .copy-icon:focus {
+    opacity: 1;
+}
+
+.dfn-panel .copy-icon {
+    display: inline-block;
+    margin-right: 0.5em;
+    width: 0.85em;
+    height: 1em;
+    border-radius: 3px;
+    background-color: #ccc;
+    cursor: pointer;
+}
+
+.dfn-panel .copy-icon .icon {
+    width: 100%;
+    height: 100%;
+    background-color: #fff;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+}
+
+.dfn-panel .copy-icon .icon::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    border: 1px solid black;
+    background-color: #ccc;
+    opacity: 0.25;
+    transform: translate(3px, -3px);
+}
+
+.dfn-panel .copy-icon:active .icon::before {
+    opacity: 1;
+}
+
+.dfn-paneled[role="button"] { cursor: help; }
+
+.highlighted {
+    animation: target-fade 3s;
+}
+
+@keyframes target-fade {
+    from {
+        background-color: var(--dfnpanel-target-bg);
+        outline: 5px solid var(--dfnpanel-target-outline);
+    }
+    to {
+        color: var(--a-normal-text);
+        background-color: transparent;
+        outline: transparent;
+    }
+}
+</style>
 <style>/* Boilerplate: style-issues */
 a[href].issue-return {
     float: right;
@@ -349,6 +473,39 @@ a[href].issue-return {
 [data-md] > :last-child {
     margin-bottom: 0;
 }
+</style>
+<style>/* Boilerplate: style-ref-hints */
+:root {
+    --ref-hint-bg: #ddd;
+    --ref-hint-text: var(--text);
+}
+@media (prefers-color-scheme: dark) {
+    :root {
+        --ref-hint-bg: #222;
+        --ref-hint-text: var(--text);
+    }
+}
+
+.ref-hint {
+    display: inline-block;
+    position: absolute;
+    z-index: 35;
+    width: 20em;
+    width: 300px;
+    height: auto;
+    max-height: 500px;
+    overflow: auto;
+    padding: 0.5em 0.5em;
+    font: small Helvetica Neue, sans-serif, Droid Sans Fallback;
+    background: var(--ref-hint-bg);
+    color: var(--ref-hint-text);
+    border: outset 0.2em;
+    white-space: normal; /* in case it's moved into a pre */
+}
+
+.ref-hint * { margin: 0; padding: 0; text-indent: 0; }
+
+.ref-hint ul { padding: 0 0 0 1em; list-style: none; }
 </style>
 <style>/* Boilerplate: style-selflinks */
 :root {
@@ -408,6 +565,49 @@ dfn > a.self-link:hover {
 a.self-link::before            { content: "¶"; }
 .heading > a.self-link::before { content: "§"; }
 dfn > a.self-link::before      { content: "#"; }
+</style>
+<style>/* Boilerplate: style-var-click-highlighting */
+/*
+Colors were chosen in Lab using https://nixsensor.com/free-color-converter/
+D50 2deg illuminant, L in [0,100], a and b in [-128, 128]
+0 = lab(85,0,85)
+1 = lab(85,80,30)
+2 = lab(85,-40,40)
+3 = lab(85,-50,0)
+4 = lab(85,5,15)
+5 = lab(85,-10,-50)
+6 = lab(85,35,-15)
+
+For darkmode:
+0 = oklab(50%   0%  108%)
+1 = oklab(50% -51%   51%)
+2 = oklab(50% -64%  -20%)
+3 = oklab(50%   6%   19%)
+4 = oklab(50% -12%  -64%)
+5 = oklab(50%  44%  -19%)  
+6 = oklab(50% 102%   38%)
+*/
+
+[data-algorithm] var { cursor: pointer; }
+var[data-var-color] { background-color: var(--var-bg); box-shadow: 0 0 0 2px var(--var-bg); }
+
+var[data-var-color] { --var-bg: #F4D200; }
+var[data-var-color="1"] { --var-bg: #FF87A2; }
+var[data-var-color="2"] { --var-bg: #96E885; }
+var[data-var-color="3"] { --var-bg: #3EEED2; }
+var[data-var-color="4"] { --var-bg: #EACFB6; }
+var[data-var-color="5"] { --var-bg: #82DDFF; }
+var[data-var-color="6"] { --var-vg: #FFBCF2; }
+
+@media (prefers-color-scheme: dark) {
+	var[data-var-color] { --var-bg: #bc1a00; }
+	var[data-var-color="1"] { --var-bg: #007f00; }
+	var[data-var-color="2"] { --var-bg: #008698; }
+	var[data-var-color="3"] { --var-bg: #7f5b2b; }
+	var[data-var-color="4"] { --var-bg: #004df3; }
+	var[data-var-color="5"] { --var-bg: #a1248a; }
+	var[data-var-color="6"] { --var-vg: #ff0000; }
+}
 </style>
 <style>/* Boilerplate: style-wpt */
 :root {
@@ -550,7 +750,7 @@ dd:not(:last-child) > .wpt-tests-block:not([open]):last-child {
   <div class="head">
    <p data-fill-with="logo"><a class="logo" href="https://www.w3.org/"> <img alt="W3C" height="48" src="https://www.w3.org/StyleSheets/TR/2021/logos/W3C" width="72"> </a> </p>
    <h1 class="p-name no-ref" id="title">Storage Access Headers</h1>
-   <p id="w3c-state"><a href="https://www.w3.org/standards/types/#UD">Unofficial Proposal Draft</a>, <time class="dt-updated" datetime="2024-10-29">29 October 2024</time></p>
+   <p id="w3c-state"><a href="https://www.w3.org/standards/types/#UD">Unofficial Proposal Draft</a>, <time class="dt-updated" datetime="2024-11-22">22 November 2024</time></p>
    <details open>
     <summary>More details about this document</summary>
     <div data-fill-with="spec-metadata">
@@ -559,6 +759,7 @@ dd:not(:last-child) > .wpt-tests-block:not([open]):last-child {
       <dd><a class="u-url" href="https://cfredric.github.io/storage-access-headers">https://cfredric.github.io/storage-access-headers</a>
       <dt>Issue Tracking:
       <dd><a href="https://github.com/cfredric/storage-access-headers/issues/">GitHub</a>
+      <dd><a href="#issues-index">Inline In Spec</a>
       <dt class="editor">Editor:
       <dd class="editor p-author h-card vcard"><a class="p-name fn u-email email" href="mailto:cfredric@google.com">Chris Fredrickson</a> (<a class="p-org org" href="https://google.com">Google</a>)
      </dl>
@@ -570,7 +771,7 @@ dd:not(:last-child) > .wpt-tests-block:not([open]):last-child {
   </div>
   <div class="p-summary" data-fill-with="abstract">
    <h2 class="no-num no-toc no-ref heading settled" id="abstract"><span class="content">Abstract</span></h2>
-   <p>TODO: A short description of your spec, one or two sentences.</p>
+   <p>This document defines a pair of request and response headers that aim to give servers information about whether unpartitioned cookies were (or could be) included on a request, and provide the ability for servers to allow those cookies to be sent (if the user has already relaxed the privacy boundary via the Storage Access API).</p>
   </div>
   <h2 class="no-num no-toc no-ref heading settled" id="sotd"><span class="content">Status of this document</span></h2>
   <div data-fill-with="status">
@@ -581,24 +782,491 @@ dd:not(:last-child) > .wpt-tests-block:not([open]):last-child {
    <h2 class="no-num no-toc no-ref" id="contents">Table of Contents</h2>
    <ol class="toc" role="directory">
     <li><a href="#intro"><span class="secno">1</span> <span class="content">Introduction</span></a>
+    <li><a href="#infra"><span class="secno">2</span> <span class="content">Infra</span></a>
+    <li><a href="#request-infrastructure"><span class="secno">3</span> <span class="content">Storage-Access Request Infrastructure</span></a>
+    <li>
+     <a href="#headers"><span class="secno">4</span> <span class="content">Storage-Access Headers</span></a>
+     <ol class="toc">
+      <li><a href="#sec-fetch-storage-access-header"><span class="secno">4.1</span> <span class="content">The <code>Sec-Fetch-Storage-Access</code> HTTP Request Header</span></a>
+      <li><a href="#activate-storage-access-header"><span class="secno">4.2</span> <span class="content">The <code>Activate-Storage-Access</code> HTTP Response Header</span></a>
+     </ol>
+    <li><a href="#fetch-metadata-integration"><span class="secno">5</span> <span class="content">Integration with Fetch Metadata</span></a>
+    <li>
+     <a href="#fetch-integration"><span class="secno">6</span> <span class="content">Integration with Fetch</span></a>
+     <ol class="toc">
+      <li><a href="#origin-header-integration"><span class="secno">6.1</span> <span class="content"><code>Origin</code> header</span></a>
+      <li><a href="#http-fetch"><span class="secno">6.2</span> <span class="content">HTTP-fetch</span></a>
+      <li><a href="#http-redirect-fetch"><span class="secno">6.3</span> <span class="content">HTTP-redirect-fetch</span></a>
+     </ol>
+    <li>
+     <a href="#html-integration"><span class="secno">7</span> <span class="content">Integration with HTML</span></a>
+     <ol class="toc">
+      <li><a href="#navigation-integration"><span class="secno">7.1</span> <span class="content">Changes to navigation</span></a>
+     </ol>
+    <li>
+     <a href="#security-considerations"><span class="secno">8</span> <span class="content">Security Considerations</span></a>
+     <ol class="toc">
+      <li><a href="#security-opt-in"><span class="secno">8.1</span> <span class="content">Opt-In signal</span></a>
+      <li><a href="#forbidden-header-name"><span class="secno">8.2</span> <span class="content">Forbidden header name</span></a>
+      <li><a href="#deeper-cors-integration"><span class="secno">8.3</span> <span class="content">Deeper CORS Integration</span></a>
+     </ol>
+    <li><a href="#privacy-considerations"><span class="secno">9</span> <span class="content">Privacy Considerations</span></a>
+    <li>
+     <a href="#deployment-considerations"><span class="secno">10</span> <span class="content">Deployment Considerations</span></a>
+     <ol class="toc">
+      <li><a href="#vary"><span class="secno">10.1</span> <span class="content">Vary</span></a>
+      <li><a href="#origin-header-interop"><span class="secno">10.2</span> <span class="content"><code>Origin</code> Header Interoperability</span></a>
+      <li><a href="#sec-prefix"><span class="secno">10.3</span> <span class="content"><code>Sec-</code> Prefix</span></a>
+      <li><a href="#header-compression"><span class="secno">10.4</span> <span class="content">Header Compression</span></a>
+     </ol>
+    <li>
+     <a href="#iana-considerations"><span class="secno">11</span> <span class="content">IANA Considerations</span></a>
+     <ol class="toc">
+      <li><a href="#sec-fetch-storage-access-reg"><span class="secno">11.1</span> <span class="content"><code>Sec-Fetch-Storage-Access</code> Registration</span></a>
+      <li><a href="#activate-storage-access-reg"><span class="secno">11.2</span> <span class="content"><code>Activate-Storage-Access</code> Registration</span></a>
+     </ol>
+    <li><a href="#acknowledgements"><span class="secno">12</span> <span class="content">Acknowledgements</span></a>
     <li>
      <a href="#w3c-conformance"><span class="secno"></span> <span class="content">Conformance</span></a>
      <ol class="toc">
       <li><a href="#w3c-conventions"><span class="secno"></span> <span class="content">Document conventions</span></a>
      </ol>
     <li>
+     <a href="#index"><span class="secno"></span> <span class="content">Index</span></a>
+     <ol class="toc">
+      <li><a href="#index-defined-here"><span class="secno"></span> <span class="content">Terms defined by this specification</span></a>
+      <li><a href="#index-defined-elsewhere"><span class="secno"></span> <span class="content">Terms defined by reference</span></a>
+     </ol>
+    <li>
      <a href="#references"><span class="secno"></span> <span class="content">References</span></a>
      <ol class="toc">
       <li><a href="#normative"><span class="secno"></span> <span class="content">Normative References</span></a>
+      <li><a href="#informative"><span class="secno"></span> <span class="content">Informative References</span></a>
      </ol>
+    <li><a href="#issues-index"><span class="secno"></span> <span class="content">Issues Index</span></a>
    </ol>
   </nav>
   <main>
    <h2 class="heading settled" data-level="1" id="intro"><span class="secno">1. </span><span class="content">Introduction</span><a class="self-link" href="#intro"></a></h2>
-   <p>For now, see the <a href="https://github.com/cfredric/storage-access-headers">explainer</a>.</p>
-   <p>See <a href="https://garykac.github.io/procspec/">https://garykac.github.io/procspec/</a>, <a href="https://dlaliberte.github.io/bikeshed-intro/index.html">https://dlaliberte.github.io/bikeshed-intro/index.html</a>,
-and <a href="https://speced.github.io/bikeshed/">https://speced.github.io/bikeshed/</a> to get started on your
-specificaton.</p>
+   <p>The <a href="https://github.com/privacycg/storage-access">Storage Access API</a> supports "authenticated embeds" by providing a way to request access to unpartitioned cookies in an embedded context. This currently requires an explicit call to a JavaScript API (namely <code class="idl"><a data-link-type="idl" href="https://privacycg.github.io/storage-access/#dom-document-requeststorageaccess" id="ref-for-dom-document-requeststorageaccess">requestStorageAccess()</a></code>) to:</p>
+   <ol>
+    <li data-md>
+     <p>Potentially prompt the user for permission; and</p>
+    <li data-md>
+     <p>Explicitly indicate the embedded resource’s interest in using unpartitioned cookies (as a protection against CSRF attacks by an embedder).</p>
+   </ol>
+   <p>As the above list suggests, this single API invocation is serving two orthogonal purposes:</p>
+   <ol>
+    <li data-md>
+     <p>It enforces a privacy boundary between the top-level site and the embedded site, and gives the user (and/or user agent) an opportunity to relax or maintain that privacy boundary.</p>
+    <li data-md>
+     <p>It enforces a security boundary between the top-level site and the embedded site (namely, the aforementioned CSRF protection), and serves as the embedded site’s explicit signal to relax that security boundary (by allowing credentialed requests to be sent to the embedded site, in the given context).</p>
+   </ol>
+   <p>The requirement to invoke <code class="idl"><a data-link-type="idl" href="https://privacycg.github.io/storage-access/#dom-document-requeststorageaccess" id="ref-for-dom-document-requeststorageaccess①">requestStorageAccess</a></code> is therefore useful, but it imposes some challenges:</p>
+   <ul>
+    <li data-md>
+     <p>Use of the Storage Access API may currently require multiple network round trips and multiple resource reloads before an <code><a data-link-type="element" href="https://html.spec.whatwg.org/multipage/iframe-embed-object.html#the-iframe-element" id="ref-for-the-iframe-element">iframe</a></code> can work as expected, since the <code><a data-link-type="element" href="https://html.spec.whatwg.org/multipage/iframe-embed-object.html#the-iframe-element" id="ref-for-the-iframe-element①">iframe</a></code> must execute <code class="idl"><a data-link-type="idl" href="https://privacycg.github.io/storage-access/#dom-document-requeststorageaccess" id="ref-for-dom-document-requeststorageaccess②">requestStorageAccess()</a></code> before fetching all of its embedded resources (presuming that they require access to unpartitioned cookies). In practice this means that the <code><a data-link-type="element" href="https://html.spec.whatwg.org/multipage/iframe-embed-object.html#the-iframe-element" id="ref-for-the-iframe-element②">iframe</a></code> loads, executes <code class="idl"><a data-link-type="idl" href="https://privacycg.github.io/storage-access/#dom-document-requeststorageaccess" id="ref-for-dom-document-requeststorageaccess③">requestStorageAccess()</a></code>, then refreshes itself in order to re-do all of the embedded fetches (including unpartitioned cookies this time).</p>
+    <li data-md>
+     <p>Embedded resources currently must execute JavaScript in order to benefit from this API. This effectively means that the embedded resource must be an <code><a data-link-type="element" href="https://html.spec.whatwg.org/multipage/iframe-embed-object.html#the-iframe-element" id="ref-for-the-iframe-element③">iframe</a></code> that has the ability to run JavaScript, or must be a subresource fetched by such an <code><a data-link-type="element" href="https://html.spec.whatwg.org/multipage/iframe-embed-object.html#the-iframe-element" id="ref-for-the-iframe-element④">iframe</a></code> (see the first bullet). This imposes an unnecessary burden on sites that serve access-controlled resources (i.e. resources that require authentication cookies) which are embedded in cross-site pages.</p>
+   </ul>
+   <p>These challenges can be mitigated by supporting a new pair of headers. In particular, this document introduces:</p>
+   <ul>
+    <li data-md>
+     <p><span>`<code><a data-link-type="http-header" href="#http-headerdef-sec-fetch-storage-access" id="ref-for-http-headerdef-sec-fetch-storage-access">Sec-Fetch-Storage-Access</a></code>`</span>, a request header to convey information about whether unpartitioned cookies were included in the request, and possibly whether the <a class="idl-code" data-link-type="permission" href="https://privacycg.github.io/storage-access/#permissiondef-storage-access" id="ref-for-permissiondef-storage-access"><code>storage-access</code></a> permission has been granted.</p>
+    <li data-md>
+     <p><span>`<code><a data-link-type="http-header" href="#http-headerdef-activate-storage-access" id="ref-for-http-headerdef-activate-storage-access">Activate-Storage-Access</a></code>`</span>, a response header that can be used to activate an existing <a class="idl-code" data-link-type="permission" href="https://privacycg.github.io/storage-access/#permissiondef-storage-access" id="ref-for-permissiondef-storage-access①"><code>storage-access</code></a> permission grant and "retry" the request, or to activate an existing <a class="idl-code" data-link-type="permission" href="https://privacycg.github.io/storage-access/#permissiondef-storage-access" id="ref-for-permissiondef-storage-access②"><code>storage-access</code></a> permission prior to loading a <a data-link-type="dfn" href="https://dom.spec.whatwg.org/#concept-document" id="ref-for-concept-document">Document</a> (typically, an <code><a data-link-type="element" href="https://html.spec.whatwg.org/multipage/iframe-embed-object.html#the-iframe-element" id="ref-for-the-iframe-element⑤">iframe</a></code>).</p>
+   </ul>
+   <h2 class="heading settled" data-level="2" id="infra"><span class="secno">2. </span><span class="content">Infra</span><a class="self-link" href="#infra"></a></h2>
+   <p>This specification depends on the Infra standard. <a data-link-type="biblio" href="#biblio-infra" title="Infra Standard">[INFRA]</a></p>
+   <h2 class="heading settled" data-level="3" id="request-infrastructure"><span class="secno">3. </span><span class="content">Storage-Access Request Infrastructure</span><a class="self-link" href="#request-infrastructure"></a></h2>
+   <p>In addition to the new headers themselves, this document introduces some new infrastructure to store and convey metadata in the <a data-link-type="dfn" href="https://infra.spec.whatwg.org/#user-agent" id="ref-for-user-agent">user agent</a>, particularly on a <a data-link-type="dfn" href="https://fetch.spec.whatwg.org/#concept-request" id="ref-for-concept-request">request</a>.</p>
+   <p>A <a data-link-type="dfn" href="https://fetch.spec.whatwg.org/#concept-request" id="ref-for-concept-request①">request</a> has a boolean <dfn class="dfn-paneled" data-dfn-for="request" data-dfn-type="dfn" data-noexport id="request-eligible-for-storage-access">eligible for storage-access</dfn>. It is initially false.</p>
+   <p class="note" role="note"><span class="marker">Note:</span> The <a data-link-type="dfn" href="#request-eligible-for-storage-access" id="ref-for-request-eligible-for-storage-access">eligible for storage-access</a> boolean indicates whether the user agent is allowed to include unpartitioned cookies when sending a <a data-link-type="dfn" href="https://fetch.spec.whatwg.org/#concept-request" id="ref-for-concept-request②">request</a> where the site <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/browsers.html#obtain-a-site" id="ref-for-obtain-a-site">obtained</a> from the request’s <a data-link-type="dfn" href="https://fetch.spec.whatwg.org/#concept-request-url" id="ref-for-concept-request-url">url</a> has a storage-access permission.</p>
+   <p class="note" role="note"><span class="marker">Note:</span> A <a data-link-type="dfn" href="https://fetch.spec.whatwg.org/#concept-request" id="ref-for-concept-request③">request</a> also has a <a data-link-type="dfn" href="https://privacycg.github.io/storage-access/#environment-has-storage-access" id="ref-for-environment-has-storage-access">has storage access</a> boolean, indirectly through its <a data-link-type="dfn" href="https://fetch.spec.whatwg.org/#concept-request-client" id="ref-for-concept-request-client">client</a>. That value is distinct from the <a data-link-type="dfn" href="https://fetch.spec.whatwg.org/#concept-request" id="ref-for-concept-request④">request</a>'s <a data-link-type="dfn" href="#request-eligible-for-storage-access" id="ref-for-request-eligible-for-storage-access①">eligible for storage-access</a> boolean. Both represent an "opt in" signal for accessing unpartitioned cookies in a cross-site context, but the signal comes from different <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/browsers.html#concept-origin" id="ref-for-concept-origin">origin</a>s. The <a data-link-type="dfn" href="https://fetch.spec.whatwg.org/#concept-request" id="ref-for-concept-request⑤">request</a>'s <a data-link-type="dfn" href="https://fetch.spec.whatwg.org/#concept-request-client" id="ref-for-concept-request-client①">client</a>'s <a data-link-type="dfn" href="https://privacycg.github.io/storage-access/#environment-has-storage-access" id="ref-for-environment-has-storage-access①">has storage access</a> field represents whether the <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/browsers.html#site" id="ref-for-site">site</a> <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/browsers.html#obtain-a-site" id="ref-for-obtain-a-site①">obtained</a> from the <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/webappapis.html#environment" id="ref-for-environment">environment</a>'s <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/webappapis.html#concept-settings-object-origin" id="ref-for-concept-settings-object-origin">origin</a> has opted in. The <a data-link-type="dfn" href="https://fetch.spec.whatwg.org/#concept-request" id="ref-for-concept-request⑥">request</a>'s <a data-link-type="dfn" href="#request-eligible-for-storage-access" id="ref-for-request-eligible-for-storage-access②">eligible for storage-access</a> field represents whether the <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/browsers.html#site" id="ref-for-site①">site</a> <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/browsers.html#obtain-a-site" id="ref-for-obtain-a-site②">obtained</a> from the <a data-link-type="dfn" href="https://fetch.spec.whatwg.org/#concept-request" id="ref-for-concept-request⑦">request</a>'s <a data-link-type="dfn" href="https://fetch.spec.whatwg.org/#concept-request-url" id="ref-for-concept-request-url①">url</a>'s <a data-link-type="dfn" href="https://url.spec.whatwg.org/#concept-url-origin" id="ref-for-concept-url-origin">origin</a> has opted in.</p>
+   <p>A <a data-link-type="dfn" href="https://fetch.spec.whatwg.org/#concept-request" id="ref-for-concept-request⑧">request</a> has an associated <dfn class="dfn-paneled" data-dfn-for="request" data-dfn-type="dfn" data-noexport id="request-single-hop-cache-mode">single-hop cache mode</dfn>, whose value is null or a <a data-link-type="dfn" href="#request-cache-mode" id="ref-for-request-cache-mode">cache mode</a>. It is initially set to null.</p>
+   <p>This document renames a <a data-link-type="dfn" href="https://fetch.spec.whatwg.org/#concept-request" id="ref-for-concept-request⑨">request</a>'s <a data-link-type="dfn" href="#request-cache-mode" id="ref-for-request-cache-mode①">cache mode</a> field to <dfn class="dfn-paneled" data-dfn-for="request" data-dfn-type="dfn" data-noexport id="request-internal-cache-mode">internal cache mode</dfn>.</p>
+   <div class="algorithm" data-algorithm="request cache mode">
+     This document redefines a <a data-link-type="dfn" href="https://fetch.spec.whatwg.org/#concept-request" id="ref-for-concept-request①⓪">request</a>'s <dfn class="dfn-paneled" data-dfn-for="request" data-dfn-type="dfn" data-noexport id="request-cache-mode">cache mode</dfn> as the cache mode returned by running the following steps, given a <a data-link-type="dfn" href="https://fetch.spec.whatwg.org/#concept-request" id="ref-for-concept-request①①">request</a> <var>request</var>: 
+    <ol>
+     <li data-md>
+      <p>If <var>request</var>’s <a data-link-type="dfn" href="#request-single-hop-cache-mode" id="ref-for-request-single-hop-cache-mode">single-hop cache mode</a> is not null, return <var>request</var>’s <a data-link-type="dfn" href="#request-single-hop-cache-mode" id="ref-for-request-single-hop-cache-mode①">single-hop cache mode</a>.</p>
+     <li data-md>
+      <p>Return <var>request</var>’s <a data-link-type="dfn" href="#request-internal-cache-mode" id="ref-for-request-internal-cache-mode">internal cache mode</a>.</p>
+    </ol>
+   </div>
+   <p>A <dfn class="dfn-paneled" data-dfn-type="dfn" data-noexport id="storage-access-status">storage access status</dfn> is one of "<dfn class="dfn-paneled" data-dfn-for="storage access status" data-dfn-type="dfn" data-noexport id="storage-access-status-none">none</dfn>", "<dfn class="dfn-paneled" data-dfn-for="storage access status" data-dfn-type="dfn" data-noexport id="storage-access-status-inactive">inactive</dfn>", or "<dfn class="dfn-paneled" data-dfn-for="storage access status" data-dfn-type="dfn" data-noexport id="storage-access-status-active">active</dfn>".</p>
+   <div class="algorithm" data-algorithm="storage access status" data-algorithm-for="request">
+     The <dfn class="dfn-paneled" data-dfn-for="request" data-dfn-type="dfn" data-noexport id="request-storage-access-status">storage access status</dfn> of a <a data-link-type="dfn" href="https://fetch.spec.whatwg.org/#concept-request" id="ref-for-concept-request①②">request</a> <var>request</var> is the <a data-link-type="dfn" href="#storage-access-status" id="ref-for-storage-access-status">storage access status</a>-or-null returned by running the following steps: 
+    <ol>
+     <li data-md>
+      <p>If the user agent’s cookie store would attach cookies with the <code>SameSite=Strict</code> attribute to <var>request</var>, return null. <a data-link-type="biblio" href="#biblio-cookies" title="HTTP State Management Mechanism">[COOKIES]</a></p>
+     <li data-md>
+      <p>Let <var>allowed</var> be a <a data-link-type="dfn" href="https://infra.spec.whatwg.org/#boolean" id="ref-for-boolean">boolean</a>, initially set to the result of <a data-link-type="dfn" href="#determine-whether-the-user-agents-cookie-store-allows-unpartitioned-cookies-to-be-accessed" id="ref-for-determine-whether-the-user-agents-cookie-store-allows-unpartitioned-cookies-to-be-accessed">determining whether the user agent’s cookie store allows unpartitioned cookies to be accessed</a> given <var>request</var>’s <a data-link-type="dfn" href="https://fetch.spec.whatwg.org/#concept-request-url" id="ref-for-concept-request-url②">url</a>, <var>request</var>’s <a data-link-type="dfn" href="https://fetch.spec.whatwg.org/#concept-request-client" id="ref-for-concept-request-client②">client</a>, and <var>request</var>’s <a data-link-type="dfn" href="#request-eligible-for-storage-access" id="ref-for-request-eligible-for-storage-access③">eligible for storage-access</a>.</p>
+     <li data-md>
+      <p>If <var>allowed</var> is true, return "<code><a data-link-type="dfn" href="#storage-access-status-active" id="ref-for-storage-access-status-active">active</a></code>".</p>
+     <li data-md>
+      <p>Let <var>allowedByPolicy</var> the result of running <a data-link-type="abstract-op" href="https://w3c.github.io/webappsec-permissions-policy/#should-request-be-allowed-to-use-feature" id="ref-for-should-request-be-allowed-to-use-feature">Should request be allowed to use feature?</a> given "<code>storage-access</code>" and <var>request</var>.</p>
+     <li data-md>
+      <p>If <var>allowedByPolicy</var> is true and <var>request</var>’s <a data-link-type="dfn" href="#request-eligible-for-storage-access" id="ref-for-request-eligible-for-storage-access④">eligible for storage-access</a> is false, then:</p>
+      <ol>
+       <li data-md>
+        <p>Set <var>allowed</var> to the result of <a data-link-type="dfn" href="#determine-whether-the-user-agents-cookie-store-allows-unpartitioned-cookies-to-be-accessed" id="ref-for-determine-whether-the-user-agents-cookie-store-allows-unpartitioned-cookies-to-be-accessed①">determining whether the user agent’s cookie store allows unpartitioned cookies to be accessed</a> given <var>request</var>’s <a data-link-type="dfn" href="https://fetch.spec.whatwg.org/#concept-request-url" id="ref-for-concept-request-url③">url</a>, <var>request</var>’s <a data-link-type="dfn" href="https://fetch.spec.whatwg.org/#concept-request-client" id="ref-for-concept-request-client③">client</a>, and <code>true</code>.</p>
+       <li data-md>
+        <p>If <var>allowed</var> is true, return "<code><a data-link-type="dfn" href="#storage-access-status-inactive" id="ref-for-storage-access-status-inactive">inactive</a></code>".</p>
+        <p class="note" role="note"><span class="marker">Note:</span> <var>allowed</var> will be true in the above step if the <a data-link-type="dfn" href="https://w3c.github.io/permissions/#dfn-permission-store-entry" id="ref-for-dfn-permission-store-entry">permission store entry</a> obtained by <a data-link-type="dfn" href="https://w3c.github.io/permissions/#dfn-get-a-permission-store-entry" id="ref-for-dfn-get-a-permission-store-entry">getting a permission store entry</a> given a <code class="idl"><a data-link-type="idl" href="https://w3c.github.io/permissions/#dom-permissiondescriptor" id="ref-for-dom-permissiondescriptor">PermissionDescriptor</a></code> with <code class="idl"><a data-link-type="idl" href="https://w3c.github.io/permissions/#dom-permissiondescriptor-name" id="ref-for-dom-permissiondescriptor-name">name</a></code> initialized to "<code>storage-access</code>" and a <a data-link-type="dfn" href="https://w3c.github.io/permissions/#dfn-permission-key" id="ref-for-dfn-permission-key">permission key</a> of <code>(the site <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/browsers.html#obtain-a-site" id="ref-for-obtain-a-site③">obtained</a> from <a data-link-type="dfn" href="https://fetch.spec.whatwg.org/#concept-request" id="ref-for-concept-request①③">request</a>'s <a data-link-type="dfn" href="https://fetch.spec.whatwg.org/#concept-request-client" id="ref-for-concept-request-client④">client</a>'s <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/webappapis.html#concept-environment-top-level-origin" id="ref-for-concept-environment-top-level-origin">top-level origin</a>, the site <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/browsers.html#obtain-a-site" id="ref-for-obtain-a-site④">obtained</a> from <a data-link-type="dfn" href="https://fetch.spec.whatwg.org/#concept-request" id="ref-for-concept-request①④">request</a>'s <a data-link-type="dfn" href="https://fetch.spec.whatwg.org/#concept-request-url" id="ref-for-concept-request-url④">url</a>'s <a data-link-type="dfn" href="https://url.spec.whatwg.org/#concept-url-origin" id="ref-for-concept-url-origin①">origin</a>)</code> has a <a data-link-type="dfn" href="https://w3c.github.io/permissions/#dfn-state" id="ref-for-dfn-state">state</a> of "<code>granted</code>". Otherwise, <var>allowed</var> will remain false.</p>
+      </ol>
+     <li data-md>
+      <p>Return "<code><a data-link-type="dfn" href="#storage-access-status-none" id="ref-for-storage-access-status-none">none</a></code>".</p>
+    </ol>
+   </div>
+   <div class="algorithm" data-algorithm="determine whether the user agent’s cookie store allows unpartitioned cookies to be accessed">
+     To <dfn class="dfn-paneled" data-dfn-type="dfn" data-noexport id="determine-whether-the-user-agents-cookie-store-allows-unpartitioned-cookies-to-be-accessed">determine whether the user agent’s cookie store allows unpartitioned cookies to be accessed</dfn>, given a <a data-link-type="dfn" href="https://url.spec.whatwg.org/#concept-url" id="ref-for-concept-url">url</a> <var>url</var>, an <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/webappapis.html#environment-settings-object" id="ref-for-environment-settings-object">environment settings object</a> <var>environment</var>, and a boolean <var>eligible for storage-access</var>, run the following steps (which return a boolean): 
+    <ol>
+     <li data-md>
+      <p>Let <var>top level site</var> be the result of <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/browsers.html#obtain-a-site" id="ref-for-obtain-a-site⑤">obtaining a site</a> from <var>environment</var>’s <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/webappapis.html#concept-environment-top-level-origin" id="ref-for-concept-environment-top-level-origin①">top-level origin</a>.</p>
+     <li data-md>
+      <p>Let <var>destination site</var> be the the result of <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/browsers.html#obtain-a-site" id="ref-for-obtain-a-site⑥">obtaining a site</a> from <var>url</var>’s <a data-link-type="dfn" href="https://url.spec.whatwg.org/#concept-url-origin" id="ref-for-concept-url-origin②">origin</a>.</p>
+     <li data-md>
+      <p>Let <var>key</var> be <code>(<var>top level site</var>, <var>destination site</var>)</code>.</p>
+     <li data-md>
+      <p>Let <var>allowed</var> be the result of <a data-link-type="dfn" href="https://privacycg.github.io/storage-access/#determine-whether-the-user-agent-explicitly-allows-unpartitioned-cookie-access" id="ref-for-determine-whether-the-user-agent-explicitly-allows-unpartitioned-cookie-access">determining whether the user agent explicitly allows unpartitioned cookie access</a> given <var>key</var>.</p>
+     <li data-md>
+      <p>If <var>allowed</var> is true, return true.</p>
+     <li data-md>
+      <p>Return false if all of the following conditions are false:</p>
+      <ul>
+       <li data-md>
+        <p><var>eligible for storage-access</var> is true</p>
+       <li data-md>
+        <p><var>environment</var>’s <a data-link-type="dfn" href="https://privacycg.github.io/storage-access/#environment-has-storage-access" id="ref-for-environment-has-storage-access②">has storage access</a> is true and the site <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/browsers.html#obtain-a-site" id="ref-for-obtain-a-site⑦">obtained</a> from <var>environment</var>’s <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/webappapis.html#concept-settings-object-origin" id="ref-for-concept-settings-object-origin①">origin</a> and the site <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/browsers.html#obtain-a-site" id="ref-for-obtain-a-site⑧">obtained</a> from <var>url</var>’s <a data-link-type="dfn" href="https://url.spec.whatwg.org/#concept-url-origin" id="ref-for-concept-url-origin③">origin</a> are <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/browsers.html#same-site" id="ref-for-same-site">same site</a></p>
+        <p class="issue" id="issue-19c7653c"><a class="self-link" href="#issue-19c7653c"></a> This condition ought to check a boolean that is updated after cross-site HTTP redirects. I.e., it ought to read a boolean derived from the <var>environment</var>’s <a data-link-type="dfn" href="https://privacycg.github.io/storage-access/#environment-has-storage-access" id="ref-for-environment-has-storage-access③">has storage access</a>, not that value itself. See <a href="https://github.com/privacycg/storage-access/issues/210">storage-access#210</a>.</p>
+      </ul>
+     <li data-md>
+      <p>Let <var>entry</var> be the result of <a data-link-type="dfn" href="https://w3c.github.io/permissions/#dfn-get-a-permission-store-entry" id="ref-for-dfn-get-a-permission-store-entry①">getting a permission store entry</a> given a <code class="idl"><a data-link-type="idl" href="https://w3c.github.io/permissions/#dom-permissiondescriptor" id="ref-for-dom-permissiondescriptor①">PermissionDescriptor</a></code> with <code class="idl"><a data-link-type="idl" href="https://w3c.github.io/permissions/#dom-permissiondescriptor-name" id="ref-for-dom-permissiondescriptor-name①">name</a></code> initialized to "<code>storage-access</code>" and a <a data-link-type="dfn" href="https://w3c.github.io/permissions/#dfn-permission-key" id="ref-for-dfn-permission-key①">permission key</a> of <var>key</var>.</p>
+     <li data-md>
+      <p>If <var>entry</var>’s <a data-link-type="dfn" href="https://w3c.github.io/permissions/#dfn-state" id="ref-for-dfn-state①">state</a> is not "<code><a data-link-type="dfn" href="https://w3c.github.io/permissions/#dfn-granted" id="ref-for-dfn-granted">granted</a></code>", return false.</p>
+     <li data-md>
+      <p>Return true.</p>
+    </ol>
+   </div>
+   <h2 class="heading settled" data-level="4" id="headers"><span class="secno">4. </span><span class="content">Storage-Access Headers</span><a class="self-link" href="#headers"></a></h2>
+   <p>The following sections define a request header and a response header. The request header exposes information about the <a data-link-type="dfn" href="https://fetch.spec.whatwg.org/#concept-request" id="ref-for-concept-request①⑤">request</a>'s access to cookies to a server. The response header allows a server to opt into accessing unpartitioned cookies on a particular request or when loading an <code><a data-link-type="element" href="https://html.spec.whatwg.org/multipage/iframe-embed-object.html#the-iframe-element" id="ref-for-the-iframe-element⑥">iframe</a></code>.</p>
+   <h3 class="heading settled" data-level="4.1" id="sec-fetch-storage-access-header"><span class="secno">4.1. </span><span class="content">The <code>Sec-Fetch-Storage-Access</code> HTTP Request Header</span><a class="self-link" href="#sec-fetch-storage-access-header"></a></h3>
+   <p>The <dfn class="dfn-paneled" data-dfn-type="http-header" data-export id="http-headerdef-sec-fetch-storage-access"><code>Sec-Fetch-Storage-Access</code></dfn> HTTP request header exposes a <a data-link-type="dfn" href="https://fetch.spec.whatwg.org/#concept-request" id="ref-for-concept-request①⑥">request</a>'s
+ability or inability to access cookies to a server. It is a <a data-link-type="dfn" href="https://datatracker.ietf.org/doc/html/rfc8941#" id="ref-for-something">Structured Field</a> <a data-link-type="dfn" href="https://datatracker.ietf.org/doc/html/rfc8941#name-items" id="ref-for-name-items">item</a> whose value MUST be a <a data-link-type="dfn" href="https://datatracker.ietf.org/doc/html/rfc8941#name-tokens" id="ref-for-name-tokens">token</a>. <a data-link-type="biblio" href="#biblio-i-dstructured-field-values-for-http" title="Structured Field Values for HTTP">[I-D.structured-field-values-for-http]</a> Its ABNF is:</p>
+<pre>Sec-Fetch-Storage-Access = sf-token
+</pre>
+   <p>Valid <code>Sec-Fetch-Storage-Access</code> values include "<code><a data-link-type="dfn" href="#storage-access-status-none" id="ref-for-storage-access-status-none①">none</a></code>", "<code><a data-link-type="dfn" href="#storage-access-status-inactive" id="ref-for-storage-access-status-inactive①">inactive</a></code>", and
+"<code><a data-link-type="dfn" href="#storage-access-status-active" id="ref-for-storage-access-status-active①">active</a></code>". In order to support forward-compatibility with as-yet-unknown
+semantics, servers SHOULD ignore this header if it contains an invalid value.</p>
+<pre class="example" id="sec-fetch-storage-access-usage"><a class="self-link" href="#sec-fetch-storage-access-usage"></a>// When the request’s credentials mode is "<code>omit</code>", the header is omitted:
+<no-header>
+
+// When the request is same-site, the header is omitted:
+<no-header>
+
+// When the request has no access to unpartitioned cookies, the header’s value is "<code>[=storage access status/none=]</code>":
+Sec-Fetch-Storage-Access: none
+
+// When the request has no access to unpartitioned cookies, but
+// 'storage-access' permission has already been granted, the header’s value is
+// "<code>[=storage access status/inactive=]</code>":
+Sec-Fetch-Storage-Access: inactive
+
+// When the request has access to unpartitioned cookies, the header’s value is "<code>[=storage access status/active=]</code>":
+Sec-Fetch-Storage-Access: active
+</no-header></no-header></pre>
+   <div class="algorithm" data-algorithm="set-storage-access">
+     To <dfn class="dfn-paneled" data-dfn-type="dfn" data-lt="set-storage-access" data-noexport id="set-storage-access">set the <code>Sec-Fetch-Storage-Access</code> header</dfn> for a <a data-link-type="dfn" href="https://fetch.spec.whatwg.org/#concept-request" id="ref-for-concept-request①⑦">request</a> <var>request</var>: 
+    <ol class="algorithm">
+     <li data-md>
+      <p><a data-link-type="dfn" href="https://infra.spec.whatwg.org/#assert" id="ref-for-assert">Assert</a>: <var>request</var>’s <a data-link-type="dfn" href="https://fetch.spec.whatwg.org/#concept-request-url" id="ref-for-concept-request-url⑤">url</a> is a <a data-link-type="dfn" href="https://w3c.github.io/webappsec-secure-contexts/#potentially-trustworthy-url" id="ref-for-potentially-trustworthy-url">potentially trustworthy URL</a>.</p>
+     <li data-md>
+      <p>If <var>request</var>’s <a data-link-type="dfn" href="https://fetch.spec.whatwg.org/#concept-request-credentials-mode" id="ref-for-concept-request-credentials-mode">credentials mode</a> is not "<code>include</code>", abort these steps.</p>
+     <li data-md>
+      <p>Let <var>access</var> be <var>request</var>’s <a data-link-type="dfn" href="#request-storage-access-status" id="ref-for-request-storage-access-status">storage access status</a>.</p>
+     <li data-md>
+      <p>If <var>access</var> is null, abort these steps.</p>
+     <li data-md>
+      <p>Let <var>value</var> be a <a data-link-type="dfn" href="https://datatracker.ietf.org/doc/html/rfc8941#" id="ref-for-something①">Structured Field</a> value whose value is a <a data-link-type="dfn" href="https://datatracker.ietf.org/doc/html/rfc8941#name-tokens" id="ref-for-name-tokens①">token</a>.</p>
+     <li data-md>
+      <p>Set <var>value</var>’s value to <var>access</var>.</p>
+     <li data-md>
+      <p><a data-link-type="dfn" href="https://fetch.spec.whatwg.org/#concept-header-list-set-structured-header" id="ref-for-concept-header-list-set-structured-header">Set a structured field value</a> given ("<code>Sec-Fetch-Storage-Access</code>", <var>value</var>) in <var>request</var>’s <a data-link-type="dfn" href="https://fetch.spec.whatwg.org/#concept-request-header-list" id="ref-for-concept-request-header-list">header list</a>.</p>
+    </ol>
+   </div>
+   <h3 class="heading settled" data-level="4.2" id="activate-storage-access-header"><span class="secno">4.2. </span><span class="content">The <code>Activate-Storage-Access</code> HTTP Response Header</span><a class="self-link" href="#activate-storage-access-header"></a></h3>
+   <p>The <dfn class="dfn-paneled" data-dfn-type="http-header" data-export id="http-headerdef-activate-storage-access"><code>Activate-Storage-Access</code></dfn> HTTP response header
+allows a server to opt in to accessing its unpartitioned cookies in a cross-site request
+context. It is a <a data-link-type="dfn" href="https://datatracker.ietf.org/doc/html/rfc8941#" id="ref-for-something②">Structured Field</a> <a data-link-type="dfn" href="https://datatracker.ietf.org/doc/html/rfc8941#name-items" id="ref-for-name-items①">item</a> whose value MUST be a <a data-link-type="dfn" href="https://datatracker.ietf.org/doc/html/rfc8941#name-tokens" id="ref-for-name-tokens②">token</a>. <a data-link-type="biblio" href="#biblio-i-dstructured-field-values-for-http" title="Structured Field Values for HTTP">[I-D.structured-field-values-for-http]</a> Its ABNF is:</p>
+<pre>Activate-Storage-Access = sf-item
+</pre>
+   <p>Valid <code>Activate-Storage-Access</code> values include "<code>load</code>" and "<code>retry</code>".</p>
+   <p>The following parameter is defined:</p>
+   <ul>
+    <li data-md>
+     <p>A parameter whose key is "<code>allowed-origin</code>", and whose value is a <a data-link-type="dfn" href="https://datatracker.ietf.org/doc/html/rfc8941#name-strings" id="ref-for-name-strings">string</a>. See below for processing requirements.</p>
+   </ul>
+<pre class="example" id="activate-storage-access-usage"><a class="self-link" href="#activate-storage-access-usage"></a>// The server’s response requests that the user agent activate storage access
+// before continuing with the load of the resource. (This is only relevant when
+// loading a new document.)
+Activate-Storage-Access: load
+
+// The server’s response requests that the user agent activate storage access,
+// then retry the request. The "allowed-origin" parameter allowlists the
+// request’s origin.
+Activate-Storage-Access: retry; allowed-origin="https://foo.bar"
+
+// Same as above, but using a wildcard instead of explicitly naming the request’s origin.
+Activate-Storage-Access: retry; allowed-origin=*
+</pre>
+   <div class="algorithm" data-algorithm="perform a storage access retry check">
+     To <dfn class="dfn-paneled" data-dfn-type="dfn" data-noexport id="perform-a-storage-access-retry-check">perform a storage access retry check</dfn> for a <a data-link-type="dfn" href="https://fetch.spec.whatwg.org/#concept-request" id="ref-for-concept-request①⑧">request</a> <var>request</var> and <a data-link-type="dfn" href="https://fetch.spec.whatwg.org/#concept-response" id="ref-for-concept-response">response</a> <var>response</var>, run the following steps: 
+    <ol class="algorithm">
+     <li data-md>
+      <p>If <var>request</var>’s <a data-link-type="dfn" href="https://fetch.spec.whatwg.org/#concept-request-credentials-mode" id="ref-for-concept-request-credentials-mode①">credentials mode</a> is not "<code>include</code>", return failure.</p>
+     <li data-md>
+      <p>If <var>request</var>’s <a data-link-type="dfn" href="#request-eligible-for-storage-access" id="ref-for-request-eligible-for-storage-access⑤">eligible for storage-access</a> is true, return failure.</p>
+     <li data-md>
+      <p>Let <var>storageAccessStatus</var> be <var>request</var>’s <a data-link-type="dfn" href="#request-storage-access-status" id="ref-for-request-storage-access-status①">storage access status</a>.</p>
+     <li data-md>
+      <p>If <var>storageAccessStatus</var> is not "<code><a data-link-type="dfn" href="#storage-access-status-inactive" id="ref-for-storage-access-status-inactive②">inactive</a></code>", return failure.</p>
+     <li data-md>
+      <p>Let <var>parsedHeader</var> be the result of <a data-link-type="dfn" href="https://fetch.spec.whatwg.org/#concept-header-list-get-structured-header" id="ref-for-concept-header-list-get-structured-header">getting a structured field value</a> given "<code>Activate-Storage-Access</code>" and "<code>item</code>" from <var>response</var>’s <a data-link-type="dfn" href="https://fetch.spec.whatwg.org/#concept-response-header-list" id="ref-for-concept-response-header-list">header list</a>.</p>
+     <li data-md>
+      <p>If <var>parsedHeader</var> is null, return failure.</p>
+     <li data-md>
+      <p>Let (<var>value</var>, <var>params</var>) be <var>parsedHeader</var>.</p>
+     <li data-md>
+      <p>If <var>value</var> is not a <a data-link-type="dfn" href="https://datatracker.ietf.org/doc/html/rfc8941#name-tokens" id="ref-for-name-tokens③">token</a>, return failure.</p>
+     <li data-md>
+      <p>If <var>value</var>’s value <a data-link-type="dfn" href="https://infra.spec.whatwg.org/#string-is" id="ref-for-string-is">is</a> not "<code>retry</code>", return failure.</p>
+     <li data-md>
+      <p>If <var>params</var>["allowed-origin"] does not exist, return failure.</p>
+     <li data-md>
+      <p>Let <var>allowedOrigin</var> be <var>params</var>["allowed-origin"].</p>
+     <li data-md>
+      <p>If <var>allowedOrigin</var> is a <a data-link-type="dfn" href="https://datatracker.ietf.org/doc/html/rfc8941#name-tokens" id="ref-for-name-tokens④">token</a> whose value is "<code>*</code>", return success.</p>
+     <li data-md>
+      <p>If <var>allowedOrigin</var> is not a <a data-link-type="dfn" href="https://datatracker.ietf.org/doc/html/rfc8941#name-strings" id="ref-for-name-strings①">string</a>, return failure.</p>
+     <li data-md>
+      <p>If the result of <a data-link-type="dfn" href="https://fetch.spec.whatwg.org/#byte-serializing-a-request-origin" id="ref-for-byte-serializing-a-request-origin">byte-serializing a request origin</a> with <var>request</var> is not <var>allowedOrigin</var>’s value, then return failure.</p>
+     <li data-md>
+      <p>Return success.</p>
+    </ol>
+   </div>
+   <div class="algorithm" data-algorithm="perform a storage access load check">
+     To <dfn class="dfn-paneled" data-dfn-type="dfn" data-noexport id="perform-a-storage-access-load-check">perform a storage access load check</dfn> for a <a data-link-type="dfn" href="https://fetch.spec.whatwg.org/#concept-request" id="ref-for-concept-request①⑨">request</a> <var>request</var> and <a data-link-type="dfn" href="https://fetch.spec.whatwg.org/#concept-response" id="ref-for-concept-response①">response</a> <var>response</var>, run the following steps: 
+    <ol class="algorithm">
+     <li data-md>
+      <p>Let <var>storageAccessStatus</var> be <var>request</var>’s <a data-link-type="dfn" href="#request-storage-access-status" id="ref-for-request-storage-access-status②">storage access status</a>.</p>
+     <li data-md>
+      <p>If <var>storageAccessStatus</var> is not one of "<code><a data-link-type="dfn" href="#storage-access-status-inactive" id="ref-for-storage-access-status-inactive③">inactive</a></code>" or "<code><a data-link-type="dfn" href="#storage-access-status-active" id="ref-for-storage-access-status-active②">active</a></code>", return failure.</p>
+     <li data-md>
+      <p>Let <var>parsedHeader</var> be the result of <a data-link-type="dfn" href="https://fetch.spec.whatwg.org/#concept-header-list-get-structured-header" id="ref-for-concept-header-list-get-structured-header①">getting a structured field value</a> given "<code>Activate-Storage-Access</code>" and "<code>item</code>" from <var>response</var>’s <a data-link-type="dfn" href="https://fetch.spec.whatwg.org/#concept-response-header-list" id="ref-for-concept-response-header-list①">header list</a>.</p>
+     <li data-md>
+      <p>If <var>parsedHeader</var> is null, return failure.</p>
+     <li data-md>
+      <p>Let (<var>value</var>, <var>params</var>) be <var>parsedHeader</var>.</p>
+     <li data-md>
+      <p>If <var>value</var> is not a <a data-link-type="dfn" href="https://datatracker.ietf.org/doc/html/rfc8941#name-tokens" id="ref-for-name-tokens⑤">token</a>, return failure.</p>
+     <li data-md>
+      <p>If <var>value</var>’s value <a data-link-type="dfn" href="https://infra.spec.whatwg.org/#string-is" id="ref-for-string-is①">is</a> not "<code>load</code>", return failure.</p>
+     <li data-md>
+      <p>Return success.</p>
+    </ol>
+   </div>
+   <h2 class="heading settled" data-level="5" id="fetch-metadata-integration"><span class="secno">5. </span><span class="content">Integration with Fetch Metadata</span><a class="self-link" href="#fetch-metadata-integration"></a></h2>
+   <p>The <span>`<code><a data-link-type="http-header" href="#http-headerdef-sec-fetch-storage-access" id="ref-for-http-headerdef-sec-fetch-storage-access①">Sec-Fetch-Storage-Access</a></code>`</span> header is appended to outgoing requests alongside other Fetch Metadata headers. <a data-link-type="biblio" href="#biblio-fetch-metadata" title="Fetch Metadata Request Headers">[FETCH-METADATA]</a> Modify the definition of <a data-link-type="abstract-op" href="https://w3c.github.io/webappsec-fetch-metadata/#abstract-opdef-append-the-fetch-metadata-headers-for-a-request" id="ref-for-abstract-opdef-append-the-fetch-metadata-headers-for-a-request">append the Fetch metadata headers for a request</a> by inserting the following as step 6:</p>
+   <div class="algorithm" data-algorithm="append the Sec-Fetch-Storage-Access header">
+    <ol start="6">
+     <li data-md>
+      <p><a data-link-type="dfn" href="#set-storage-access" id="ref-for-set-storage-access">Set the <code>Sec-Fetch-Storage-Access</code> header</a> for <var>r</var>.</p>
+    </ol>
+   </div>
+   <h2 class="heading settled" data-level="6" id="fetch-integration"><span class="secno">6. </span><span class="content">Integration with Fetch</span><a class="self-link" href="#fetch-integration"></a></h2>
+   <p>Handling these headers requires modifications to a few different parts of Fetch. <a data-link-type="biblio" href="#biblio-fetch" title="Fetch Standard">[FETCH]</a></p>
+   <h3 class="heading settled" data-level="6.1" id="origin-header-integration"><span class="secno">6.1. </span><span class="content"><code>Origin</code> header</span><a class="self-link" href="#origin-header-integration"></a></h3>
+   <p>When making a decision on whether to retry a request and force it to include unpartitioned cookies, a server ought to be informed as to the initiator of the request. I.e., the request ought to include the <span>`<code><a data-link-type="http-header" href="https://fetch.spec.whatwg.org/#http-origin" id="ref-for-http-origin">Origin</a></code>`</span> header whenever it also includes the <code>Sec-Fetch-Storage-Access: inactive</code> header. Modify the definition of <a data-link-type="dfn" href="https://fetch.spec.whatwg.org/#append-a-request-origin-header" id="ref-for-append-a-request-origin-header">append a request Origin header</a> by rewriting step 4 as:</p>
+   <div class="algorithm" data-algorithm="modified append a request Origin header">
+    <ol start="4">
+     <li data-md>
+      <p>If at least one of the following conditions is true:</p>
+      <ul>
+       <li data-md>
+        <p>the result of <a data-link-type="dfn" href="https://fetch.spec.whatwg.org/#concept-header-list-get" id="ref-for-concept-header-list-get">getting</a> <span>`<code><a data-link-type="http-header" href="#http-headerdef-sec-fetch-storage-access" id="ref-for-http-headerdef-sec-fetch-storage-access②">Sec-Fetch-Storage-Access</a></code>`</span> from <var>request</var>’s <a data-link-type="dfn" href="https://fetch.spec.whatwg.org/#concept-request-header-list" id="ref-for-concept-request-header-list①">header list</a> is "<code><a data-link-type="dfn" href="#storage-access-status-inactive" id="ref-for-storage-access-status-inactive④">inactive</a></code>"</p>
+       <li data-md>
+        <p><var>request</var>’s <a data-link-type="dfn" href="https://fetch.spec.whatwg.org/#concept-request-method" id="ref-for-concept-request-method">method</a> is neither `<code>GET</code>` nor `<code>HEAD</code>`</p>
+      </ul>
+      <p>Then:</p>
+    </ol>
+   </div>
+   <p>The rest of the algorithm is unmodified.</p>
+   <h3 class="heading settled" data-level="6.2" id="http-fetch"><span class="secno">6.2. </span><span class="content">HTTP-fetch</span><a class="self-link" href="#http-fetch"></a></h3>
+   <p>Insert a new step after step 5 in <a data-link-type="dfn" href="https://fetch.spec.whatwg.org/#concept-http-fetch" id="ref-for-concept-http-fetch">HTTP fetch</a>:</p>
+   <div class="algorithm" data-algorithm="modified HTTP-fetch">
+    <ol start="6">
+     <li data-md>
+      <p>If the result of <a data-link-type="dfn" href="#perform-a-storage-access-retry-check" id="ref-for-perform-a-storage-access-retry-check">performing a storage access retry check</a> for <var>request</var> is success, then return the result of running <a data-link-type="dfn" href="#http-storage-access-retry-fetch" id="ref-for-http-storage-access-retry-fetch">HTTP-storage-access-retry-fetch</a> given <var>fetchParams</var>.</p>
+    </ol>
+   </div>
+   <p>Insert a new step after step 6.1 (before "switch on request’s redirect mode"):</p>
+   <div class="algorithm" data-algorithm="modified HTTP-fetch 2">
+    <ol start="2">
+     <li data-md>
+      <p>Set <var>request</var>’s <a data-link-type="dfn" href="#request-single-hop-cache-mode" id="ref-for-request-single-hop-cache-mode②">single-hop cache mode</a> to null.</p>
+    </ol>
+   </div>
+   <p>The rest of the algorithm is unmodified.</p>
+   <div class="algorithm" data-algorithm="HTTP-storage-access-retry-fetch">
+     To <dfn class="dfn-paneled" data-dfn-type="dfn" data-noexport id="http-storage-access-retry-fetch">HTTP-storage-access-retry-fetch</dfn> given a <a data-link-type="dfn" href="https://fetch.spec.whatwg.org/#fetch-params" id="ref-for-fetch-params">fetch params</a> <var>fetchParams</var>, run the following steps: 
+    <ol>
+     <li data-md>
+      <p>Let <var>request</var> be <var>fetchParams</var>’s <a data-link-type="dfn" href="https://fetch.spec.whatwg.org/#concept-request" id="ref-for-concept-request②⓪">request</a>.</p>
+     <li data-md>
+      <p class="assertion">Assert: <var>request</var>’s <a data-link-type="dfn" href="#request-storage-access-status" id="ref-for-request-storage-access-status③">storage access status</a> is "<code><a data-link-type="dfn" href="#storage-access-status-inactive" id="ref-for-storage-access-status-inactive⑤">inactive</a></code>".</p>
+     <li data-md>
+      <p class="assertion">Assert: <var>request</var>’s <a data-link-type="dfn" href="#request-eligible-for-storage-access" id="ref-for-request-eligible-for-storage-access⑥">eligible for storage-access</a> is false.</p>
+     <li data-md>
+      <p>If <var>request</var>’s <a data-link-type="dfn" href="https://fetch.spec.whatwg.org/#concept-request-redirect-count" id="ref-for-concept-request-redirect-count">redirect count</a> is 20, then return a <a data-link-type="dfn" href="https://fetch.spec.whatwg.org/#concept-network-error" id="ref-for-concept-network-error">network error</a>.</p>
+     <li data-md>
+      <p>Increase <var>request</var>’s <a data-link-type="dfn" href="https://fetch.spec.whatwg.org/#concept-request-redirect-count" id="ref-for-concept-request-redirect-count①">redirect count</a> by 1.</p>
+     <li data-md>
+      <p><a data-link-type="dfn" href="https://infra.spec.whatwg.org/#list-append" id="ref-for-list-append">Append</a> <var>request</var>’s <a data-link-type="dfn" href="https://fetch.spec.whatwg.org/#concept-request-url" id="ref-for-concept-request-url⑥">url</a> to <var>request</var>’s <a data-link-type="dfn" href="https://fetch.spec.whatwg.org/#concept-request-url-list" id="ref-for-concept-request-url-list">URL list</a>.</p>
+     <li data-md>
+      <p>Set <var>request</var>’s <a data-link-type="dfn" href="#request-single-hop-cache-mode" id="ref-for-request-single-hop-cache-mode③">single-hop cache mode</a> to "<code>reload</code>".</p>
+     <li data-md>
+      <p>Set <var>request</var>’s <a data-link-type="dfn" href="#request-eligible-for-storage-access" id="ref-for-request-eligible-for-storage-access⑦">eligible for storage-access</a> to true.</p>
+     <li data-md>
+      <p class="assertion">Assert: <var>request</var>’s <a data-link-type="dfn" href="#request-storage-access-status" id="ref-for-request-storage-access-status④">storage access status</a> is "<code><a data-link-type="dfn" href="#storage-access-status-active" id="ref-for-storage-access-status-active③">active</a></code>".</p>
+     <li data-md>
+      <p>Let <var>recursive</var> be true.</p>
+     <li data-md>
+      <p>Return the result of running <a data-link-type="dfn" href="https://fetch.spec.whatwg.org/#concept-main-fetch" id="ref-for-concept-main-fetch">main fetch</a> given <var>fetchParams</var> and <var>recursive</var>.</p>
+    </ol>
+   </div>
+   <h3 class="heading settled" data-level="6.3" id="http-redirect-fetch"><span class="secno">6.3. </span><span class="content">HTTP-redirect-fetch</span><a class="self-link" href="#http-redirect-fetch"></a></h3>
+   <p>Insert a new step after step 17 in <a data-link-type="dfn" href="https://fetch.spec.whatwg.org/#concept-http-redirect-fetch" id="ref-for-concept-http-redirect-fetch">HTTP-redirect fetch</a>:</p>
+   <div class="algorithm" data-algorithm="modified HTTP-redirect fetch">
+    <ol start="18">
+     <li data-md>
+      <p>If <var>locationURL</var>’s <a data-link-type="dfn" href="https://url.spec.whatwg.org/#concept-url-origin" id="ref-for-concept-url-origin④">origin</a> is not <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/browsers.html#same-origin" id="ref-for-same-origin">same origin</a> with <var>request</var>’s <a data-link-type="dfn" href="https://fetch.spec.whatwg.org/#concept-request-url" id="ref-for-concept-request-url⑦">url</a>'s <a data-link-type="dfn" href="https://url.spec.whatwg.org/#concept-url-origin" id="ref-for-concept-url-origin⑤">origin</a>, set <var>request</var>’s <a data-link-type="dfn" href="#request-eligible-for-storage-access" id="ref-for-request-eligible-for-storage-access⑧">eligible for storage-access</a> to false.</p>
+    </ol>
+   </div>
+   <p>The rest of the algorithm is unmodified.</p>
+   <h2 class="heading settled" data-level="7" id="html-integration"><span class="secno">7. </span><span class="content">Integration with HTML</span><a class="self-link" href="#html-integration"></a></h2>
+   <h3 class="heading settled" data-level="7.1" id="navigation-integration"><span class="secno">7.1. </span><span class="content">Changes to navigation</span><a class="self-link" href="#navigation-integration"></a></h3>
+   <p>This integration builds upon the changes introduced by the Storage Access API specification. <a data-link-type="biblio" href="#biblio-storage-access" title="The Storage Access API">[STORAGE-ACCESS]</a></p>
+   <p>In particular, modify the changes when creating the request’s <a data-link-type="dfn" href="https://fetch.spec.whatwg.org/#concept-request-reserved-client" id="ref-for-concept-request-reserved-client">reserved client</a> in <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/browsing-the-web.html#create-navigation-params-by-fetching" id="ref-for-create-navigation-params-by-fetching">create navigation params by fetching</a> to be the following:</p>
+   <div class="algorithm" data-algorithm="modified create navigation params by fetching">
+    <ol>
+     <li data-md>
+      <p>Let <var>compute has storage access</var> be an algorithm with the following steps, which return a boolean:</p>
+      <ol>
+       <li data-md>
+        <p>If <var>response</var> is not null and the result of <a data-link-type="dfn" href="#perform-a-storage-access-load-check" id="ref-for-perform-a-storage-access-load-check">performing a storage access load check</a> given <var>request</var> and <var>response</var> is success, return true.</p>
+       <li data-md>
+        <p>If <var>sourceSnapshotParams</var>’s <a data-link-type="dfn" href="https://privacycg.github.io/storage-access/#source-snapsnot-params-environment-id" id="ref-for-source-snapsnot-params-environment-id">environment id</a> does not equal <var>navigable</var>’s <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/document-sequences.html#nav-document" id="ref-for-nav-document">active document</a>'s <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/webappapis.html#relevant-settings-object" id="ref-for-relevant-settings-object">relevant settings object</a>'s <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/webappapis.html#concept-environment-id" id="ref-for-concept-environment-id">id</a>, return false.</p>
+       <li data-md>
+        <p>If <var>originalURL</var>’s <a data-link-type="dfn" href="https://url.spec.whatwg.org/#concept-url-origin" id="ref-for-concept-url-origin⑥">origin</a> is not <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/browsers.html#same-origin" id="ref-for-same-origin①">same origin</a> with <var>currentURL</var>’s <a data-link-type="dfn" href="https://url.spec.whatwg.org/#concept-url-origin" id="ref-for-concept-url-origin⑦">origin</a>, return false.</p>
+       <li data-md>
+        <p>If <var>response</var> is not null and <var>response</var>’s <a data-link-type="dfn" href="https://fetch.spec.whatwg.org/#response-has-cross-origin-redirects" id="ref-for-response-has-cross-origin-redirects">has-cross-origin-redirects</a> is true, return false.</p>
+       <li data-md>
+        <p>Return true.</p>
+      </ol>
+     <li data-md>
+      <p>Set <var>request</var>’s <a data-link-type="dfn" href="https://fetch.spec.whatwg.org/#concept-request-reserved-client" id="ref-for-concept-request-reserved-client①">reserved client</a>'s <a data-link-type="dfn" href="https://privacycg.github.io/storage-access/#environment-has-storage-access" id="ref-for-environment-has-storage-access④">has storage access</a> to the result of executing <var>compute has storage access</var>.</p>
+    </ol>
+   </div>
+   <h2 class="heading settled" data-level="8" id="security-considerations"><span class="secno">8. </span><span class="content">Security Considerations</span><a class="self-link" href="#security-considerations"></a></h2>
+   <h3 class="heading settled" data-level="8.1" id="security-opt-in"><span class="secno">8.1. </span><span class="content">Opt-In signal</span><a class="self-link" href="#security-opt-in"></a></h3>
+    The primary security concerns for this specification are those laid out in <a href="https://github.com/privacycg/storage-access/issues/113">privacycg/storage-access#113</a>. Namely: since the Storage Access API makes unpartitioned cookies available even after those cookies have been blocked by default, it is crucial that the Storage Access API not preserve the security concerns traditionally associated with unpartitioned cookies, like CSRF. The principal way that the Storage Access API addresses these security concerns is by requiring an embedded cross-site resource (e.g. an iframe) to explicitly opt in to accessing unpartitioned cookies by invoking <code class="idl"><a data-link-type="idl" href="https://privacycg.github.io/storage-access/#dom-document-requeststorageaccess" id="ref-for-dom-document-requeststorageaccess④">requestStorageAccess()</a></code>. 
+   <p>Storage Access Headers continues in the same vein by requiring embedded cross-site resources (or rather, their servers) to explicitly opt-in to accessing unpartitioned cookies (by supplying an HTTP response header), before any unpartitioned cookies are included on the request. When a server opts in by sending the <code>Activate-Storage-Access: retry</code> header, it also must explicitly name the origin that it grants the ability to send credentialed requests (via the "<code>allowed-origin</code>" parameter). This fails closed by blocking credentialed requests, in the event of an origin mismatch.</p>
+   <h3 class="heading settled" data-level="8.2" id="forbidden-header-name"><span class="secno">8.2. </span><span class="content">Forbidden header name</span><a class="self-link" href="#forbidden-header-name"></a></h3>
+    This proposal uses a new forbidden name for the <span>`<code><a data-link-type="http-header" href="#http-headerdef-sec-fetch-storage-access" id="ref-for-http-headerdef-sec-fetch-storage-access③">Sec-Fetch-Storage-Access</a></code>`</span> header to prevent programmatic modification of the header value. This is primarily for reasons of coherence, rather than security, but there is a security reason to make this choice. If a script could modify the value of the header, it could lie to a server about the state of the <a class="idl-code" data-link-type="permission" href="https://privacycg.github.io/storage-access/#permissiondef-storage-access" id="ref-for-permissiondef-storage-access③"><code>storage-access</code></a> permission in the requesting context and indicate that the state is "<code><a data-link-type="dfn" href="#storage-access-status-active" id="ref-for-storage-access-status-active④">active</a></code>", even if the requesting context has not opted in to using the permission grant. This could mislead the server into inferring that the request context is more trusted/safe than it actually is (e.g., perhaps the requesting context has intentionally not opted into accessing its unpartitioned cookies because it cannot conclude it’s safe to do so). This could lead the server to make different decisions than it would have if it had received the correct header value ("<code><a data-link-type="dfn" href="#storage-access-status-none" id="ref-for-storage-access-status-none②">none</a></code>" or "<code><a data-link-type="dfn" href="#storage-access-status-inactive" id="ref-for-storage-access-status-inactive⑥">inactive</a></code>"). Thus the value of this header ought to be trustworthy, so it ought to be up to the user agent to set it. 
+   <h3 class="heading settled" data-level="8.3" id="deeper-cors-integration"><span class="secno">8.3. </span><span class="content">Deeper CORS Integration</span><a class="self-link" href="#deeper-cors-integration"></a></h3>
+   <p>It is tempting to design this specification such that it piggy-backs and/or integrates with CORS (i.e., the CORS protocol) deeply, since CORS intuitively feels like it is meant to address a similar problem of enabling cross-origin functionality. However, this would be undesirable for a few reasons:</p>
+   <ul>
+    <li data-md>
+     <p>If CORS (and the relevant SAA permission, of course) were a "sufficient" condition for attaching unpartitioned cookies...</p>
+     <ul>
+      <li data-md>
+       <p>Then this would allow the top-level site to attack the embedded site by sending (CORS-enabled) credentialed requests to arbitrary endpoints on the embedded site, without requiring any opt-in from the embedded site before it received those requests. This would make CSRF attacks against the embedded site more feasible. This is undesirable for security reasons.</p>
+     </ul>
+    <li data-md>
+     <p>If CORS were required for the user agent to attach unpartitioned cookies to the request...</p>
+     <ul>
+      <li data-md>
+       <p>Then this would mean the embedded site would be required to allow the top-level site to read the bytes of its responses and response headers, just so that the user agent would include cookies when fetching the embedded resource. This is a more powerful capability than simply attaching unpartitioned cookies, so this would expose the embedded site to unnecessary attack vectors from the top-level site. This is undesirable for security reasons.</p>
+      <li data-md>
+       <p>This would also mean that in order to fix an embedded widget on some page, the top-level site must perform some action to enable CORS; the embedded site alone would be unable to update the page and fix the widget. This is undesirable from a developer usability / composability standpoint.</p>
+     </ul>
+   </ul>
+   <p>Therefore, CORS ought to be neither necessary nor sufficient for attaching unpartitioned cookies to a cross-site request. This specification is therefore designed to be orthogonal to CORS.</p>
+   <p class="note" role="note"><span class="marker">Note:</span> This specification <em>does</em> rely on the <span>`<code><a data-link-type="http-header" href="https://fetch.spec.whatwg.org/#http-origin" id="ref-for-http-origin①">Origin</a></code>`</span> header, which is defined by CORS, so this specification <em>does</em> integrate with CORS in a technical sense. This is intentional, since in that case we are able to reuse an existing header that sends exactly the information that this specification needs, and both the new usage and existing usage are for security features.</p>
+   <h2 class="heading settled" data-level="9" id="privacy-considerations"><span class="secno">9. </span><span class="content">Privacy Considerations</span><a class="self-link" href="#privacy-considerations"></a></h2>
+   <p>This specification simplifies some ways in which developers can use an API that allows access to unpartitioned data. However, it does not meaningfully change the privacy characteristics of the Storage Access API <a data-link-type="biblio" href="#biblio-storage-access" title="The Storage Access API">[STORAGE-ACCESS]</a>: sites are still able to ask for the ability to access unpartitioned cookies; user agents are still able to handle those requests how they see fit. Importantly, if the <a class="idl-code" data-link-type="permission" href="https://privacycg.github.io/storage-access/#permissiondef-storage-access" id="ref-for-permissiondef-storage-access④"><code>storage-access</code></a> permission is not granted by the user or user agent, then this specification does not allow use of unpartitioned data.</p>
+   <p>The <span>`<code><a data-link-type="http-header" href="#http-headerdef-sec-fetch-storage-access" id="ref-for-http-headerdef-sec-fetch-storage-access④">Sec-Fetch-Storage-Access</a></code>`</span> header does expose some user-specific state in network requests which was not previously available there, namely the state of the <a class="idl-code" data-link-type="permission" href="https://privacycg.github.io/storage-access/#permissiondef-storage-access" id="ref-for-permissiondef-storage-access⑤"><code>storage-access</code></a> permission. However, this information is not considered privacy-sensitive, for a few reasons:</p>
+   <ul>
+    <li data-md>
+     <p>The embedded site could have learned this information anyway by calling <code class="idl"><a data-link-type="idl" href="https://w3c.github.io/permissions/#dom-permissions-query" id="ref-for-dom-permissions-query">query</a></code> and/or <code class="idl"><a data-link-type="idl" href="https://privacycg.github.io/storage-access/#dom-document-requeststorageaccess" id="ref-for-dom-document-requeststorageaccess⑤">requestStorageAccess()</a></code> in an embedded iframe. These APIs are not treated as privacy-sensitive.</p>
+    <li data-md>
+     <p>The <span>`<code><a data-link-type="http-header" href="#http-headerdef-sec-fetch-storage-access" id="ref-for-http-headerdef-sec-fetch-storage-access⑤">Sec-Fetch-Storage-Access</a></code>`</span> header’s value is "<code><a data-link-type="dfn" href="#storage-access-status-none" id="ref-for-storage-access-status-none③">none</a></code>" unless the relevant context would be able to access unpartitioned state after calling <code class="idl"><a data-link-type="idl" href="https://privacycg.github.io/storage-access/#dom-document-requeststorageaccess" id="ref-for-dom-document-requeststorageaccess⑥">requestStorageAccess()</a></code> without triggering a user prompt. Thus, in the cases where the <span>`<code><a data-link-type="http-header" href="#http-headerdef-sec-fetch-storage-access" id="ref-for-http-headerdef-sec-fetch-storage-access⑥">Sec-Fetch-Storage-Access</a></code>`</span> header conveys interesting information (i.e. "<code><a data-link-type="dfn" href="#storage-access-status-inactive" id="ref-for-storage-access-status-inactive⑦">inactive</a></code>" or "<code><a data-link-type="dfn" href="#storage-access-status-active" id="ref-for-storage-access-status-active⑤">active</a></code>"), the site in question already has the ability to access unpartitioned state, by assumption. So, there is zero privacy benefit to omitting the <span>`<code><a data-link-type="http-header" href="#http-headerdef-sec-fetch-storage-access" id="ref-for-http-headerdef-sec-fetch-storage-access⑦">Sec-Fetch-Storage-Access</a></code>`</span> header altogether in those cases.</p>
+     <ul>
+      <li data-md>
+       <p>Conversely, since the <span>`<code><a data-link-type="http-header" href="#http-headerdef-sec-fetch-storage-access" id="ref-for-http-headerdef-sec-fetch-storage-access⑧">Sec-Fetch-Storage-Access</a></code>`</span> header only has one valid non-"<code><a data-link-type="dfn" href="#storage-access-status-active" id="ref-for-storage-access-status-active⑥">active</a></code>" and non-"<code><a data-link-type="dfn" href="#storage-access-status-inactive" id="ref-for-storage-access-status-inactive⑧">inactive</a></code>" state (namely "<code><a data-link-type="dfn" href="#storage-access-status-none" id="ref-for-storage-access-status-none④">none</a></code>"), there’s no privacy benefit to omitting the <span>`<code><a data-link-type="http-header" href="#http-headerdef-sec-fetch-storage-access" id="ref-for-http-headerdef-sec-fetch-storage-access⑨">Sec-Fetch-Storage-Access</a></code>`</span> header when its value is neither "<code><a data-link-type="dfn" href="#storage-access-status-inactive" id="ref-for-storage-access-status-inactive⑨">inactive</a></code>" nor "<code><a data-link-type="dfn" href="#storage-access-status-active" id="ref-for-storage-access-status-active⑦">active</a></code>".</p>
+     </ul>
+   </ul>
+   <h2 class="heading settled" data-level="10" id="deployment-considerations"><span class="secno">10. </span><span class="content">Deployment Considerations</span><a class="self-link" href="#deployment-considerations"></a></h2>
+   <h3 class="heading settled" data-level="10.1" id="vary"><span class="secno">10.1. </span><span class="content">Vary</span><a class="self-link" href="#vary"></a></h3>
+   <p>If a given endpoint might use the <span>`<code><a data-link-type="http-header" href="#http-headerdef-activate-storage-access" id="ref-for-http-headerdef-activate-storage-access①">Activate-Storage-Access</a></code>`</span> header, then developers should include <span>`<code><a data-link-type="http-header" href="#http-headerdef-sec-fetch-storage-access" id="ref-for-http-headerdef-sec-fetch-storage-access①⓪">Sec-Fetch-Storage-Access</a></code>`</span> in the response’s <code>Vary</code> header <a data-link-type="biblio" href="#biblio-rfc9110" title="HTTP Semantics">[RFC9110]</a>, to ensure that caches handle the response appropriately. For example, <code>Vary: Accept-Encoding, Sec-Fetch-Storage-Access</code>.</p>
+   <h3 class="heading settled" data-level="10.2" id="origin-header-interop"><span class="secno">10.2. </span><span class="content"><code>Origin</code> Header Interoperability</span><a class="self-link" href="#origin-header-interop"></a></h3>
+   <p>Some servers misbehave if they receive the <span>`<code><a data-link-type="http-header" href="https://fetch.spec.whatwg.org/#http-origin" id="ref-for-http-origin②">Origin</a></code>`</span> header when they weren’t expecting to. However, the <span>`<code><a data-link-type="http-header" href="https://fetch.spec.whatwg.org/#http-origin" id="ref-for-http-origin③">Origin</a></code>`</span> header conveys exactly the information that a server would need before making an informed choice on whether to respond with the <code>Activate-Storage-Access: retry</code> header, so it’s a perfect candidate for reuse by this specification (rather than inventing some new <code>Origin2</code> header). This specification strives to minimize new breakage due to including the <span>`<code><a data-link-type="http-header" href="https://fetch.spec.whatwg.org/#http-origin" id="ref-for-http-origin④">Origin</a></code>`</span> header on more requests, by minimizing the set of requests that newly include the <span>`<code><a data-link-type="http-header" href="https://fetch.spec.whatwg.org/#http-origin" id="ref-for-http-origin⑤">Origin</a></code>`</span> header. In particular, the <span>`<code><a data-link-type="http-header" href="https://fetch.spec.whatwg.org/#http-origin" id="ref-for-http-origin⑥">Origin</a></code>`</span> header is only (newly) included on cross-site <a data-link-type="dfn" href="https://fetch.spec.whatwg.org/#concept-request" id="ref-for-concept-request②①">request</a>s whose <a data-link-type="dfn" href="#request-storage-access-status" id="ref-for-request-storage-access-status⑤">storage access status</a> is "<code><a data-link-type="dfn" href="#storage-access-status-inactive" id="ref-for-storage-access-status-inactive①⓪">inactive</a></code>" and whose <a data-link-type="dfn" href="https://fetch.spec.whatwg.org/#concept-request-credentials-mode" id="ref-for-concept-request-credentials-mode②">credentials mode</a> is "<code>include</code>".</p>
+   <h3 class="heading settled" data-level="10.3" id="sec-prefix"><span class="secno">10.3. </span><span class="content"><code>Sec-</code> Prefix</span><a class="self-link" href="#sec-prefix"></a></h3>
+   <p>The <span>`<code><a data-link-type="http-header" href="#http-headerdef-sec-fetch-storage-access" id="ref-for-http-headerdef-sec-fetch-storage-access①①">Sec-Fetch-Storage-Access</a></code>`</span> header’s name is prefixed with <code>Sec-</code> because only the <a data-link-type="dfn" href="https://infra.spec.whatwg.org/#user-agent" id="ref-for-user-agent①">user agent</a> is permitted to set such headers (as they are <a data-link-type="dfn" href="https://fetch.spec.whatwg.org/#forbidden-request-header" id="ref-for-forbidden-request-header">forbidden request-headers</a>). Therefore, the <span>`<code><a data-link-type="http-header" href="#http-headerdef-sec-fetch-storage-access" id="ref-for-http-headerdef-sec-fetch-storage-access①②">Sec-Fetch-Storage-Access</a></code>`</span> name is guaranteed to not conflict with any preexisting headers in use on the web.</p>
+   <h3 class="heading settled" data-level="10.4" id="header-compression"><span class="secno">10.4. </span><span class="content">Header Compression</span><a class="self-link" href="#header-compression"></a></h3>
+   <p>The <span>`<code><a data-link-type="http-header" href="#http-headerdef-sec-fetch-storage-access" id="ref-for-http-headerdef-sec-fetch-storage-access①③">Sec-Fetch-Storage-Access</a></code>`</span> header has exactly 3 legal values. Therefore it should perform well with HPACK, per <a data-link-type="biblio" href="#biblio-mnot-designing-headers" title="Designing Headers for HTTP Compression">[MNOT-DESIGNING-HEADERS]</a>. Optimizing the length of the header name has little impact compared to minimizing the number of legal header values.</p>
+   <p>The <span>`<code><a data-link-type="http-header" href="#http-headerdef-activate-storage-access" id="ref-for-http-headerdef-activate-storage-access②">Activate-Storage-Access</a></code>`</span> header has an unbounded number of legal values, but only a small number of them (perhaps 1-2) can reasonably be expected to occur in a single HTTP connection. This header should therefore also perform reasonably well with HPACK.</p>
+   <h2 class="heading settled" data-level="11" id="iana-considerations"><span class="secno">11. </span><span class="content">IANA Considerations</span><a class="self-link" href="#iana-considerations"></a></h2>
+   <p>The permanent message header field registry should be updated with the following registrations for the headers defined in this specification: <a data-link-type="biblio" href="#biblio-rfc3864" title="Registration Procedures for Message Header Fields">[RFC3864]</a></p>
+   <h3 class="heading settled" data-level="11.1" id="sec-fetch-storage-access-reg"><span class="secno">11.1. </span><span class="content"><code>Sec-Fetch-Storage-Access</code> Registration</span><a class="self-link" href="#sec-fetch-storage-access-reg"></a></h3>
+   <dl>
+    <dt data-md>Header field name
+    <dd data-md>
+     <p>Sec-Fetch-Storage-Access</p>
+    <dt data-md>Applicable protocol
+    <dd data-md>
+     <p>http</p>
+    <dt data-md>Status
+    <dd data-md>
+     <p>draft</p>
+    <dt data-md>Author/Change controller
+    <dd data-md>
+     <p>Me</p>
+    <dt data-md>Specification document
+    <dd data-md>
+     <p>This specification (See <a href="#sec-fetch-storage-access-header">§ 4.1 The Sec-Fetch-Storage-Access HTTP Request Header</a>)</p>
+   </dl>
+   <h3 class="heading settled" data-level="11.2" id="activate-storage-access-reg"><span class="secno">11.2. </span><span class="content"><code>Activate-Storage-Access</code> Registration</span><a class="self-link" href="#activate-storage-access-reg"></a></h3>
+   <dl>
+    <dt data-md>Header field name
+    <dd data-md>
+     <p>Activate-Storage-Access</p>
+    <dt data-md>Applicable protocol
+    <dd data-md>
+     <p>http</p>
+    <dt data-md>Status
+    <dd data-md>
+     <p>draft</p>
+    <dt data-md>Author/Change controller
+    <dd data-md>
+     <p>Me</p>
+    <dt data-md>Specification document
+    <dd data-md>
+     <p>This specification (See <a href="#activate-storage-access-header">§ 4.2 The Activate-Storage-Access HTTP Response Header</a>)</p>
+   </dl>
+   <h2 class="heading settled" data-level="12" id="acknowledgements"><span class="secno">12. </span><span class="content">Acknowledgements</span><a class="self-link" href="#acknowledgements"></a></h2>
+   <p>Thanks to Johann Hofmann, Artur Janc, Ben VanderSloot, Dom Farolino, Matt Menke, Adam Rice, and Maks Orlovich, who all provided valuable insight and support in the design of this mechanism.</p>
   </main>
   <div data-fill-with="conformance">
    <h2 class="no-ref no-num heading settled" id="w3c-conformance"><span class="content">Conformance</span><a class="self-link" href="#w3c-conformance"></a></h2>
@@ -636,9 +1304,1224 @@ specificaton.</p>
    </details>
   </div>
   <script src="https://www.w3.org/scripts/TR/2021/fixup.js"></script>
+  <h2 class="no-num no-ref heading settled" id="index"><span class="content">Index</span><a class="self-link" href="#index"></a></h2>
+  <h3 class="no-num no-ref heading settled" id="index-defined-here"><span class="content">Terms defined by this specification</span><a class="self-link" href="#index-defined-here"></a></h3>
+  <ul class="index">
+   <li><a href="#http-headerdef-activate-storage-access">Activate-Storage-Access</a><span>, in § 4.2</span>
+   <li><a href="#storage-access-status-active">active</a><span>, in § 3</span>
+   <li><a href="#request-cache-mode">cache mode</a><span>, in § 3</span>
+   <li><a href="#determine-whether-the-user-agents-cookie-store-allows-unpartitioned-cookies-to-be-accessed">determine whether the user agent’s cookie store allows unpartitioned cookies to be accessed</a><span>, in § 3</span>
+   <li><a href="#request-eligible-for-storage-access">eligible for storage-access</a><span>, in § 3</span>
+   <li><a href="#http-storage-access-retry-fetch">HTTP-storage-access-retry-fetch</a><span>, in § 6.2</span>
+   <li><a href="#storage-access-status-inactive">inactive</a><span>, in § 3</span>
+   <li><a href="#request-internal-cache-mode">internal cache mode</a><span>, in § 3</span>
+   <li><a href="#storage-access-status-none">none</a><span>, in § 3</span>
+   <li><a href="#perform-a-storage-access-load-check">perform a storage access load check</a><span>, in § 4.2</span>
+   <li><a href="#perform-a-storage-access-retry-check">perform a storage access retry check</a><span>, in § 4.2</span>
+   <li><a href="#http-headerdef-sec-fetch-storage-access">Sec-Fetch-Storage-Access</a><span>, in § 4.1</span>
+   <li><a href="#set-storage-access">set-storage-access</a><span>, in § 4.1</span>
+   <li><a href="#request-single-hop-cache-mode">single-hop cache mode</a><span>, in § 3</span>
+   <li>
+    storage access status
+    <ul>
+     <li><a href="#storage-access-status">definition of</a><span>, in § 3</span>
+     <li><a href="#request-storage-access-status">dfn for request</a><span>, in § 3</span>
+    </ul>
+  </ul>
+  <h3 class="no-num no-ref heading settled" id="index-defined-elsewhere"><span class="content">Terms defined by reference</span><a class="self-link" href="#index-defined-elsewhere"></a></h3>
+  <ul class="index">
+   <li>
+    <a data-link-type="biblio">[]</a> defines the following terms:
+    <ul>
+     <li><span class="dfn-paneled" id="02fa1e8b">append a request Origin header</span>
+     <li><span class="dfn-paneled" id="cae9bd49">byte-serializing a request origin</span>
+     <li><span class="dfn-paneled" id="97aa4684">fetch params</span>
+     <li><span class="dfn-paneled" id="5a330bbb">has-cross-origin-redirects</span>
+     <li><span class="dfn-paneled" id="e0dfd35e">main fetch</span>
+    </ul>
+   <li>
+    <a data-link-type="biblio">[DOM]</a> defines the following terms:
+    <ul>
+     <li><span class="dfn-paneled" id="a973e0fe">document</span>
+    </ul>
+   <li>
+    <a data-link-type="biblio">[FETCH]</a> defines the following terms:
+    <ul>
+     <li><span class="dfn-paneled" id="857d5516">client</span>
+     <li><span class="dfn-paneled" id="902380f7">credentials mode</span>
+     <li><span class="dfn-paneled" id="ad6ec3ab">forbidden request-header</span>
+     <li><span class="dfn-paneled" id="d47d0690">get</span>
+     <li><span class="dfn-paneled" id="5c66de35">get a structured field value</span>
+     <li><span class="dfn-paneled" id="6ee0eab1">header list <small>(for request)</small></span>
+     <li><span class="dfn-paneled" id="f7b00a8b">header list <small>(for response)</small></span>
+     <li><span class="dfn-paneled" id="2aaa2f42">HTTP fetch</span>
+     <li><span class="dfn-paneled" id="8acee9c8">HTTP-redirect fetch</span>
+     <li><span class="dfn-paneled" id="50b05fad">method</span>
+     <li><span class="dfn-paneled" id="eb1b1af3">network error</span>
+     <li><span class="dfn-paneled" id="ddf444bb">origin</span>
+     <li><span class="dfn-paneled" id="8c3deeef">redirect count</span>
+     <li><span class="dfn-paneled" id="55213b5b">request</span>
+     <li><span class="dfn-paneled" id="abe352cd">reserved client</span>
+     <li><span class="dfn-paneled" id="ee7bba09">response</span>
+     <li><span class="dfn-paneled" id="35b98f13">set a structured field value</span>
+     <li><span class="dfn-paneled" id="dc1cd39b">URL</span>
+     <li><span class="dfn-paneled" id="ae56d57e">URL list</span>
+    </ul>
+   <li>
+    <a data-link-type="biblio">[FETCH-METADATA]</a> defines the following terms:
+    <ul>
+     <li><span class="dfn-paneled" id="c503ee23">append the Fetch metadata headers for a request</span>
+    </ul>
+   <li>
+    <a data-link-type="biblio">[HTML]</a> defines the following terms:
+    <ul>
+     <li><span class="dfn-paneled" id="35972864">active document</span>
+     <li><span class="dfn-paneled" id="07ad3048">create navigation params by fetching</span>
+     <li><span class="dfn-paneled" id="24cf98a1">environment</span>
+     <li><span class="dfn-paneled" id="3e12e042">environment settings object</span>
+     <li><span class="dfn-paneled" id="73a186aa">id</span>
+     <li><span class="dfn-paneled" id="87fcd40c">iframe</span>
+     <li><span class="dfn-paneled" id="602b1a68">obtain a site</span>
+     <li><span class="dfn-paneled" id="086e3aff">origin</span>
+     <li><span class="dfn-paneled" id="43ac8374">origin <small>(for environment settings object)</small></span>
+     <li><span class="dfn-paneled" id="9c4c1e66">relevant settings object</span>
+     <li><span class="dfn-paneled" id="7393da89">same origin</span>
+     <li><span class="dfn-paneled" id="feac4ab3">same site</span>
+     <li><span class="dfn-paneled" id="fb9bb722">site</span>
+     <li><span class="dfn-paneled" id="c63519ed">top-level origin</span>
+    </ul>
+   <li>
+    <a data-link-type="biblio">[I-D.structured-field-values-for-http]</a> defines the following terms:
+    <ul>
+     <li><span class="dfn-paneled" id="9957c2e4">item</span>
+     <li><span class="dfn-paneled" id="06c3424b">string</span>
+     <li><span class="dfn-paneled" id="00620a89">structured field</span>
+     <li><span class="dfn-paneled" id="d15b4135">token</span>
+    </ul>
+   <li>
+    <a data-link-type="biblio">[INFRA]</a> defines the following terms:
+    <ul>
+     <li><span class="dfn-paneled" id="53275e46">append</span>
+     <li><span class="dfn-paneled" id="77b4c09a">assert</span>
+     <li><span class="dfn-paneled" id="36858240">boolean</span>
+     <li><span class="dfn-paneled" id="7a87d819">is</span>
+     <li><span class="dfn-paneled" id="6d19ac93">user agent</span>
+    </ul>
+   <li>
+    <a data-link-type="biblio">[PERMISSIONS]</a> defines the following terms:
+    <ul>
+     <li><span class="dfn-paneled" id="ebb01253">PermissionDescriptor</span>
+     <li><span class="dfn-paneled" id="844271a8">get a permission store entry</span>
+     <li><span class="dfn-paneled" id="6821ab89">granted</span>
+     <li><span class="dfn-paneled" id="0310eecd">name</span>
+     <li><span class="dfn-paneled" id="2f495016">permission key</span>
+     <li><span class="dfn-paneled" id="2a381665">permission store entry</span>
+     <li><span class="dfn-paneled" id="78f04503">query()</span>
+     <li><span class="dfn-paneled" id="9d6fde71">state</span>
+    </ul>
+   <li>
+    <a data-link-type="biblio">[PERMISSIONS-POLICY-1]</a> defines the following terms:
+    <ul>
+     <li><span class="dfn-paneled" id="c7141347">Should request be allowed to use feature?</span>
+    </ul>
+   <li>
+    <a data-link-type="biblio">[SECURE-CONTEXTS]</a> defines the following terms:
+    <ul>
+     <li><span class="dfn-paneled" id="9c5d9c4d">potentially trustworthy URL</span>
+    </ul>
+   <li>
+    <a data-link-type="biblio">[STORAGE-ACCESS]</a> defines the following terms:
+    <ul>
+     <li><span class="dfn-paneled" id="f6b9fd3a">determine whether the user agent explicitly allows unpartitioned cookie access</span>
+     <li><span class="dfn-paneled" id="8329843d">environment id</span>
+     <li><span class="dfn-paneled" id="0b77b39d">has storage access</span>
+     <li><span class="dfn-paneled" id="aa7820f7">requestStorageAccess()</span>
+     <li><span class="dfn-paneled" id="c6c743c2">storage-access</span>
+    </ul>
+   <li>
+    <a data-link-type="biblio">[URL]</a> defines the following terms:
+    <ul>
+     <li><span class="dfn-paneled" id="959ad97b">origin</span>
+     <li><span class="dfn-paneled" id="dcffbccd">URL</span>
+    </ul>
+  </ul>
   <h2 class="no-num no-ref heading settled" id="references"><span class="content">References</span><a class="self-link" href="#references"></a></h2>
   <h3 class="no-num no-ref heading settled" id="normative"><span class="content">Normative References</span><a class="self-link" href="#normative"></a></h3>
   <dl>
+   <dt id="biblio-cookies">[COOKIES]
+   <dd>A. Barth. <a href="https://httpwg.org/specs/rfc6265.html"><cite>HTTP State Management Mechanism</cite></a>. April 2011. Proposed Standard. URL: <a href="https://httpwg.org/specs/rfc6265.html">https://httpwg.org/specs/rfc6265.html</a>
+   <dt id="biblio-dom">[DOM]
+   <dd>Anne van Kesteren. <a href="https://dom.spec.whatwg.org/"><cite>DOM Standard</cite></a>. Living Standard. URL: <a href="https://dom.spec.whatwg.org/">https://dom.spec.whatwg.org/</a>
+   <dt id="biblio-fetch">[FETCH]
+   <dd>Anne van Kesteren. <a href="https://fetch.spec.whatwg.org/"><cite>Fetch Standard</cite></a>. Living Standard. URL: <a href="https://fetch.spec.whatwg.org/">https://fetch.spec.whatwg.org/</a>
+   <dt id="biblio-fetch-metadata">[FETCH-METADATA]
+   <dd>Mike West. <a href="https://w3c.github.io/webappsec-fetch-metadata/"><cite>Fetch Metadata Request Headers</cite></a>. URL: <a href="https://w3c.github.io/webappsec-fetch-metadata/">https://w3c.github.io/webappsec-fetch-metadata/</a>
+   <dt id="biblio-html">[HTML]
+   <dd>Anne van Kesteren; et al. <a href="https://html.spec.whatwg.org/multipage/"><cite>HTML Standard</cite></a>. Living Standard. URL: <a href="https://html.spec.whatwg.org/multipage/">https://html.spec.whatwg.org/multipage/</a>
+   <dt id="biblio-i-dstructured-field-values-for-http">[I-D.structured-field-values-for-http]
+   <dd>Mark Nottingham; Poul-Henning Kamp. <a href="https://datatracker.ietf.org/doc/html/rfc8941"><cite>Structured Field Values for HTTP</cite></a>. ID. URL: <a href="https://datatracker.ietf.org/doc/html/rfc8941">https://datatracker.ietf.org/doc/html/rfc8941</a>
+   <dt id="biblio-infra">[INFRA]
+   <dd>Anne van Kesteren; Domenic Denicola. <a href="https://infra.spec.whatwg.org/"><cite>Infra Standard</cite></a>. Living Standard. URL: <a href="https://infra.spec.whatwg.org/">https://infra.spec.whatwg.org/</a>
+   <dt id="biblio-permissions">[PERMISSIONS]
+   <dd>Marcos Caceres; Mike Taylor. <a href="https://w3c.github.io/permissions/"><cite>Permissions</cite></a>. URL: <a href="https://w3c.github.io/permissions/">https://w3c.github.io/permissions/</a>
+   <dt id="biblio-permissions-policy-1">[PERMISSIONS-POLICY-1]
+   <dd>Ian Clelland. <a href="https://w3c.github.io/webappsec-permissions-policy/"><cite>Permissions Policy</cite></a>. URL: <a href="https://w3c.github.io/webappsec-permissions-policy/">https://w3c.github.io/webappsec-permissions-policy/</a>
    <dt id="biblio-rfc2119">[RFC2119]
    <dd>S. Bradner. <a href="https://datatracker.ietf.org/doc/html/rfc2119"><cite>Key words for use in RFCs to Indicate Requirement Levels</cite></a>. March 1997. Best Current Practice. URL: <a href="https://datatracker.ietf.org/doc/html/rfc2119">https://datatracker.ietf.org/doc/html/rfc2119</a>
+   <dt id="biblio-rfc3864">[RFC3864]
+   <dd>G. Klyne; M. Nottingham; J. Mogul. <a href="https://www.rfc-editor.org/rfc/rfc3864"><cite>Registration Procedures for Message Header Fields</cite></a>. September 2004. Best Current Practice. URL: <a href="https://www.rfc-editor.org/rfc/rfc3864">https://www.rfc-editor.org/rfc/rfc3864</a>
+   <dt id="biblio-rfc9110">[RFC9110]
+   <dd>R. Fielding, Ed.; M. Nottingham, Ed.; J. Reschke, Ed.. <a href="https://httpwg.org/specs/rfc9110.html"><cite>HTTP Semantics</cite></a>. June 2022. Internet Standard. URL: <a href="https://httpwg.org/specs/rfc9110.html">https://httpwg.org/specs/rfc9110.html</a>
+   <dt id="biblio-secure-contexts">[SECURE-CONTEXTS]
+   <dd>Mike West. <a href="https://w3c.github.io/webappsec-secure-contexts/"><cite>Secure Contexts</cite></a>. URL: <a href="https://w3c.github.io/webappsec-secure-contexts/">https://w3c.github.io/webappsec-secure-contexts/</a>
+   <dt id="biblio-storage-access">[STORAGE-ACCESS]
+   <dd><a href="https://privacycg.github.io/storage-access/"><cite>The Storage Access API</cite></a>. Editor's Draft. URL: <a href="https://privacycg.github.io/storage-access/">https://privacycg.github.io/storage-access/</a>
+   <dt id="biblio-url">[URL]
+   <dd>Anne van Kesteren. <a href="https://url.spec.whatwg.org/"><cite>URL Standard</cite></a>. Living Standard. URL: <a href="https://url.spec.whatwg.org/">https://url.spec.whatwg.org/</a>
   </dl>
+  <h3 class="no-num no-ref heading settled" id="informative"><span class="content">Informative References</span><a class="self-link" href="#informative"></a></h3>
+  <dl>
+   <dt id="biblio-mnot-designing-headers">[MNOT-DESIGNING-HEADERS]
+   <dd>Mark Nottingham. <a href="https://www.mnot.net/blog/2018/11/27/header_compression"><cite>Designing Headers for HTTP Compression</cite></a>. URL: <a href="https://www.mnot.net/blog/2018/11/27/header_compression">https://www.mnot.net/blog/2018/11/27/header_compression</a>
+  </dl>
+  <h2 class="no-num no-ref heading settled" id="issues-index"><span class="content">Issues Index</span><a class="self-link" href="#issues-index"></a></h2>
+  <div style="counter-reset:issue">
+   <div class="issue"> This condition ought to check a boolean that is updated after cross-site HTTP redirects. I.e., it ought to read a boolean derived from the <var>environment</var>’s <a data-link-type="dfn" href="https://privacycg.github.io/storage-access/#environment-has-storage-access">has storage access</a>, not that value itself. See <a href="https://github.com/privacycg/storage-access/issues/210">storage-access#210</a>. <a class="issue-return" href="#issue-19c7653c" title="Jump to section">↵</a></div>
+  </div>
+<script>/* Boilerplate: script-dom-helper */
+"use strict";
+function query(sel) { return document.querySelector(sel); }
+
+function queryAll(sel) { return [...document.querySelectorAll(sel)]; }
+
+function iter(obj) {
+	if(!obj) return [];
+	var it = obj[Symbol.iterator];
+	if(it) return it;
+	return Object.entries(obj);
+}
+
+function mk(tagname, attrs, ...children) {
+	const el = document.createElement(tagname);
+	for(const [k,v] of iter(attrs)) {
+		if(k.slice(0,3) == "_on") {
+			const eventName = k.slice(3);
+			el.addEventListener(eventName, v);
+		} else if(k[0] == "_") {
+			// property, not attribute
+			el[k.slice(1)] = v;
+		} else {
+			if(v === false || v == null) {
+        continue;
+      } else if(v === true) {
+        el.setAttribute(k, "");
+        continue;
+      } else {
+  			el.setAttribute(k, v);
+      }
+		}
+	}
+	append(el, children);
+	return el;
+}
+
+/* Create shortcuts for every known HTML element */
+[
+  "a",
+  "abbr",
+  "acronym",
+  "address",
+  "applet",
+  "area",
+  "article",
+  "aside",
+  "audio",
+  "b",
+  "base",
+  "basefont",
+  "bdo",
+  "big",
+  "blockquote",
+  "body",
+  "br",
+  "button",
+  "canvas",
+  "caption",
+  "center",
+  "cite",
+  "code",
+  "col",
+  "colgroup",
+  "datalist",
+  "dd",
+  "del",
+  "details",
+  "dfn",
+  "dialog",
+  "div",
+  "dl",
+  "dt",
+  "em",
+  "embed",
+  "fieldset",
+  "figcaption",
+  "figure",
+  "font",
+  "footer",
+  "form",
+  "frame",
+  "frameset",
+  "head",
+  "header",
+  "h1",
+  "h2",
+  "h3",
+  "h4",
+  "h5",
+  "h6",
+  "hr",
+  "html",
+  "i",
+  "iframe",
+  "img",
+  "input",
+  "ins",
+  "kbd",
+  "label",
+  "legend",
+  "li",
+  "link",
+  "main",
+  "map",
+  "mark",
+  "meta",
+  "meter",
+  "nav",
+  "nobr",
+  "noscript",
+  "object",
+  "ol",
+  "optgroup",
+  "option",
+  "output",
+  "p",
+  "param",
+  "pre",
+  "progress",
+  "q",
+  "s",
+  "samp",
+  "script",
+  "section",
+  "select",
+  "small",
+  "source",
+  "span",
+  "strike",
+  "strong",
+  "style",
+  "sub",
+  "summary",
+  "sup",
+  "table",
+  "tbody",
+  "td",
+  "template",
+  "textarea",
+  "tfoot",
+  "th",
+  "thead",
+  "time",
+  "title",
+  "tr",
+  "u",
+  "ul",
+  "var",
+  "video",
+  "wbr",
+  "xmp",
+].forEach(tagname=>{
+	mk[tagname] = (...args) => mk(tagname, ...args);
+});
+
+function* nodesFromChildList(children) {
+	for(const child of children.flat(Infinity)) {
+		if(child instanceof Node) {
+			yield child;
+		} else {
+			yield new Text(child);
+		}
+	}
+}
+function append(el, ...children) {
+	for(const child of nodesFromChildList(children)) {
+		if(el instanceof Node) el.appendChild(child);
+		else el.push(child);
+	}
+	return el;
+}
+
+function insertAfter(el, ...children) {
+	for(const child of nodesFromChildList(children)) {
+		el.parentNode.insertBefore(child, el.nextSibling);
+	}
+	return el;
+}
+
+function clearContents(el) {
+	el.innerHTML = "";
+	return el;
+}
+
+function parseHTML(markup) {
+	if(markup.toLowerCase().trim().indexOf('<!doctype') === 0) {
+		const doc = document.implementation.createHTMLDocument("");
+		doc.documentElement.innerHTML = markup;
+		return doc;
+	} else {
+		const el = mk.template({});
+		el.innerHTML = markup;
+		return el.content;
+	}
+}</script>
+<script>/* Boilerplate: script-dfn-panel */
+"use strict";
+{
+let dfnPanelData = {
+"00620a89": {"dfnID":"00620a89","dfnText":"structured field","external":true,"refSections":[{"refs":[{"id":"ref-for-something"},{"id":"ref-for-something\u2460"}],"title":"4.1. The Sec-Fetch-Storage-Access HTTP Request Header"},{"refs":[{"id":"ref-for-something\u2461"}],"title":"4.2. The Activate-Storage-Access HTTP Response Header"}],"url":"https://datatracker.ietf.org/doc/html/rfc8941#"},
+"02fa1e8b": {"dfnID":"02fa1e8b","dfnText":"append a request Origin header","external":true,"refSections":[{"refs":[{"id":"ref-for-append-a-request-origin-header"}],"title":"6.1. Origin header"}],"url":"https://fetch.spec.whatwg.org/#append-a-request-origin-header"},
+"0310eecd": {"dfnID":"0310eecd","dfnText":"name","external":true,"refSections":[{"refs":[{"id":"ref-for-dom-permissiondescriptor-name"},{"id":"ref-for-dom-permissiondescriptor-name\u2460"}],"title":"3. Storage-Access Request Infrastructure"}],"url":"https://w3c.github.io/permissions/#dom-permissiondescriptor-name"},
+"06c3424b": {"dfnID":"06c3424b","dfnText":"string","external":true,"refSections":[{"refs":[{"id":"ref-for-name-strings"},{"id":"ref-for-name-strings\u2460"}],"title":"4.2. The Activate-Storage-Access HTTP Response Header"}],"url":"https://datatracker.ietf.org/doc/html/rfc8941#name-strings"},
+"07ad3048": {"dfnID":"07ad3048","dfnText":"create navigation params by fetching","external":true,"refSections":[{"refs":[{"id":"ref-for-create-navigation-params-by-fetching"}],"title":"7.1. Changes to navigation"}],"url":"https://html.spec.whatwg.org/multipage/browsing-the-web.html#create-navigation-params-by-fetching"},
+"086e3aff": {"dfnID":"086e3aff","dfnText":"origin","external":true,"refSections":[{"refs":[{"id":"ref-for-concept-origin"}],"title":"3. Storage-Access Request Infrastructure"}],"url":"https://html.spec.whatwg.org/multipage/browsers.html#concept-origin"},
+"0b77b39d": {"dfnID":"0b77b39d","dfnText":"has storage access","external":true,"refSections":[{"refs":[{"id":"ref-for-environment-has-storage-access"},{"id":"ref-for-environment-has-storage-access\u2460"},{"id":"ref-for-environment-has-storage-access\u2461"},{"id":"ref-for-environment-has-storage-access\u2462"}],"title":"3. Storage-Access Request Infrastructure"},{"refs":[{"id":"ref-for-environment-has-storage-access\u2463"}],"title":"7.1. Changes to navigation"}],"url":"https://privacycg.github.io/storage-access/#environment-has-storage-access"},
+"24cf98a1": {"dfnID":"24cf98a1","dfnText":"environment","external":true,"refSections":[{"refs":[{"id":"ref-for-environment"}],"title":"3. Storage-Access Request Infrastructure"}],"url":"https://html.spec.whatwg.org/multipage/webappapis.html#environment"},
+"2a381665": {"dfnID":"2a381665","dfnText":"permission store entry","external":true,"refSections":[{"refs":[{"id":"ref-for-dfn-permission-store-entry"}],"title":"3. Storage-Access Request Infrastructure"}],"url":"https://w3c.github.io/permissions/#dfn-permission-store-entry"},
+"2aaa2f42": {"dfnID":"2aaa2f42","dfnText":"HTTP fetch","external":true,"refSections":[{"refs":[{"id":"ref-for-concept-http-fetch"}],"title":"6.2. HTTP-fetch"}],"url":"https://fetch.spec.whatwg.org/#concept-http-fetch"},
+"2f495016": {"dfnID":"2f495016","dfnText":"permission key","external":true,"refSections":[{"refs":[{"id":"ref-for-dfn-permission-key"},{"id":"ref-for-dfn-permission-key\u2460"}],"title":"3. Storage-Access Request Infrastructure"}],"url":"https://w3c.github.io/permissions/#dfn-permission-key"},
+"35972864": {"dfnID":"35972864","dfnText":"active document","external":true,"refSections":[{"refs":[{"id":"ref-for-nav-document"}],"title":"7.1. Changes to navigation"}],"url":"https://html.spec.whatwg.org/multipage/document-sequences.html#nav-document"},
+"35b98f13": {"dfnID":"35b98f13","dfnText":"set a structured field value","external":true,"refSections":[{"refs":[{"id":"ref-for-concept-header-list-set-structured-header"}],"title":"4.1. The Sec-Fetch-Storage-Access HTTP Request Header"}],"url":"https://fetch.spec.whatwg.org/#concept-header-list-set-structured-header"},
+"36858240": {"dfnID":"36858240","dfnText":"boolean","external":true,"refSections":[{"refs":[{"id":"ref-for-boolean"}],"title":"3. Storage-Access Request Infrastructure"}],"url":"https://infra.spec.whatwg.org/#boolean"},
+"3e12e042": {"dfnID":"3e12e042","dfnText":"environment settings object","external":true,"refSections":[{"refs":[{"id":"ref-for-environment-settings-object"}],"title":"3. Storage-Access Request Infrastructure"}],"url":"https://html.spec.whatwg.org/multipage/webappapis.html#environment-settings-object"},
+"43ac8374": {"dfnID":"43ac8374","dfnText":"origin (for environment settings object)","external":true,"refSections":[{"refs":[{"id":"ref-for-concept-settings-object-origin"},{"id":"ref-for-concept-settings-object-origin\u2460"}],"title":"3. Storage-Access Request Infrastructure"}],"url":"https://html.spec.whatwg.org/multipage/webappapis.html#concept-settings-object-origin"},
+"50b05fad": {"dfnID":"50b05fad","dfnText":"method","external":true,"refSections":[{"refs":[{"id":"ref-for-concept-request-method"}],"title":"6.1. Origin header"}],"url":"https://fetch.spec.whatwg.org/#concept-request-method"},
+"53275e46": {"dfnID":"53275e46","dfnText":"append","external":true,"refSections":[{"refs":[{"id":"ref-for-list-append"}],"title":"6.2. HTTP-fetch"}],"url":"https://infra.spec.whatwg.org/#list-append"},
+"55213b5b": {"dfnID":"55213b5b","dfnText":"request","external":true,"refSections":[{"refs":[{"id":"ref-for-concept-request"},{"id":"ref-for-concept-request\u2460"},{"id":"ref-for-concept-request\u2461"},{"id":"ref-for-concept-request\u2462"},{"id":"ref-for-concept-request\u2463"},{"id":"ref-for-concept-request\u2464"},{"id":"ref-for-concept-request\u2465"},{"id":"ref-for-concept-request\u2466"},{"id":"ref-for-concept-request\u2467"},{"id":"ref-for-concept-request\u2468"},{"id":"ref-for-concept-request\u2460\u24ea"},{"id":"ref-for-concept-request\u2460\u2460"},{"id":"ref-for-concept-request\u2460\u2461"},{"id":"ref-for-concept-request\u2460\u2462"},{"id":"ref-for-concept-request\u2460\u2463"}],"title":"3. Storage-Access Request Infrastructure"},{"refs":[{"id":"ref-for-concept-request\u2460\u2464"}],"title":"4. Storage-Access Headers"},{"refs":[{"id":"ref-for-concept-request\u2460\u2465"},{"id":"ref-for-concept-request\u2460\u2466"}],"title":"4.1. The Sec-Fetch-Storage-Access HTTP Request Header"},{"refs":[{"id":"ref-for-concept-request\u2460\u2467"},{"id":"ref-for-concept-request\u2460\u2468"}],"title":"4.2. The Activate-Storage-Access HTTP Response Header"},{"refs":[{"id":"ref-for-concept-request\u2461\u24ea"}],"title":"6.2. HTTP-fetch"},{"refs":[{"id":"ref-for-concept-request\u2461\u2460"}],"title":"10.2. Origin Header Interoperability"}],"url":"https://fetch.spec.whatwg.org/#concept-request"},
+"5a330bbb": {"dfnID":"5a330bbb","dfnText":"has-cross-origin-redirects","external":true,"refSections":[{"refs":[{"id":"ref-for-response-has-cross-origin-redirects"}],"title":"7.1. Changes to navigation"}],"url":"https://fetch.spec.whatwg.org/#response-has-cross-origin-redirects"},
+"5c66de35": {"dfnID":"5c66de35","dfnText":"get a structured field value","external":true,"refSections":[{"refs":[{"id":"ref-for-concept-header-list-get-structured-header"},{"id":"ref-for-concept-header-list-get-structured-header\u2460"}],"title":"4.2. The Activate-Storage-Access HTTP Response Header"}],"url":"https://fetch.spec.whatwg.org/#concept-header-list-get-structured-header"},
+"602b1a68": {"dfnID":"602b1a68","dfnText":"obtain a site","external":true,"refSections":[{"refs":[{"id":"ref-for-obtain-a-site"},{"id":"ref-for-obtain-a-site\u2460"},{"id":"ref-for-obtain-a-site\u2461"},{"id":"ref-for-obtain-a-site\u2462"},{"id":"ref-for-obtain-a-site\u2463"},{"id":"ref-for-obtain-a-site\u2464"},{"id":"ref-for-obtain-a-site\u2465"},{"id":"ref-for-obtain-a-site\u2466"},{"id":"ref-for-obtain-a-site\u2467"}],"title":"3. Storage-Access Request Infrastructure"}],"url":"https://html.spec.whatwg.org/multipage/browsers.html#obtain-a-site"},
+"6821ab89": {"dfnID":"6821ab89","dfnText":"granted","external":true,"refSections":[{"refs":[{"id":"ref-for-dfn-granted"}],"title":"3. Storage-Access Request Infrastructure"}],"url":"https://w3c.github.io/permissions/#dfn-granted"},
+"6d19ac93": {"dfnID":"6d19ac93","dfnText":"user agent","external":true,"refSections":[{"refs":[{"id":"ref-for-user-agent"}],"title":"3. Storage-Access Request Infrastructure"},{"refs":[{"id":"ref-for-user-agent\u2460"}],"title":"10.3. Sec- Prefix"}],"url":"https://infra.spec.whatwg.org/#user-agent"},
+"6ee0eab1": {"dfnID":"6ee0eab1","dfnText":"header list (for request)","external":true,"refSections":[{"refs":[{"id":"ref-for-concept-request-header-list"}],"title":"4.1. The Sec-Fetch-Storage-Access HTTP Request Header"},{"refs":[{"id":"ref-for-concept-request-header-list\u2460"}],"title":"6.1. Origin header"}],"url":"https://fetch.spec.whatwg.org/#concept-request-header-list"},
+"7393da89": {"dfnID":"7393da89","dfnText":"same origin","external":true,"refSections":[{"refs":[{"id":"ref-for-same-origin"}],"title":"6.3. HTTP-redirect-fetch"},{"refs":[{"id":"ref-for-same-origin\u2460"}],"title":"7.1. Changes to navigation"}],"url":"https://html.spec.whatwg.org/multipage/browsers.html#same-origin"},
+"73a186aa": {"dfnID":"73a186aa","dfnText":"id","external":true,"refSections":[{"refs":[{"id":"ref-for-concept-environment-id"}],"title":"7.1. Changes to navigation"}],"url":"https://html.spec.whatwg.org/multipage/webappapis.html#concept-environment-id"},
+"77b4c09a": {"dfnID":"77b4c09a","dfnText":"assert","external":true,"refSections":[{"refs":[{"id":"ref-for-assert"}],"title":"4.1. The Sec-Fetch-Storage-Access HTTP Request Header"}],"url":"https://infra.spec.whatwg.org/#assert"},
+"78f04503": {"dfnID":"78f04503","dfnText":"query()","external":true,"refSections":[{"refs":[{"id":"ref-for-dom-permissions-query"}],"title":"9. Privacy Considerations"}],"url":"https://w3c.github.io/permissions/#dom-permissions-query"},
+"7a87d819": {"dfnID":"7a87d819","dfnText":"is","external":true,"refSections":[{"refs":[{"id":"ref-for-string-is"},{"id":"ref-for-string-is\u2460"}],"title":"4.2. The Activate-Storage-Access HTTP Response Header"}],"url":"https://infra.spec.whatwg.org/#string-is"},
+"8329843d": {"dfnID":"8329843d","dfnText":"environment id","external":true,"refSections":[{"refs":[{"id":"ref-for-source-snapsnot-params-environment-id"}],"title":"7.1. Changes to navigation"}],"url":"https://privacycg.github.io/storage-access/#source-snapsnot-params-environment-id"},
+"844271a8": {"dfnID":"844271a8","dfnText":"get a permission store entry","external":true,"refSections":[{"refs":[{"id":"ref-for-dfn-get-a-permission-store-entry"},{"id":"ref-for-dfn-get-a-permission-store-entry\u2460"}],"title":"3. Storage-Access Request Infrastructure"}],"url":"https://w3c.github.io/permissions/#dfn-get-a-permission-store-entry"},
+"857d5516": {"dfnID":"857d5516","dfnText":"client","external":true,"refSections":[{"refs":[{"id":"ref-for-concept-request-client"},{"id":"ref-for-concept-request-client\u2460"},{"id":"ref-for-concept-request-client\u2461"},{"id":"ref-for-concept-request-client\u2462"},{"id":"ref-for-concept-request-client\u2463"}],"title":"3. Storage-Access Request Infrastructure"}],"url":"https://fetch.spec.whatwg.org/#concept-request-client"},
+"87fcd40c": {"dfnID":"87fcd40c","dfnText":"iframe","external":true,"refSections":[{"refs":[{"id":"ref-for-the-iframe-element"},{"id":"ref-for-the-iframe-element\u2460"},{"id":"ref-for-the-iframe-element\u2461"},{"id":"ref-for-the-iframe-element\u2462"},{"id":"ref-for-the-iframe-element\u2463"},{"id":"ref-for-the-iframe-element\u2464"}],"title":"1. Introduction"},{"refs":[{"id":"ref-for-the-iframe-element\u2465"}],"title":"4. Storage-Access Headers"}],"url":"https://html.spec.whatwg.org/multipage/iframe-embed-object.html#the-iframe-element"},
+"8acee9c8": {"dfnID":"8acee9c8","dfnText":"HTTP-redirect fetch","external":true,"refSections":[{"refs":[{"id":"ref-for-concept-http-redirect-fetch"}],"title":"6.3. HTTP-redirect-fetch"}],"url":"https://fetch.spec.whatwg.org/#concept-http-redirect-fetch"},
+"8c3deeef": {"dfnID":"8c3deeef","dfnText":"redirect count","external":true,"refSections":[{"refs":[{"id":"ref-for-concept-request-redirect-count"},{"id":"ref-for-concept-request-redirect-count\u2460"}],"title":"6.2. HTTP-fetch"}],"url":"https://fetch.spec.whatwg.org/#concept-request-redirect-count"},
+"902380f7": {"dfnID":"902380f7","dfnText":"credentials mode","external":true,"refSections":[{"refs":[{"id":"ref-for-concept-request-credentials-mode"}],"title":"4.1. The Sec-Fetch-Storage-Access HTTP Request Header"},{"refs":[{"id":"ref-for-concept-request-credentials-mode\u2460"}],"title":"4.2. The Activate-Storage-Access HTTP Response Header"},{"refs":[{"id":"ref-for-concept-request-credentials-mode\u2461"}],"title":"10.2. Origin Header Interoperability"}],"url":"https://fetch.spec.whatwg.org/#concept-request-credentials-mode"},
+"959ad97b": {"dfnID":"959ad97b","dfnText":"origin","external":true,"refSections":[{"refs":[{"id":"ref-for-concept-url-origin"},{"id":"ref-for-concept-url-origin\u2460"},{"id":"ref-for-concept-url-origin\u2461"},{"id":"ref-for-concept-url-origin\u2462"}],"title":"3. Storage-Access Request Infrastructure"},{"refs":[{"id":"ref-for-concept-url-origin\u2463"},{"id":"ref-for-concept-url-origin\u2464"}],"title":"6.3. HTTP-redirect-fetch"},{"refs":[{"id":"ref-for-concept-url-origin\u2465"},{"id":"ref-for-concept-url-origin\u2466"}],"title":"7.1. Changes to navigation"}],"url":"https://url.spec.whatwg.org/#concept-url-origin"},
+"97aa4684": {"dfnID":"97aa4684","dfnText":"fetch params","external":true,"refSections":[{"refs":[{"id":"ref-for-fetch-params"}],"title":"6.2. HTTP-fetch"}],"url":"https://fetch.spec.whatwg.org/#fetch-params"},
+"9957c2e4": {"dfnID":"9957c2e4","dfnText":"item","external":true,"refSections":[{"refs":[{"id":"ref-for-name-items"}],"title":"4.1. The Sec-Fetch-Storage-Access HTTP Request Header"},{"refs":[{"id":"ref-for-name-items\u2460"}],"title":"4.2. The Activate-Storage-Access HTTP Response Header"}],"url":"https://datatracker.ietf.org/doc/html/rfc8941#name-items"},
+"9c4c1e66": {"dfnID":"9c4c1e66","dfnText":"relevant settings object","external":true,"refSections":[{"refs":[{"id":"ref-for-relevant-settings-object"}],"title":"7.1. Changes to navigation"}],"url":"https://html.spec.whatwg.org/multipage/webappapis.html#relevant-settings-object"},
+"9c5d9c4d": {"dfnID":"9c5d9c4d","dfnText":"potentially trustworthy URL","external":true,"refSections":[{"refs":[{"id":"ref-for-potentially-trustworthy-url"}],"title":"4.1. The Sec-Fetch-Storage-Access HTTP Request Header"}],"url":"https://w3c.github.io/webappsec-secure-contexts/#potentially-trustworthy-url"},
+"9d6fde71": {"dfnID":"9d6fde71","dfnText":"state","external":true,"refSections":[{"refs":[{"id":"ref-for-dfn-state"},{"id":"ref-for-dfn-state\u2460"}],"title":"3. Storage-Access Request Infrastructure"}],"url":"https://w3c.github.io/permissions/#dfn-state"},
+"a973e0fe": {"dfnID":"a973e0fe","dfnText":"document","external":true,"refSections":[{"refs":[{"id":"ref-for-concept-document"}],"title":"1. Introduction"}],"url":"https://dom.spec.whatwg.org/#concept-document"},
+"aa7820f7": {"dfnID":"aa7820f7","dfnText":"requestStorageAccess()","external":true,"refSections":[{"refs":[{"id":"ref-for-dom-document-requeststorageaccess"},{"id":"ref-for-dom-document-requeststorageaccess\u2460"},{"id":"ref-for-dom-document-requeststorageaccess\u2461"},{"id":"ref-for-dom-document-requeststorageaccess\u2462"}],"title":"1. Introduction"},{"refs":[{"id":"ref-for-dom-document-requeststorageaccess\u2463"}],"title":"8.1. Opt-In signal"},{"refs":[{"id":"ref-for-dom-document-requeststorageaccess\u2464"},{"id":"ref-for-dom-document-requeststorageaccess\u2465"}],"title":"9. Privacy Considerations"}],"url":"https://privacycg.github.io/storage-access/#dom-document-requeststorageaccess"},
+"abe352cd": {"dfnID":"abe352cd","dfnText":"reserved client","external":true,"refSections":[{"refs":[{"id":"ref-for-concept-request-reserved-client"},{"id":"ref-for-concept-request-reserved-client\u2460"}],"title":"7.1. Changes to navigation"}],"url":"https://fetch.spec.whatwg.org/#concept-request-reserved-client"},
+"ad6ec3ab": {"dfnID":"ad6ec3ab","dfnText":"forbidden request-header","external":true,"refSections":[{"refs":[{"id":"ref-for-forbidden-request-header"}],"title":"10.3. Sec- Prefix"}],"url":"https://fetch.spec.whatwg.org/#forbidden-request-header"},
+"ae56d57e": {"dfnID":"ae56d57e","dfnText":"URL list","external":true,"refSections":[{"refs":[{"id":"ref-for-concept-request-url-list"}],"title":"6.2. HTTP-fetch"}],"url":"https://fetch.spec.whatwg.org/#concept-request-url-list"},
+"c503ee23": {"dfnID":"c503ee23","dfnText":"append the Fetch metadata headers for a request","external":true,"refSections":[{"refs":[{"id":"ref-for-abstract-opdef-append-the-fetch-metadata-headers-for-a-request"}],"title":"5. Integration with Fetch Metadata"}],"url":"https://w3c.github.io/webappsec-fetch-metadata/#abstract-opdef-append-the-fetch-metadata-headers-for-a-request"},
+"c63519ed": {"dfnID":"c63519ed","dfnText":"top-level origin","external":true,"refSections":[{"refs":[{"id":"ref-for-concept-environment-top-level-origin"},{"id":"ref-for-concept-environment-top-level-origin\u2460"}],"title":"3. Storage-Access Request Infrastructure"}],"url":"https://html.spec.whatwg.org/multipage/webappapis.html#concept-environment-top-level-origin"},
+"c6c743c2": {"dfnID":"c6c743c2","dfnText":"storage-access","external":true,"refSections":[{"refs":[{"id":"ref-for-permissiondef-storage-access"},{"id":"ref-for-permissiondef-storage-access\u2460"},{"id":"ref-for-permissiondef-storage-access\u2461"}],"title":"1. Introduction"},{"refs":[{"id":"ref-for-permissiondef-storage-access\u2462"}],"title":"8.2. Forbidden header name"},{"refs":[{"id":"ref-for-permissiondef-storage-access\u2463"},{"id":"ref-for-permissiondef-storage-access\u2464"}],"title":"9. Privacy Considerations"}],"url":"https://privacycg.github.io/storage-access/#permissiondef-storage-access"},
+"c7141347": {"dfnID":"c7141347","dfnText":"Should request be allowed to use feature?","external":true,"refSections":[{"refs":[{"id":"ref-for-should-request-be-allowed-to-use-feature"}],"title":"3. Storage-Access Request Infrastructure"}],"url":"https://w3c.github.io/webappsec-permissions-policy/#should-request-be-allowed-to-use-feature"},
+"cae9bd49": {"dfnID":"cae9bd49","dfnText":"byte-serializing a request origin","external":true,"refSections":[{"refs":[{"id":"ref-for-byte-serializing-a-request-origin"}],"title":"4.2. The Activate-Storage-Access HTTP Response Header"}],"url":"https://fetch.spec.whatwg.org/#byte-serializing-a-request-origin"},
+"d15b4135": {"dfnID":"d15b4135","dfnText":"token","external":true,"refSections":[{"refs":[{"id":"ref-for-name-tokens"},{"id":"ref-for-name-tokens\u2460"}],"title":"4.1. The Sec-Fetch-Storage-Access HTTP Request Header"},{"refs":[{"id":"ref-for-name-tokens\u2461"},{"id":"ref-for-name-tokens\u2462"},{"id":"ref-for-name-tokens\u2463"},{"id":"ref-for-name-tokens\u2464"}],"title":"4.2. The Activate-Storage-Access HTTP Response Header"}],"url":"https://datatracker.ietf.org/doc/html/rfc8941#name-tokens"},
+"d47d0690": {"dfnID":"d47d0690","dfnText":"get","external":true,"refSections":[{"refs":[{"id":"ref-for-concept-header-list-get"}],"title":"6.1. Origin header"}],"url":"https://fetch.spec.whatwg.org/#concept-header-list-get"},
+"dc1cd39b": {"dfnID":"dc1cd39b","dfnText":"URL","external":true,"refSections":[{"refs":[{"id":"ref-for-concept-request-url"},{"id":"ref-for-concept-request-url\u2460"},{"id":"ref-for-concept-request-url\u2461"},{"id":"ref-for-concept-request-url\u2462"},{"id":"ref-for-concept-request-url\u2463"}],"title":"3. Storage-Access Request Infrastructure"},{"refs":[{"id":"ref-for-concept-request-url\u2464"}],"title":"4.1. The Sec-Fetch-Storage-Access HTTP Request Header"},{"refs":[{"id":"ref-for-concept-request-url\u2465"}],"title":"6.2. HTTP-fetch"},{"refs":[{"id":"ref-for-concept-request-url\u2466"}],"title":"6.3. HTTP-redirect-fetch"}],"url":"https://fetch.spec.whatwg.org/#concept-request-url"},
+"dcffbccd": {"dfnID":"dcffbccd","dfnText":"URL","external":true,"refSections":[{"refs":[{"id":"ref-for-concept-url"}],"title":"3. Storage-Access Request Infrastructure"}],"url":"https://url.spec.whatwg.org/#concept-url"},
+"ddf444bb": {"dfnID":"ddf444bb","dfnText":"origin","external":true,"refSections":[{"refs":[{"id":"ref-for-http-origin"}],"title":"6.1. Origin header"},{"refs":[{"id":"ref-for-http-origin\u2460"}],"title":"8.3. Deeper CORS Integration"},{"refs":[{"id":"ref-for-http-origin\u2461"},{"id":"ref-for-http-origin\u2462"},{"id":"ref-for-http-origin\u2463"},{"id":"ref-for-http-origin\u2464"},{"id":"ref-for-http-origin\u2465"}],"title":"10.2. Origin Header Interoperability"}],"url":"https://fetch.spec.whatwg.org/#http-origin"},
+"determine-whether-the-user-agents-cookie-store-allows-unpartitioned-cookies-to-be-accessed": {"dfnID":"determine-whether-the-user-agents-cookie-store-allows-unpartitioned-cookies-to-be-accessed","dfnText":"determine whether the user agent\u2019s cookie store allows unpartitioned cookies to be accessed","external":false,"refSections":[{"refs":[{"id":"ref-for-determine-whether-the-user-agents-cookie-store-allows-unpartitioned-cookies-to-be-accessed"},{"id":"ref-for-determine-whether-the-user-agents-cookie-store-allows-unpartitioned-cookies-to-be-accessed\u2460"}],"title":"3. Storage-Access Request Infrastructure"}],"url":"#determine-whether-the-user-agents-cookie-store-allows-unpartitioned-cookies-to-be-accessed"},
+"e0dfd35e": {"dfnID":"e0dfd35e","dfnText":"main fetch","external":true,"refSections":[{"refs":[{"id":"ref-for-concept-main-fetch"}],"title":"6.2. HTTP-fetch"}],"url":"https://fetch.spec.whatwg.org/#concept-main-fetch"},
+"eb1b1af3": {"dfnID":"eb1b1af3","dfnText":"network error","external":true,"refSections":[{"refs":[{"id":"ref-for-concept-network-error"}],"title":"6.2. HTTP-fetch"}],"url":"https://fetch.spec.whatwg.org/#concept-network-error"},
+"ebb01253": {"dfnID":"ebb01253","dfnText":"PermissionDescriptor","external":true,"refSections":[{"refs":[{"id":"ref-for-dom-permissiondescriptor"},{"id":"ref-for-dom-permissiondescriptor\u2460"}],"title":"3. Storage-Access Request Infrastructure"}],"url":"https://w3c.github.io/permissions/#dom-permissiondescriptor"},
+"ee7bba09": {"dfnID":"ee7bba09","dfnText":"response","external":true,"refSections":[{"refs":[{"id":"ref-for-concept-response"},{"id":"ref-for-concept-response\u2460"}],"title":"4.2. The Activate-Storage-Access HTTP Response Header"}],"url":"https://fetch.spec.whatwg.org/#concept-response"},
+"f6b9fd3a": {"dfnID":"f6b9fd3a","dfnText":"determine whether the user agent explicitly allows unpartitioned cookie access","external":true,"refSections":[{"refs":[{"id":"ref-for-determine-whether-the-user-agent-explicitly-allows-unpartitioned-cookie-access"}],"title":"3. Storage-Access Request Infrastructure"}],"url":"https://privacycg.github.io/storage-access/#determine-whether-the-user-agent-explicitly-allows-unpartitioned-cookie-access"},
+"f7b00a8b": {"dfnID":"f7b00a8b","dfnText":"header list (for response)","external":true,"refSections":[{"refs":[{"id":"ref-for-concept-response-header-list"},{"id":"ref-for-concept-response-header-list\u2460"}],"title":"4.2. The Activate-Storage-Access HTTP Response Header"}],"url":"https://fetch.spec.whatwg.org/#concept-response-header-list"},
+"fb9bb722": {"dfnID":"fb9bb722","dfnText":"site","external":true,"refSections":[{"refs":[{"id":"ref-for-site"},{"id":"ref-for-site\u2460"}],"title":"3. Storage-Access Request Infrastructure"}],"url":"https://html.spec.whatwg.org/multipage/browsers.html#site"},
+"feac4ab3": {"dfnID":"feac4ab3","dfnText":"same site","external":true,"refSections":[{"refs":[{"id":"ref-for-same-site"}],"title":"3. Storage-Access Request Infrastructure"}],"url":"https://html.spec.whatwg.org/multipage/browsers.html#same-site"},
+"http-headerdef-activate-storage-access": {"dfnID":"http-headerdef-activate-storage-access","dfnText":"Activate-Storage-Access","external":false,"refSections":[{"refs":[{"id":"ref-for-http-headerdef-activate-storage-access"}],"title":"1. Introduction"},{"refs":[{"id":"ref-for-http-headerdef-activate-storage-access\u2460"}],"title":"10.1. Vary"},{"refs":[{"id":"ref-for-http-headerdef-activate-storage-access\u2461"}],"title":"10.4. Header Compression"}],"url":"#http-headerdef-activate-storage-access"},
+"http-headerdef-sec-fetch-storage-access": {"dfnID":"http-headerdef-sec-fetch-storage-access","dfnText":"Sec-Fetch-Storage-Access","external":false,"refSections":[{"refs":[{"id":"ref-for-http-headerdef-sec-fetch-storage-access"}],"title":"1. Introduction"},{"refs":[{"id":"ref-for-http-headerdef-sec-fetch-storage-access\u2460"}],"title":"5. Integration with Fetch Metadata"},{"refs":[{"id":"ref-for-http-headerdef-sec-fetch-storage-access\u2461"}],"title":"6.1. Origin header"},{"refs":[{"id":"ref-for-http-headerdef-sec-fetch-storage-access\u2462"}],"title":"8.2. Forbidden header name"},{"refs":[{"id":"ref-for-http-headerdef-sec-fetch-storage-access\u2463"},{"id":"ref-for-http-headerdef-sec-fetch-storage-access\u2464"},{"id":"ref-for-http-headerdef-sec-fetch-storage-access\u2465"},{"id":"ref-for-http-headerdef-sec-fetch-storage-access\u2466"},{"id":"ref-for-http-headerdef-sec-fetch-storage-access\u2467"},{"id":"ref-for-http-headerdef-sec-fetch-storage-access\u2468"}],"title":"9. Privacy Considerations"},{"refs":[{"id":"ref-for-http-headerdef-sec-fetch-storage-access\u2460\u24ea"}],"title":"10.1. Vary"},{"refs":[{"id":"ref-for-http-headerdef-sec-fetch-storage-access\u2460\u2460"},{"id":"ref-for-http-headerdef-sec-fetch-storage-access\u2460\u2461"}],"title":"10.3. Sec- Prefix"},{"refs":[{"id":"ref-for-http-headerdef-sec-fetch-storage-access\u2460\u2462"}],"title":"10.4. Header Compression"}],"url":"#http-headerdef-sec-fetch-storage-access"},
+"http-storage-access-retry-fetch": {"dfnID":"http-storage-access-retry-fetch","dfnText":"HTTP-storage-access-retry-fetch","external":false,"refSections":[{"refs":[{"id":"ref-for-http-storage-access-retry-fetch"}],"title":"6.2. HTTP-fetch"}],"url":"#http-storage-access-retry-fetch"},
+"perform-a-storage-access-load-check": {"dfnID":"perform-a-storage-access-load-check","dfnText":"perform a storage access load check","external":false,"refSections":[{"refs":[{"id":"ref-for-perform-a-storage-access-load-check"}],"title":"7.1. Changes to navigation"}],"url":"#perform-a-storage-access-load-check"},
+"perform-a-storage-access-retry-check": {"dfnID":"perform-a-storage-access-retry-check","dfnText":"perform a storage access retry check","external":false,"refSections":[{"refs":[{"id":"ref-for-perform-a-storage-access-retry-check"}],"title":"6.2. HTTP-fetch"}],"url":"#perform-a-storage-access-retry-check"},
+"request-cache-mode": {"dfnID":"request-cache-mode","dfnText":"cache mode","external":false,"refSections":[{"refs":[{"id":"ref-for-request-cache-mode"},{"id":"ref-for-request-cache-mode\u2460"}],"title":"3. Storage-Access Request Infrastructure"}],"url":"#request-cache-mode"},
+"request-eligible-for-storage-access": {"dfnID":"request-eligible-for-storage-access","dfnText":"eligible for storage-access","external":false,"refSections":[{"refs":[{"id":"ref-for-request-eligible-for-storage-access"},{"id":"ref-for-request-eligible-for-storage-access\u2460"},{"id":"ref-for-request-eligible-for-storage-access\u2461"},{"id":"ref-for-request-eligible-for-storage-access\u2462"},{"id":"ref-for-request-eligible-for-storage-access\u2463"}],"title":"3. Storage-Access Request Infrastructure"},{"refs":[{"id":"ref-for-request-eligible-for-storage-access\u2464"}],"title":"4.2. The Activate-Storage-Access HTTP Response Header"},{"refs":[{"id":"ref-for-request-eligible-for-storage-access\u2465"},{"id":"ref-for-request-eligible-for-storage-access\u2466"}],"title":"6.2. HTTP-fetch"},{"refs":[{"id":"ref-for-request-eligible-for-storage-access\u2467"}],"title":"6.3. HTTP-redirect-fetch"}],"url":"#request-eligible-for-storage-access"},
+"request-internal-cache-mode": {"dfnID":"request-internal-cache-mode","dfnText":"internal cache mode","external":false,"refSections":[{"refs":[{"id":"ref-for-request-internal-cache-mode"}],"title":"3. Storage-Access Request Infrastructure"}],"url":"#request-internal-cache-mode"},
+"request-single-hop-cache-mode": {"dfnID":"request-single-hop-cache-mode","dfnText":"single-hop cache mode","external":false,"refSections":[{"refs":[{"id":"ref-for-request-single-hop-cache-mode"},{"id":"ref-for-request-single-hop-cache-mode\u2460"}],"title":"3. Storage-Access Request Infrastructure"},{"refs":[{"id":"ref-for-request-single-hop-cache-mode\u2461"},{"id":"ref-for-request-single-hop-cache-mode\u2462"}],"title":"6.2. HTTP-fetch"}],"url":"#request-single-hop-cache-mode"},
+"request-storage-access-status": {"dfnID":"request-storage-access-status","dfnText":"storage access status","external":false,"refSections":[{"refs":[{"id":"ref-for-request-storage-access-status"}],"title":"4.1. The Sec-Fetch-Storage-Access HTTP Request Header"},{"refs":[{"id":"ref-for-request-storage-access-status\u2460"},{"id":"ref-for-request-storage-access-status\u2461"}],"title":"4.2. The Activate-Storage-Access HTTP Response Header"},{"refs":[{"id":"ref-for-request-storage-access-status\u2462"},{"id":"ref-for-request-storage-access-status\u2463"}],"title":"6.2. HTTP-fetch"},{"refs":[{"id":"ref-for-request-storage-access-status\u2464"}],"title":"10.2. Origin Header Interoperability"}],"url":"#request-storage-access-status"},
+"set-storage-access": {"dfnID":"set-storage-access","dfnText":"set the Sec-Fetch-Storage-Access header","external":false,"refSections":[{"refs":[{"id":"ref-for-set-storage-access"}],"title":"5. Integration with Fetch Metadata"}],"url":"#set-storage-access"},
+"storage-access-status": {"dfnID":"storage-access-status","dfnText":"storage access status","external":false,"refSections":[{"refs":[{"id":"ref-for-storage-access-status"}],"title":"3. Storage-Access Request Infrastructure"}],"url":"#storage-access-status"},
+"storage-access-status-active": {"dfnID":"storage-access-status-active","dfnText":"active","external":false,"refSections":[{"refs":[{"id":"ref-for-storage-access-status-active"}],"title":"3. Storage-Access Request Infrastructure"},{"refs":[{"id":"ref-for-storage-access-status-active\u2460"}],"title":"4.1. The Sec-Fetch-Storage-Access HTTP Request Header"},{"refs":[{"id":"ref-for-storage-access-status-active\u2461"}],"title":"4.2. The Activate-Storage-Access HTTP Response Header"},{"refs":[{"id":"ref-for-storage-access-status-active\u2462"}],"title":"6.2. HTTP-fetch"},{"refs":[{"id":"ref-for-storage-access-status-active\u2463"}],"title":"8.2. Forbidden header name"},{"refs":[{"id":"ref-for-storage-access-status-active\u2464"},{"id":"ref-for-storage-access-status-active\u2465"},{"id":"ref-for-storage-access-status-active\u2466"}],"title":"9. Privacy Considerations"}],"url":"#storage-access-status-active"},
+"storage-access-status-inactive": {"dfnID":"storage-access-status-inactive","dfnText":"inactive","external":false,"refSections":[{"refs":[{"id":"ref-for-storage-access-status-inactive"}],"title":"3. Storage-Access Request Infrastructure"},{"refs":[{"id":"ref-for-storage-access-status-inactive\u2460"}],"title":"4.1. The Sec-Fetch-Storage-Access HTTP Request Header"},{"refs":[{"id":"ref-for-storage-access-status-inactive\u2461"},{"id":"ref-for-storage-access-status-inactive\u2462"}],"title":"4.2. The Activate-Storage-Access HTTP Response Header"},{"refs":[{"id":"ref-for-storage-access-status-inactive\u2463"}],"title":"6.1. Origin header"},{"refs":[{"id":"ref-for-storage-access-status-inactive\u2464"}],"title":"6.2. HTTP-fetch"},{"refs":[{"id":"ref-for-storage-access-status-inactive\u2465"}],"title":"8.2. Forbidden header name"},{"refs":[{"id":"ref-for-storage-access-status-inactive\u2466"},{"id":"ref-for-storage-access-status-inactive\u2467"},{"id":"ref-for-storage-access-status-inactive\u2468"}],"title":"9. Privacy Considerations"},{"refs":[{"id":"ref-for-storage-access-status-inactive\u2460\u24ea"}],"title":"10.2. Origin Header Interoperability"}],"url":"#storage-access-status-inactive"},
+"storage-access-status-none": {"dfnID":"storage-access-status-none","dfnText":"none","external":false,"refSections":[{"refs":[{"id":"ref-for-storage-access-status-none"}],"title":"3. Storage-Access Request Infrastructure"},{"refs":[{"id":"ref-for-storage-access-status-none\u2460"}],"title":"4.1. The Sec-Fetch-Storage-Access HTTP Request Header"},{"refs":[{"id":"ref-for-storage-access-status-none\u2461"}],"title":"8.2. Forbidden header name"},{"refs":[{"id":"ref-for-storage-access-status-none\u2462"},{"id":"ref-for-storage-access-status-none\u2463"}],"title":"9. Privacy Considerations"}],"url":"#storage-access-status-none"},
+};
+
+document.addEventListener("DOMContentLoaded", ()=>{
+    genAllDfnPanels();
+
+    document.body.addEventListener("click", (e) => {
+        // If not handled already, just hide all dfn panels.
+        hideAllDfnPanels();
+    });
+});
+
+window.addEventListener("resize", () => {
+    // Pin any visible dfn panel
+    queryAll(".dfn-panel.on, .dfn-panel.activated").forEach(el=>positionDfnPanel(el));
+});
+
+function genAllDfnPanels() {
+    for(const panelData of Object.values(dfnPanelData)) {
+        const dfnID = panelData.dfnID;
+        const dfn = document.getElementById(dfnID);
+        if(!dfn) {
+            console.log(`Can't find dfn#${dfnID}.`, panelData);
+            continue;
+        }
+        dfn.panelData = panelData;
+        insertDfnPopupAction(dfn);
+    }
+}
+
+function genDfnPanel(dfn, { dfnID, url, dfnText, refSections, external }) {
+    const dfnPanel = mk.aside({
+        class: "dfn-panel on",
+        id: `infopanel-for-${dfnID}`,
+        "data-for": dfnID,
+        "aria-labelled-by":`infopaneltitle-for-${dfnID}`,
+        },
+        mk.span({id:`infopaneltitle-for-${dfnID}`, style:"display:none"},
+            `Info about the '${dfnText}' ${external?"external":""} reference.`),
+        mk.a({href:url, class:"dfn-link"}, url),
+        refSections.length == 0 ? [] :
+            mk.b({}, "Referenced in:"),
+            mk.ul({},
+                ...refSections.map(section=>
+                    mk.li({},
+                        ...section.refs.map((ref, refI)=>
+                            [
+                                mk.a({ href: `#${ref.id}` },
+                                    (refI == 0) ? section.title : `(${refI + 1})`
+                                ),
+                                " ",
+                            ]
+                        ),
+                    ),
+                ),
+            ),
+        genLinkingSyntaxes(dfn),
+    );
+
+    dfnPanel.addEventListener('click', (event) => {
+        if (event.target.nodeName == 'A') {
+            scrollToTargetAndHighlight(event);
+            pinDfnPanel(dfnPanel);
+        }
+        event.stopPropagation();
+        refocusOnTarget(event);
+    });
+    dfnPanel.addEventListener('keydown', (event) => {
+        if(event.keyCode == 27) { // Escape key
+            hideDfnPanel({dfnPanel});
+            event.stopPropagation();
+            event.preventDefault();
+        }
+    });
+
+    dfnPanel.dfn = dfn;
+    dfn.dfnPanel = dfnPanel;
+    return dfnPanel;
+}
+
+
+
+function hideAllDfnPanels() {
+    // Delete the currently-active dfn panel.
+    queryAll(".dfn-panel").forEach(dfnPanel=>hideDfnPanel({dfnPanel}));
+}
+
+function showDfnPanel(dfn) {
+    hideAllDfnPanels(); // Only display one at a time.
+
+    dfn.setAttribute("aria-expanded", "true");
+
+    const dfnPanel = genDfnPanel(dfn, dfn.panelData);
+
+    // Give the dfn a unique tabindex, and then
+    // give all the tabbable panel bits successive indexes.
+    let tabIndex = 100;
+    dfn.tabIndex = tabIndex++;
+    const tabbable = dfnPanel.querySelectorAll(":is(a, button)");
+    for (const el of tabbable) {
+        el.tabIndex = tabIndex++;
+    }
+
+    append(document.body, dfnPanel);
+    positionDfnPanel(dfnPanel);
+}
+
+function positionDfnPanel(dfnPanel) {
+    const dfn = dfnPanel.dfn;
+    const dfnPos = getBounds(dfn);
+    dfnPanel.style.top = dfnPos.bottom + "px";
+    dfnPanel.style.left = dfnPos.left + "px";
+
+    const panelPos = dfnPanel.getBoundingClientRect();
+    const panelMargin = 8;
+    const maxRight = document.body.parentNode.clientWidth - panelMargin;
+    if (panelPos.right > maxRight) {
+        const overflowAmount = panelPos.right - maxRight;
+        const newLeft = Math.max(panelMargin, dfnPos.left - overflowAmount);
+        dfnPanel.style.left = newLeft + "px";
+    }
+}
+
+function pinDfnPanel(dfnPanel) {
+    // Switch it to "activated" state, which pins it.
+    dfnPanel.classList.add("activated");
+    dfnPanel.style.position = "fixed";
+    dfnPanel.style.left = null;
+    dfnPanel.style.top = null;
+}
+
+function hideDfnPanel({dfn, dfnPanel}) {
+    if(!dfnPanel) dfnPanel = dfn.dfnPanel;
+    if(!dfn) dfn = dfnPanel.dfn;
+    dfn.dfnPanel = undefined;
+    dfnPanel.dfn = undefined;
+    dfn.setAttribute("aria-expanded", "false");
+    dfn.tabIndex = undefined;
+    dfnPanel.remove()
+}
+
+function toggleDfnPanel(dfn) {
+    if(dfn.dfnPanel) {
+        hideDfnPanel(dfn);
+    } else {
+        showDfnPanel(dfn);
+    }
+}
+
+function insertDfnPopupAction(dfn) {
+    dfn.setAttribute('role', 'button');
+    dfn.setAttribute('aria-expanded', 'false')
+    dfn.tabIndex = 0;
+    dfn.classList.add('has-dfn-panel');
+    dfn.addEventListener('click', (event) => {
+        toggleDfnPanel(dfn);
+        event.stopPropagation();
+    });
+    dfn.addEventListener('keypress', (event) => {
+        const kc = event.keyCode;
+        // 32->Space, 13->Enter
+        if(kc == 32 || kc == 13) {
+            toggleDfnPanel(dfn);
+            event.stopPropagation();
+            event.preventDefault();
+        }
+    });
+}
+
+function refocusOnTarget(event) {
+    const target = event.target;
+    setTimeout(() => {
+        // Refocus on the event.target element.
+        // This is needed after browser scrolls to the destination.
+        target.focus();
+    });
+}
+
+// TODO: shared util
+// Returns the root-level absolute position {left and top} of element.
+function getBounds(el, relativeTo=document.body) {
+    const relativeRect = relativeTo.getBoundingClientRect();
+    const elRect = el.getBoundingClientRect();
+    const top = elRect.top - relativeRect.top;
+    const left = elRect.left - relativeRect.left;
+    return {
+        top,
+        left,
+        bottom: top + elRect.height,
+        right: left + elRect.width,
+    }
+}
+
+function scrollToTargetAndHighlight(event) {
+    let hash = event.target.hash;
+    if (hash) {
+        hash = decodeURIComponent(hash.substring(1));
+        const dest = document.getElementById(hash);
+        if (dest) {
+            dest.classList.add('highlighted');
+            setTimeout(() => dest.classList.remove('highlighted'), 1000);
+        }
+    }
+}
+
+// Functions, divided by link type, that wrap an autolink's
+// contents with the appropriate outer syntax.
+// Alternately, a string naming another type they format
+// the same as.
+function needsFor(type) {
+    switch(type) {
+        case "descriptor":
+        case "value":
+        case "element-attr":
+        case "attr-value":
+        case "element-state":
+        case "method":
+        case "constructor":
+        case "argument":
+        case "attribute":
+        case "const":
+        case "dict-member":
+        case "event":
+        case "enum-value":
+        case "stringifier":
+        case "serializer":
+        case "iterator":
+        case "maplike":
+        case "setlike":
+        case "state":
+        case "mode":
+        case "context":
+        case "facet": return true;
+
+        default: return false;
+    }
+}
+function refusesFor(type) {
+    switch(type) {
+        case "property":
+        case "element":
+        case "interface":
+        case "namespace":
+        case "callback":
+        case "dictionary":
+        case "enum":
+        case "exception":
+        case "typedef":
+        case "http-header":
+        case "permission": return true;
+
+        default: return false;
+    }
+}
+function linkFormatterFromType(type) {
+    switch(type) {
+        case 'scheme':
+        case 'permission':
+        case 'dfn': return (text) => `[=${text}=]`;
+
+        case 'abstract-op': return (text) => `[\$${text}\$]`;
+
+        case 'function':
+        case 'at-rule':
+        case 'selector':
+        case 'value': return (text) => `''${text}''`;
+
+        case 'http-header': return (text) => `[:${text}:]`;
+
+        case 'interface':
+        case 'constructor':
+        case 'method':
+        case 'argument':
+        case 'attribute':
+        case 'callback':
+        case 'dictionary':
+        case 'dict-member':
+        case 'enum':
+        case 'enum-value':
+        case 'exception':
+        case 'const':
+        case 'typedef':
+        case 'stringifier':
+        case 'serializer':
+        case 'iterator':
+        case 'maplike':
+        case 'setlike':
+        case 'extended-attribute':
+        case 'event':
+        case 'idl': return (text) => `{{${text}}}`;
+
+        case 'element-state':
+        case 'element-attr':
+        case 'attr-value':
+        case 'element': return (element) => `<{${element}}>`;
+
+        case 'grammar': return (text) => `${text} (within a <pre class=prod>)`;
+
+        case 'type': return (text)=> `<<${text}>>`;
+
+        case 'descriptor':
+        case 'property': return (text) => `'${text}'`;
+
+        default: return;
+    };
+};
+
+function genLinkingSyntaxes(dfn) {
+    if(dfn.tagName != "DFN") return;
+
+    const type = dfn.getAttribute('data-dfn-type');
+    if(!type) {
+        console.log(`<dfn> doesn't have a data-dfn-type:`, dfn);
+        return [];
+    }
+
+    // Return a function that wraps link text based on the type
+    const linkFormatter = linkFormatterFromType(type);
+    if(!linkFormatter) {
+        console.log(`<dfn> has an unknown data-dfn-type:`, dfn);
+        return [];
+    }
+
+    let ltAlts;
+    if(dfn.hasAttribute('data-lt')) {
+        ltAlts = dfn.getAttribute('data-lt')
+            .split("|")
+            .map(x=>x.trim());
+    } else {
+        ltAlts = [dfn.textContent.trim()];
+    }
+    if(type == "type") {
+        // lt of "<foo>", but "foo" is the interior;
+        // <<foo/bar>> is how you write it with a for,
+        // not <foo/<bar>> or whatever.
+        for(var i = 0; i < ltAlts.length; i++) {
+            const lt = ltAlts[i];
+            const match = /<(.*)>/.exec(lt);
+            if(match) { ltAlts[i] = match[1]; }
+        }
+    }
+
+    let forAlts;
+    if(dfn.hasAttribute('data-dfn-for')) {
+        forAlts = dfn.getAttribute('data-dfn-for')
+            .split(",")
+            .map(x=>x.trim());
+    } else {
+        forAlts = [''];
+    }
+
+    let linkingSyntaxes = [];
+    if(!needsFor(type)) {
+        for(const lt of ltAlts) {
+            linkingSyntaxes.push(linkFormatter(lt));
+        }
+    }
+    if(!refusesFor(type)) {
+        for(const f of forAlts) {
+            linkingSyntaxes.push(linkFormatter(`${f}/${ltAlts[0]}`))
+        }
+    }
+    return [
+        mk.b({}, 'Possible linking syntaxes:'),
+        mk.ul({},
+            ...linkingSyntaxes.map(link => {
+                const copyLink = async () =>
+                    await navigator.clipboard.writeText(link);
+                return mk.li({},
+                    mk.div({ class: 'link-item' },
+                        mk.button({
+                            class: 'copy-icon', title: 'Copy',
+                            type: 'button',
+                            _onclick: copyLink,
+                            tabindex: 0,
+                        }, mk.span({ class: 'icon' }) ),
+                        mk.span({}, link)
+                    )
+                );
+            })
+        )
+    ];
+}
+}
+</script>
+<script>/* Boilerplate: script-ref-hints */
+"use strict";
+{
+let refsData = {
+"#determine-whether-the-user-agents-cookie-store-allows-unpartitioned-cookies-to-be-accessed": {"displayText":"determine whether the user agent's cookie store allows unpartitioned cookies to be accessed","export":true,"for_":[],"level":"","normative":true,"shortname":"storage-access-headers","spec":"storage-access-headers","status":"local","text":"determine whether the user agent's cookie store allows unpartitioned cookies to be accessed","type":"dfn","url":"#determine-whether-the-user-agents-cookie-store-allows-unpartitioned-cookies-to-be-accessed"},
+"#http-headerdef-activate-storage-access": {"displayText":"activate-storage-access","export":true,"for_":[],"level":"","normative":true,"shortname":"storage-access-headers","spec":"storage-access-headers","status":"local","text":"activate-storage-access","type":"http-header","url":"#http-headerdef-activate-storage-access"},
+"#http-headerdef-sec-fetch-storage-access": {"displayText":"sec-fetch-storage-access","export":true,"for_":[],"level":"","normative":true,"shortname":"storage-access-headers","spec":"storage-access-headers","status":"local","text":"sec-fetch-storage-access","type":"http-header","url":"#http-headerdef-sec-fetch-storage-access"},
+"#http-storage-access-retry-fetch": {"displayText":"http-storage-access-retry-fetch","export":true,"for_":[],"level":"","normative":true,"shortname":"storage-access-headers","spec":"storage-access-headers","status":"local","text":"http-storage-access-retry-fetch","type":"dfn","url":"#http-storage-access-retry-fetch"},
+"#perform-a-storage-access-load-check": {"displayText":"perform a storage access load check","export":true,"for_":[],"level":"","normative":true,"shortname":"storage-access-headers","spec":"storage-access-headers","status":"local","text":"perform a storage access load check","type":"dfn","url":"#perform-a-storage-access-load-check"},
+"#perform-a-storage-access-retry-check": {"displayText":"perform a storage access retry check","export":true,"for_":[],"level":"","normative":true,"shortname":"storage-access-headers","spec":"storage-access-headers","status":"local","text":"perform a storage access retry check","type":"dfn","url":"#perform-a-storage-access-retry-check"},
+"#request-cache-mode": {"displayText":"cache mode","export":true,"for_":["request"],"level":"","normative":true,"shortname":"storage-access-headers","spec":"storage-access-headers","status":"local","text":"cache mode","type":"dfn","url":"#request-cache-mode"},
+"#request-eligible-for-storage-access": {"displayText":"eligible for storage-access","export":true,"for_":["request"],"level":"","normative":true,"shortname":"storage-access-headers","spec":"storage-access-headers","status":"local","text":"eligible for storage-access","type":"dfn","url":"#request-eligible-for-storage-access"},
+"#request-internal-cache-mode": {"displayText":"internal cache mode","export":true,"for_":["request"],"level":"","normative":true,"shortname":"storage-access-headers","spec":"storage-access-headers","status":"local","text":"internal cache mode","type":"dfn","url":"#request-internal-cache-mode"},
+"#request-single-hop-cache-mode": {"displayText":"single-hop cache mode","export":true,"for_":["request"],"level":"","normative":true,"shortname":"storage-access-headers","spec":"storage-access-headers","status":"local","text":"single-hop cache mode","type":"dfn","url":"#request-single-hop-cache-mode"},
+"#request-storage-access-status": {"displayText":"storage access status","export":true,"for_":["request"],"level":"","normative":true,"shortname":"storage-access-headers","spec":"storage-access-headers","status":"local","text":"storage access status","type":"dfn","url":"#request-storage-access-status"},
+"#set-storage-access": {"displayText":"set-storage-access","export":true,"for_":[],"level":"","normative":true,"shortname":"storage-access-headers","spec":"storage-access-headers","status":"local","text":"set-storage-access","type":"dfn","url":"#set-storage-access"},
+"#storage-access-status": {"displayText":"storage access status","export":true,"for_":[],"level":"","normative":true,"shortname":"storage-access-headers","spec":"storage-access-headers","status":"local","text":"storage access status","type":"dfn","url":"#storage-access-status"},
+"#storage-access-status-active": {"displayText":"active","export":true,"for_":["storage access status"],"level":"","normative":true,"shortname":"storage-access-headers","spec":"storage-access-headers","status":"local","text":"active","type":"dfn","url":"#storage-access-status-active"},
+"#storage-access-status-inactive": {"displayText":"inactive","export":true,"for_":["storage access status"],"level":"","normative":true,"shortname":"storage-access-headers","spec":"storage-access-headers","status":"local","text":"inactive","type":"dfn","url":"#storage-access-status-inactive"},
+"#storage-access-status-none": {"displayText":"none","export":true,"for_":["storage access status"],"level":"","normative":true,"shortname":"storage-access-headers","spec":"storage-access-headers","status":"local","text":"none","type":"dfn","url":"#storage-access-status-none"},
+"https://datatracker.ietf.org/doc/html/rfc8941#": {"displayText":"structured field","export":true,"for_":[],"level":"","normative":true,"shortname":"i-d.structured-field-values-for-http","spec":"i-d.structured-field-values-for-http","status":"anchor-block","text":"structured field","type":"dfn","url":"https://datatracker.ietf.org/doc/html/rfc8941#"},
+"https://datatracker.ietf.org/doc/html/rfc8941#name-items": {"displayText":"item","export":true,"for_":["structured field"],"level":"","normative":true,"shortname":"i-d.structured-field-values-for-http","spec":"i-d.structured-field-values-for-http","status":"anchor-block","text":"item","type":"dfn","url":"https://datatracker.ietf.org/doc/html/rfc8941#name-items"},
+"https://datatracker.ietf.org/doc/html/rfc8941#name-strings": {"displayText":"string","export":true,"for_":["structured field"],"level":"","normative":true,"shortname":"i-d.structured-field-values-for-http","spec":"i-d.structured-field-values-for-http","status":"anchor-block","text":"string","type":"dfn","url":"https://datatracker.ietf.org/doc/html/rfc8941#name-strings"},
+"https://datatracker.ietf.org/doc/html/rfc8941#name-tokens": {"displayText":"token","export":true,"for_":["structured field"],"level":"","normative":true,"shortname":"i-d.structured-field-values-for-http","spec":"i-d.structured-field-values-for-http","status":"anchor-block","text":"token","type":"dfn","url":"https://datatracker.ietf.org/doc/html/rfc8941#name-tokens"},
+"https://dom.spec.whatwg.org/#concept-document": {"displayText":"document","export":true,"for_":[],"level":"1","normative":true,"shortname":"dom","spec":"dom","status":"current","text":"document","type":"dfn","url":"https://dom.spec.whatwg.org/#concept-document"},
+"https://fetch.spec.whatwg.org/#append-a-request-origin-header": {"displayText":"append a request Origin header","export":true,"for_":[],"level":"","normative":true,"shortname":"storage-access-headers","spec":"","status":"anchor-block","text":"append a request origin header","type":"dfn","url":"https://fetch.spec.whatwg.org/#append-a-request-origin-header"},
+"https://fetch.spec.whatwg.org/#byte-serializing-a-request-origin": {"displayText":"byte-serializing a request origin","export":true,"for_":[],"level":"","normative":true,"shortname":"storage-access-headers","spec":"","status":"anchor-block","text":"byte-serializing a request origin","type":"dfn","url":"https://fetch.spec.whatwg.org/#byte-serializing-a-request-origin"},
+"https://fetch.spec.whatwg.org/#concept-header-list-get": {"displayText":"get","export":true,"for_":["header list"],"level":"1","normative":true,"shortname":"fetch","spec":"fetch","status":"current","text":"get","type":"dfn","url":"https://fetch.spec.whatwg.org/#concept-header-list-get"},
+"https://fetch.spec.whatwg.org/#concept-header-list-get-structured-header": {"displayText":"get a structured field value","export":true,"for_":["header list"],"level":"1","normative":true,"shortname":"fetch","spec":"fetch","status":"current","text":"get a structured field value","type":"dfn","url":"https://fetch.spec.whatwg.org/#concept-header-list-get-structured-header"},
+"https://fetch.spec.whatwg.org/#concept-header-list-set-structured-header": {"displayText":"set a structured field value","export":true,"for_":["header list"],"level":"1","normative":true,"shortname":"fetch","spec":"fetch","status":"current","text":"set a structured field value","type":"dfn","url":"https://fetch.spec.whatwg.org/#concept-header-list-set-structured-header"},
+"https://fetch.spec.whatwg.org/#concept-http-fetch": {"displayText":"HTTP fetch","export":true,"for_":[],"level":"1","normative":true,"shortname":"fetch","spec":"fetch","status":"current","text":"http fetch","type":"dfn","url":"https://fetch.spec.whatwg.org/#concept-http-fetch"},
+"https://fetch.spec.whatwg.org/#concept-http-redirect-fetch": {"displayText":"HTTP-redirect fetch","export":true,"for_":[],"level":"1","normative":true,"shortname":"fetch","spec":"fetch","status":"current","text":"http-redirect fetch","type":"dfn","url":"https://fetch.spec.whatwg.org/#concept-http-redirect-fetch"},
+"https://fetch.spec.whatwg.org/#concept-main-fetch": {"displayText":"main fetch","export":true,"for_":[],"level":"","normative":true,"shortname":"storage-access-headers","spec":"","status":"anchor-block","text":"main fetch","type":"dfn","url":"https://fetch.spec.whatwg.org/#concept-main-fetch"},
+"https://fetch.spec.whatwg.org/#concept-network-error": {"displayText":"network error","export":true,"for_":[],"level":"1","normative":true,"shortname":"fetch","spec":"fetch","status":"current","text":"network error","type":"dfn","url":"https://fetch.spec.whatwg.org/#concept-network-error"},
+"https://fetch.spec.whatwg.org/#concept-request": {"displayText":"request","export":true,"for_":[],"level":"1","normative":true,"shortname":"fetch","spec":"fetch","status":"current","text":"request","type":"dfn","url":"https://fetch.spec.whatwg.org/#concept-request"},
+"https://fetch.spec.whatwg.org/#concept-request-client": {"displayText":"client","export":true,"for_":["request"],"level":"1","normative":true,"shortname":"fetch","spec":"fetch","status":"current","text":"client","type":"dfn","url":"https://fetch.spec.whatwg.org/#concept-request-client"},
+"https://fetch.spec.whatwg.org/#concept-request-credentials-mode": {"displayText":"credentials mode","export":true,"for_":["request"],"level":"1","normative":true,"shortname":"fetch","spec":"fetch","status":"current","text":"credentials mode","type":"dfn","url":"https://fetch.spec.whatwg.org/#concept-request-credentials-mode"},
+"https://fetch.spec.whatwg.org/#concept-request-header-list": {"displayText":"header list","export":true,"for_":["request"],"level":"1","normative":true,"shortname":"fetch","spec":"fetch","status":"current","text":"header list","type":"dfn","url":"https://fetch.spec.whatwg.org/#concept-request-header-list"},
+"https://fetch.spec.whatwg.org/#concept-request-method": {"displayText":"method","export":true,"for_":["request"],"level":"1","normative":true,"shortname":"fetch","spec":"fetch","status":"current","text":"method","type":"dfn","url":"https://fetch.spec.whatwg.org/#concept-request-method"},
+"https://fetch.spec.whatwg.org/#concept-request-redirect-count": {"displayText":"redirect count","export":true,"for_":["request"],"level":"1","normative":true,"shortname":"fetch","spec":"fetch","status":"current","text":"redirect count","type":"dfn","url":"https://fetch.spec.whatwg.org/#concept-request-redirect-count"},
+"https://fetch.spec.whatwg.org/#concept-request-reserved-client": {"displayText":"reserved client","export":true,"for_":["request"],"level":"1","normative":true,"shortname":"fetch","spec":"fetch","status":"current","text":"reserved client","type":"dfn","url":"https://fetch.spec.whatwg.org/#concept-request-reserved-client"},
+"https://fetch.spec.whatwg.org/#concept-request-url": {"displayText":"URL","export":true,"for_":["request"],"level":"1","normative":true,"shortname":"fetch","spec":"fetch","status":"current","text":"url","type":"dfn","url":"https://fetch.spec.whatwg.org/#concept-request-url"},
+"https://fetch.spec.whatwg.org/#concept-request-url-list": {"displayText":"URL list","export":true,"for_":["request"],"level":"1","normative":true,"shortname":"fetch","spec":"fetch","status":"current","text":"url list","type":"dfn","url":"https://fetch.spec.whatwg.org/#concept-request-url-list"},
+"https://fetch.spec.whatwg.org/#concept-response": {"displayText":"response","export":true,"for_":[],"level":"1","normative":true,"shortname":"fetch","spec":"fetch","status":"current","text":"response","type":"dfn","url":"https://fetch.spec.whatwg.org/#concept-response"},
+"https://fetch.spec.whatwg.org/#concept-response-header-list": {"displayText":"header list","export":true,"for_":["response"],"level":"1","normative":true,"shortname":"fetch","spec":"fetch","status":"current","text":"header list","type":"dfn","url":"https://fetch.spec.whatwg.org/#concept-response-header-list"},
+"https://fetch.spec.whatwg.org/#fetch-params": {"displayText":"fetch params","export":true,"for_":[],"level":"","normative":true,"shortname":"storage-access-headers","spec":"","status":"anchor-block","text":"fetch params","type":"dfn","url":"https://fetch.spec.whatwg.org/#fetch-params"},
+"https://fetch.spec.whatwg.org/#forbidden-request-header": {"displayText":"forbidden request-header","export":true,"for_":[],"level":"1","normative":true,"shortname":"fetch","spec":"fetch","status":"current","text":"forbidden request-header","type":"dfn","url":"https://fetch.spec.whatwg.org/#forbidden-request-header"},
+"https://fetch.spec.whatwg.org/#http-origin": {"displayText":"origin","export":true,"for_":[],"level":"1","normative":true,"shortname":"fetch","spec":"fetch","status":"current","text":"origin","type":"http-header","url":"https://fetch.spec.whatwg.org/#http-origin"},
+"https://fetch.spec.whatwg.org/#response-has-cross-origin-redirects": {"displayText":"has-cross-origin-redirects","export":true,"for_":["response"],"level":"","normative":true,"shortname":"storage-access-headers","spec":"","status":"anchor-block","text":"has-cross-origin-redirects","type":"dfn","url":"https://fetch.spec.whatwg.org/#response-has-cross-origin-redirects"},
+"https://html.spec.whatwg.org/multipage/browsers.html#concept-origin": {"displayText":"origin","export":true,"for_":[],"level":"1","normative":true,"shortname":"html","spec":"html","status":"current","text":"origin","type":"dfn","url":"https://html.spec.whatwg.org/multipage/browsers.html#concept-origin"},
+"https://html.spec.whatwg.org/multipage/browsers.html#obtain-a-site": {"displayText":"obtain a site","export":true,"for_":[],"level":"1","normative":true,"shortname":"html","spec":"html","status":"current","text":"obtain a site","type":"dfn","url":"https://html.spec.whatwg.org/multipage/browsers.html#obtain-a-site"},
+"https://html.spec.whatwg.org/multipage/browsers.html#same-origin": {"displayText":"same origin","export":true,"for_":[],"level":"1","normative":true,"shortname":"html","spec":"html","status":"current","text":"same origin","type":"dfn","url":"https://html.spec.whatwg.org/multipage/browsers.html#same-origin"},
+"https://html.spec.whatwg.org/multipage/browsers.html#same-site": {"displayText":"same site","export":true,"for_":[],"level":"1","normative":true,"shortname":"html","spec":"html","status":"current","text":"same site","type":"dfn","url":"https://html.spec.whatwg.org/multipage/browsers.html#same-site"},
+"https://html.spec.whatwg.org/multipage/browsers.html#site": {"displayText":"site","export":true,"for_":[],"level":"1","normative":true,"shortname":"html","spec":"html","status":"current","text":"site","type":"dfn","url":"https://html.spec.whatwg.org/multipage/browsers.html#site"},
+"https://html.spec.whatwg.org/multipage/browsing-the-web.html#create-navigation-params-by-fetching": {"displayText":"create navigation params by fetching","export":true,"for_":[],"level":"","normative":true,"shortname":"html","spec":"html","status":"anchor-block","text":"create navigation params by fetching","type":"dfn","url":"https://html.spec.whatwg.org/multipage/browsing-the-web.html#create-navigation-params-by-fetching"},
+"https://html.spec.whatwg.org/multipage/document-sequences.html#nav-document": {"displayText":"active document","export":true,"for_":["navigable"],"level":"1","normative":true,"shortname":"html","spec":"html","status":"current","text":"active document","type":"dfn","url":"https://html.spec.whatwg.org/multipage/document-sequences.html#nav-document"},
+"https://html.spec.whatwg.org/multipage/iframe-embed-object.html#the-iframe-element": {"displayText":"iframe","export":true,"for_":[],"level":"1","normative":true,"shortname":"html","spec":"html","status":"current","text":"iframe","type":"element","url":"https://html.spec.whatwg.org/multipage/iframe-embed-object.html#the-iframe-element"},
+"https://html.spec.whatwg.org/multipage/webappapis.html#concept-environment-id": {"displayText":"id","export":true,"for_":["environment"],"level":"1","normative":true,"shortname":"html","spec":"html","status":"current","text":"id","type":"dfn","url":"https://html.spec.whatwg.org/multipage/webappapis.html#concept-environment-id"},
+"https://html.spec.whatwg.org/multipage/webappapis.html#concept-environment-top-level-origin": {"displayText":"top-level origin","export":true,"for_":["environment"],"level":"1","normative":true,"shortname":"html","spec":"html","status":"current","text":"top-level origin","type":"dfn","url":"https://html.spec.whatwg.org/multipage/webappapis.html#concept-environment-top-level-origin"},
+"https://html.spec.whatwg.org/multipage/webappapis.html#concept-settings-object-origin": {"displayText":"origin","export":true,"for_":["environment settings object"],"level":"1","normative":true,"shortname":"html","spec":"html","status":"current","text":"origin","type":"dfn","url":"https://html.spec.whatwg.org/multipage/webappapis.html#concept-settings-object-origin"},
+"https://html.spec.whatwg.org/multipage/webappapis.html#environment": {"displayText":"environment","export":true,"for_":[],"level":"1","normative":true,"shortname":"html","spec":"html","status":"current","text":"environment","type":"dfn","url":"https://html.spec.whatwg.org/multipage/webappapis.html#environment"},
+"https://html.spec.whatwg.org/multipage/webappapis.html#environment-settings-object": {"displayText":"environment settings object","export":true,"for_":[],"level":"1","normative":true,"shortname":"html","spec":"html","status":"current","text":"environment settings object","type":"dfn","url":"https://html.spec.whatwg.org/multipage/webappapis.html#environment-settings-object"},
+"https://html.spec.whatwg.org/multipage/webappapis.html#relevant-settings-object": {"displayText":"relevant settings object","export":true,"for_":[],"level":"1","normative":true,"shortname":"html","spec":"html","status":"current","text":"relevant settings object","type":"dfn","url":"https://html.spec.whatwg.org/multipage/webappapis.html#relevant-settings-object"},
+"https://infra.spec.whatwg.org/#assert": {"displayText":"assert","export":true,"for_":[],"level":"1","normative":true,"shortname":"infra","spec":"infra","status":"current","text":"assert","type":"dfn","url":"https://infra.spec.whatwg.org/#assert"},
+"https://infra.spec.whatwg.org/#boolean": {"displayText":"boolean","export":true,"for_":[],"level":"1","normative":true,"shortname":"infra","spec":"infra","status":"current","text":"boolean","type":"dfn","url":"https://infra.spec.whatwg.org/#boolean"},
+"https://infra.spec.whatwg.org/#list-append": {"displayText":"append","export":true,"for_":["list"],"level":"1","normative":true,"shortname":"infra","spec":"infra","status":"current","text":"append","type":"dfn","url":"https://infra.spec.whatwg.org/#list-append"},
+"https://infra.spec.whatwg.org/#string-is": {"displayText":"is","export":true,"for_":["string"],"level":"1","normative":true,"shortname":"infra","spec":"infra","status":"current","text":"is","type":"dfn","url":"https://infra.spec.whatwg.org/#string-is"},
+"https://infra.spec.whatwg.org/#user-agent": {"displayText":"user agent","export":true,"for_":[],"level":"1","normative":true,"shortname":"infra","spec":"infra","status":"current","text":"user agent","type":"dfn","url":"https://infra.spec.whatwg.org/#user-agent"},
+"https://privacycg.github.io/storage-access/#determine-whether-the-user-agent-explicitly-allows-unpartitioned-cookie-access": {"displayText":"determine whether the user agent explicitly allows unpartitioned cookie access","export":true,"for_":[],"level":"","normative":true,"shortname":"storage-access","spec":"storage-access","status":"anchor-block","text":"determine whether the user agent explicitly allows unpartitioned cookie access","type":"dfn","url":"https://privacycg.github.io/storage-access/#determine-whether-the-user-agent-explicitly-allows-unpartitioned-cookie-access"},
+"https://privacycg.github.io/storage-access/#dom-document-requeststorageaccess": {"displayText":"requestStorageAccess()","export":true,"for_":["Document"],"level":"1","normative":true,"shortname":"storage-access","spec":"storage-access","status":"current","text":"requestStorageAccess()","type":"method","url":"https://privacycg.github.io/storage-access/#dom-document-requeststorageaccess"},
+"https://privacycg.github.io/storage-access/#environment-has-storage-access": {"displayText":"has storage access","export":true,"for_":["environment"],"level":"","normative":true,"shortname":"storage-access","spec":"storage-access","status":"anchor-block","text":"has storage access","type":"dfn","url":"https://privacycg.github.io/storage-access/#environment-has-storage-access"},
+"https://privacycg.github.io/storage-access/#permissiondef-storage-access": {"displayText":"storage-access","export":true,"for_":[],"level":"1","normative":true,"shortname":"storage-access","spec":"storage-access","status":"current","text":"storage-access","type":"permission","url":"https://privacycg.github.io/storage-access/#permissiondef-storage-access"},
+"https://privacycg.github.io/storage-access/#source-snapsnot-params-environment-id": {"displayText":"environment id","export":true,"for_":["source snapshot params"],"level":"","normative":true,"shortname":"storage-access","spec":"storage-access","status":"anchor-block","text":"environment id","type":"dfn","url":"https://privacycg.github.io/storage-access/#source-snapsnot-params-environment-id"},
+"https://url.spec.whatwg.org/#concept-url": {"displayText":"URL","export":true,"for_":[],"level":"1","normative":true,"shortname":"url","spec":"url","status":"current","text":"url","type":"dfn","url":"https://url.spec.whatwg.org/#concept-url"},
+"https://url.spec.whatwg.org/#concept-url-origin": {"displayText":"origin","export":true,"for_":["url"],"level":"1","normative":true,"shortname":"url","spec":"url","status":"current","text":"origin","type":"dfn","url":"https://url.spec.whatwg.org/#concept-url-origin"},
+"https://w3c.github.io/permissions/#dfn-get-a-permission-store-entry": {"displayText":"get a permission store entry","export":true,"for_":[],"level":"1","normative":true,"shortname":"permissions","spec":"permissions","status":"current","text":"get a permission store entry","type":"dfn","url":"https://w3c.github.io/permissions/#dfn-get-a-permission-store-entry"},
+"https://w3c.github.io/permissions/#dfn-granted": {"displayText":"granted","export":true,"for_":["permission"],"level":"1","normative":true,"shortname":"permissions","spec":"permissions","status":"current","text":"granted","type":"dfn","url":"https://w3c.github.io/permissions/#dfn-granted"},
+"https://w3c.github.io/permissions/#dfn-permission-key": {"displayText":"permission key","export":true,"for_":[],"level":"1","normative":true,"shortname":"permissions","spec":"permissions","status":"current","text":"permission key","type":"dfn","url":"https://w3c.github.io/permissions/#dfn-permission-key"},
+"https://w3c.github.io/permissions/#dfn-permission-store-entry": {"displayText":"permission store entry","export":true,"for_":[],"level":"1","normative":true,"shortname":"permissions","spec":"permissions","status":"current","text":"permission store entry","type":"dfn","url":"https://w3c.github.io/permissions/#dfn-permission-store-entry"},
+"https://w3c.github.io/permissions/#dfn-state": {"displayText":"state","export":true,"for_":["permission store entry"],"level":"1","normative":true,"shortname":"permissions","spec":"permissions","status":"current","text":"state","type":"dfn","url":"https://w3c.github.io/permissions/#dfn-state"},
+"https://w3c.github.io/permissions/#dom-permissiondescriptor": {"displayText":"PermissionDescriptor","export":true,"for_":[],"level":"1","normative":true,"shortname":"permissions","spec":"permissions","status":"current","text":"PermissionDescriptor","type":"dictionary","url":"https://w3c.github.io/permissions/#dom-permissiondescriptor"},
+"https://w3c.github.io/permissions/#dom-permissiondescriptor-name": {"displayText":"name","export":true,"for_":["PermissionDescriptor"],"level":"1","normative":true,"shortname":"permissions","spec":"permissions","status":"current","text":"name","type":"dict-member","url":"https://w3c.github.io/permissions/#dom-permissiondescriptor-name"},
+"https://w3c.github.io/permissions/#dom-permissions-query": {"displayText":"query()","export":true,"for_":["Permissions"],"level":"1","normative":true,"shortname":"permissions","spec":"permissions","status":"current","text":"query()","type":"method","url":"https://w3c.github.io/permissions/#dom-permissions-query"},
+"https://w3c.github.io/webappsec-fetch-metadata/#abstract-opdef-append-the-fetch-metadata-headers-for-a-request": {"displayText":"append the Fetch metadata headers for a request","export":true,"for_":[],"level":"1","normative":true,"shortname":"fetch-metadata","spec":"fetch-metadata","status":"current","text":"append the Fetch metadata headers for a request","type":"abstract-op","url":"https://w3c.github.io/webappsec-fetch-metadata/#abstract-opdef-append-the-fetch-metadata-headers-for-a-request"},
+"https://w3c.github.io/webappsec-permissions-policy/#should-request-be-allowed-to-use-feature": {"displayText":"Should request be allowed to use feature?","export":true,"for_":[],"level":"1","normative":true,"shortname":"permissions-policy","spec":"permissions-policy-1","status":"current","text":"Should request be allowed to use feature?","type":"abstract-op","url":"https://w3c.github.io/webappsec-permissions-policy/#should-request-be-allowed-to-use-feature"},
+"https://w3c.github.io/webappsec-secure-contexts/#potentially-trustworthy-url": {"displayText":"potentially trustworthy URL","export":true,"for_":[],"level":"1","normative":true,"shortname":"secure-contexts","spec":"secure-contexts","status":"current","text":"potentially trustworthy url","type":"dfn","url":"https://w3c.github.io/webappsec-secure-contexts/#potentially-trustworthy-url"},
+};
+
+function mkRefHint(link, ref) {
+    const linkText = link.textContent;
+    let dfnTextElements = '';
+    if (ref.displayText.toLowerCase() != linkText.toLowerCase()) {
+        // Give the original term if it's being displayed in a different way.
+        // But allow casing differences, they're insignificant.
+        dfnTextElements =
+            mk.li({},
+                mk.b({}, "Term: "),
+                mk.span({}, ref.displayText)
+            );
+    }
+    const forList = ref.for_;
+    let forListElements;
+    if(forList.length == 0) {
+        forListElements = [];
+    } else if(forList.length == 1) {
+        forListElements = mk.li({},
+            mk.b({}, "For: "),
+            mk.span({}, forList[0]),
+        );
+    } else {
+        forListElements = mk.li({},
+            mk.b({}, "For: "),
+            mk.ul({},
+                ...forList.map(forItem =>
+                    mk.li({},
+                        mk.span({}, forItem)
+                    ),
+                ),
+            ),
+        );
+    }
+    const url = ref.url;
+    const safeUrl = encodeURIComponent(url);
+    const hintPanel = mk.aside({
+        class: "ref-hint",
+        id: `ref-hint-for-${safeUrl}`,
+        "data-for": url,
+        "aria-labelled-by": `ref-hint-for-${safeUrl}`,
+    },
+        mk.ul({},
+            dfnTextElements,
+            mk.li({},
+                mk.b({}, "URL: "),
+                mk.a({ href: url, class: "ref" }, url),
+            ),
+            mk.li({},
+                mk.b({}, "Type: "),
+                mk.span({}, `${ref.type}`),
+            ),
+            mk.li({},
+                mk.b({}, "Spec: "),
+                mk.span({}, `${ref.spec ? ref.spec : ''}`),
+            ),
+            forListElements
+        ),
+    );
+    hintPanel.forLink = link;
+    setupRefHintEventListeners(link, hintPanel);
+    return hintPanel;
+}
+
+function hideAllRefHints() {
+    queryAll(".ref-hint").forEach(el=>hideRefHint(el));
+}
+
+function hideRefHint(refHint) {
+    const link = refHint.forLink;
+    link.setAttribute("aria-expanded", "false");
+    if(refHint.teardownEventListeners) {
+        refHint.teardownEventListeners();
+    }
+    refHint.remove();
+}
+
+function showRefHint(link) {
+    if(link.classList.contains("dfn-link")) return;
+    const url = link.getAttribute("href");
+    const ref = refsData[url];
+    if(!ref) return;
+
+    hideAllRefHints(); // Only display one at this time.
+
+    const refHint = mkRefHint(link, ref);
+    append(document.body, refHint);
+    link.setAttribute("aria-expanded", "true");
+    positionRefHint(refHint);
+}
+
+function setupRefHintEventListeners(link, refHint) {
+    if (refHint.teardownEventListeners) return;
+    // Add event handlers to hide the refHint after the user moves away
+    // from both the link and refHint, if not hovering either within one second.
+    let timeout = null;
+    const startHidingRefHint = (event) => {
+        if (timeout) {
+            clearTimeout(timeout);
+        }
+        timeout = setTimeout(() => {
+            hideRefHint(refHint);
+        }, 1000);
+    }
+    const resetHidingRefHint = (event) => {
+        if (timeout) clearTimeout(timeout);
+        timeout = null;
+    };
+    link.addEventListener("mouseleave", startHidingRefHint);
+    link.addEventListener("mouseenter", resetHidingRefHint);
+    link.addEventListener("blur", startHidingRefHint);
+    link.addEventListener("focus", resetHidingRefHint);
+    refHint.addEventListener("mouseleave", startHidingRefHint);
+    refHint.addEventListener("mouseenter", resetHidingRefHint);
+    refHint.addEventListener("blur", startHidingRefHint);
+    refHint.addEventListener("focus", resetHidingRefHint);
+
+    refHint.teardownEventListeners = () => {
+        // remove event listeners
+        resetHidingRefHint();
+        link.removeEventListener("mouseleave", startHidingRefHint);
+        link.removeEventListener("mouseenter", resetHidingRefHint);
+        link.removeEventListener("blur", startHidingRefHint);
+        link.removeEventListener("focus", resetHidingRefHint);
+        refHint.removeEventListener("mouseleave", startHidingRefHint);
+        refHint.removeEventListener("mouseenter", resetHidingRefHint);
+        refHint.removeEventListener("blur", startHidingRefHint);
+        refHint.removeEventListener("focus", resetHidingRefHint);
+    };
+}
+
+function positionRefHint(refHint) {
+    const link = refHint.forLink;
+    const linkPos = getBounds(link);
+    refHint.style.top = linkPos.bottom + "px";
+    refHint.style.left = linkPos.left + "px";
+
+    const panelPos = refHint.getBoundingClientRect();
+    const panelMargin = 8;
+    const maxRight = document.body.parentNode.clientWidth - panelMargin;
+    if (panelPos.right > maxRight) {
+        const overflowAmount = panelPos.right - maxRight;
+        const newLeft = Math.max(panelMargin, linkPos.left - overflowAmount);
+        refHint.style.left = newLeft + "px";
+    }
+}
+
+// TODO: shared util
+// Returns the root-level absolute position {left and top} of element.
+function getBounds(el, relativeTo=document.body) {
+    const relativeRect = relativeTo.getBoundingClientRect();
+    const elRect = el.getBoundingClientRect();
+    const top = elRect.top - relativeRect.top;
+    const left = elRect.left - relativeRect.left;
+    return {
+        top,
+        left,
+        bottom: top + elRect.height,
+        right: left + elRect.width,
+    }
+}
+
+function showRefHintListener(e) {
+    // If the target isn't in a link (or is a link),
+    // just ignore it.
+    let link = e.target.closest("a");
+    if(!link) return;
+
+    // If the target is in a ref-hint panel
+    // (aka a link in the already-open one),
+    // also just ignore it.
+    if(link.closest(".ref-hint")) return;
+
+    // Otherwise, show the panel for the link.
+    showRefHint(link);
+}
+
+function hideAllHintsListener(e) {
+    // If the click is inside a ref-hint panel, ignore it.
+    if(e.target.closest(".ref-hint")) return;
+    // Otherwise, close all the current panels.
+    hideAllRefHints();
+}
+
+document.addEventListener("DOMContentLoaded", () => {
+    document.body.addEventListener("mousedown", showRefHintListener);
+    document.body.addEventListener("focus", showRefHintListener);
+
+    document.body.addEventListener("click", hideAllHintsListener);
+});
+
+window.addEventListener("resize", () => {
+    // Hide any open ref hint.
+    hideAllRefHints();
+});
+}
+</script>
+<script>/* Boilerplate: script-var-click-highlighting */
+"use strict";
+{
+/*
+Color-choosing design:
+
+* Colors are ordered by goodness.
+* On clicking a var, give it the earliest color
+    with the lowest usage in the algorithm.
+* On re-clicking, re-use the var's most recent color
+    if that's not currently being used elsewhere.
+*/
+
+const COLOR_COUNT = 7;
+
+document.addEventListener("click", e=>{
+    if(e.target.nodeName == "VAR") {
+        highlightSameAlgoVars(e.target);
+    }
+});
+
+function highlightSameAlgoVars(v) {
+    // Find the algorithm container.
+    let algoContainer = findAlgoContainer(v);
+
+    // Not highlighting document-global vars,
+    // too likely to be unrelated.
+    if(algoContainer == null) return;
+
+    const varName = nameFromVar(v);
+    if(!v.hasAttribute("data-var-color")) {
+        const newColor = chooseHighlightColor(algoContainer, v);
+        for(const el of algoContainer.querySelectorAll("var")) {
+            if(nameFromVar(el) == varName) {
+                el.setAttribute("data-var-color", newColor);
+                el.setAttribute("data-var-last-color", newColor);
+            }
+        }
+    } else {
+        for(const el of algoContainer.querySelectorAll("var")) {
+            if(nameFromVar(el) == varName) {
+                el.removeAttribute("data-var-color");
+            }
+        }
+    }
+}
+function findAlgoContainer(el) {
+    while(el != document.body) {
+        if(el.hasAttribute("data-algorithm")) return el;
+        el = el.parentNode;
+    }
+    return null;
+}
+function nameFromVar(el) {
+    return el.textContent.replace(/(\s|\xa0)+/g, " ").trim();
+}
+function colorCountsFromContainer(container) {
+    const namesFromColor = Array.from({length:COLOR_COUNT}, x=>new Set());
+    for(let v of container.querySelectorAll("var[data-var-color]")) {
+        let color = +v.getAttribute("data-var-color");
+        namesFromColor[color].add(nameFromVar(v));
+    }
+
+    return namesFromColor.map(x=>x.size);
+}
+function leastUsedColor(colors) {
+    // Find the earliest color with the lowest count.
+    let minCount = Infinity;
+    let minColor = null;
+    for(var i = 0; i < colors.length; i++) {
+        if(colors[i] < minCount) {
+            minColor = i;
+            minCount = colors[i];
+        }
+    }
+    return minColor;
+}
+function chooseHighlightColor(container, v) {
+    const colorCounts = colorCountsFromContainer(container);
+    if(v.hasAttribute("data-var-last-color")) {
+        let color = +v.getAttribute("data-var-last-color");
+        if(colorCounts[color] == 0) return color;
+    }
+    return leastUsedColor(colorCounts);
+}
+}
+</script>
