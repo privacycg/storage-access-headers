@@ -55,6 +55,7 @@ However, consider a subsequent visit to the example.com page, after the `storage
 Instead, we can imagine a different flow, where the user agent recognizes that the calendar widget already has `storage-access` permission and somehow knows that the widget wants to opt in to using it, so it loads the iframe with access to unpartitioned cookies. This would avoid unnecessary latency and power drain due to network traffic and script execution, leading to a better user experience. So, the flow could be:
 
 ![sequence diagram of network requests with Storage Access request and response headers](./images/new_flow.png)
+([source](https://sequencediagram.org/index.html#initialData=MIGwlgpgdgLgtAPgMoQE4Dc0C4AEKDGcAYhDPgBZxIwD2qAhgOYRwCC++EAzl7mFPXwwwmAFAoMaOIlCRYudsPT0YLanSYt2nHrlSlUATwA6UADwAzeiBAAjQQGsc+GrGgwEo0VBqqcICAsYHBoLHFl3XAjYHEElFW4cGHIIUy5aBmY4QR0uHAAHNABbMB4wVy9o+GQ0TFRcAmJSCioMzTYObl5YoRFUqGAaGgdIXABXLjQwABMAXgBGACYAZnFaqRlwSJxFEQTWjSztLtwQGnpp0zMXN1hPb18If0Dg0PCt+Xe5YLOLvIB3GbMGCmQHJPCsVgFYqlLjlKA9JQQIA))
 
 1. The user agent requests the calendar widget's content.
     * This fetch is still uncredentialed, as before.
@@ -78,6 +79,7 @@ At present, no web platform API allows loading this image via a credentialed fet
 However, if the browser supports the headers described below (and if the user has already granted the `storage-access` permission to the appropriate `<site, site>` pair somehow - e.g. via an iframe at some point in the recent past), then this scenario is supported by the browser as in the following sequence:
 
 ![sequence diagram of network requests with Storage Access request and response headers for an embedded cross-site image](./images/embedded_image.png)
+([source](https://sequencediagram.org/index.html#initialData=HYewLgpgBANhBmYonlAwjAlhYYBc6WOSmAzrCAIYAmmwA5lNSAMYCuAtsQHS8BQfUJFgIkKQtlwEMkpACMI9OuXgQwLABZ1GLAE4hSpALSlMwzB0r0IfGcSMA+AMoRdAN1cEXLIwDE1mkZOYCC6VhBGAIIsLBCGBHSULGCYHnwu7q5GjnZSUAASACqFAAoA9ACM3BVQACwADDUAqsCUbGAaoZgAXhDUADrA0SlulJBBIWHWUTFxpAS6aroAngK5YI4ZHrpeED7+6hoToeEzsfFQSSMQg2ggIADW2ARspK6Y1AC8FQBMAMzpVzbbIOdYEIqlSrVKA-er1KAAeQA0oMADwWcJQFggXDEBwCITQOCIZCoMESYgUGjkDHWS7AahYnEpYBsOJU2gMJisTjEIA))
 
 Browsers that do not support the proposed headers will still receive the appropriate `401 Unauthorized` response. However, browsers that do support the proposed headers are able to retry the fetch and can send the user's credentials, since the user has already given permission for this (by assumption).
 
