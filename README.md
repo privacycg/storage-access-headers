@@ -54,7 +54,18 @@ However, consider a subsequent visit to the example.com page, after the `storage
 
 Instead, we can imagine a different flow, where the user agent recognizes that the calendar widget already has `storage-access` permission and somehow knows that the widget wants to opt in to using it, so it loads the iframe with access to unpartitioned cookies. This would avoid unnecessary latency and power drain due to network traffic and script execution, leading to a better user experience. So, the flow could be:
 
-![sequence diagram of network requests with Storage Access request and response headers](./images/new_flow.png)
+```mermaid
+sequenceDiagram
+  Client->>Server: Sec-Fetch-Storage-Access: inactive
+  Server-->>Client: Activate-Storage-Access: retry<br/><fallback content>
+
+  note left of Client: Client activates the<br/>storage-access permission
+
+  Client->>Server: Sec-Fetch-Storage-Access: active<br/>Cookie: userid=123
+  Server-->>Client: Activate-Storage-Access: load<br/><content>
+
+  note left of Client: Client loads widget<br/>with SAA permission active
+```
 
 1. The user agent requests the calendar widget's content.
     * This fetch is still uncredentialed, as before.
@@ -77,7 +88,19 @@ At present, no web platform API allows loading this image via a credentialed fet
 
 However, if the browser supports the headers described below (and if the user has already granted the `storage-access` permission to the appropriate `<site, site>` pair somehow - e.g. via an iframe at some point in the recent past), then this scenario is supported by the browser as in the following sequence:
 
-![sequence diagram of network requests with Storage Access request and response headers for an embedded cross-site image](./images/embedded_image.png)
+```mermaid
+sequenceDiagram
+  note left of Client: Client is loading document...
+
+  note left of Client: Client begins fetching cross-site image
+  Client->>Server: Sec-Fetch-Storage-Access: inactive
+  Server-->>Client: HTTP/1.1 401 Unauthorized<br/>Activate-Storage-Access: retry
+
+  Client->>Server: Sec-Fetch-Storage-Access: active<br/>Cookie: userid=123
+  Server-->>Client: HTTP/1.1 200 OK<br/><image content>
+
+  note left of Client: Client loads image and continues loading document
+```
 
 Browsers that do not support the proposed headers will still receive the appropriate `401 Unauthorized` response. However, browsers that do support the proposed headers are able to retry the fetch and can send the user's credentials, since the user has already given permission for this (by assumption).
 
