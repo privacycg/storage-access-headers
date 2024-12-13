@@ -104,6 +104,28 @@ sequenceDiagram
 
 Browsers that do not support the proposed headers will still receive the appropriate `401 Unauthorized` response. However, browsers that do support the proposed headers are able to retry the fetch and can send the user's credentials, since the user has already given permission for this (by assumption).
 
+### Retry with `reuse-for`
+
+Consider a Single-Page App (SPA) that authenticates with a third party then sends multiple requests to their APIs. Storage Access Headers (SAH) alone would require each request to be retried, effectively doubling the number of requests on page load. In the first `retry` response, however, the server can request the browser to make the storage activation reusable with the `reuse-for` header parameter. Subsequent requests to these URLs will have access to unpartitioned cookies for the lifetime of the document.
+
+```mermaid
+sequenceDiagram
+  note left of Client: Client is loading document...
+
+  note left of Client: Client begins fetching cross-site content
+  Client->>Server: Sec-Fetch-Storage-Access: inactive
+  Server-->>Client: HTTP/1.1 401 Unauthorized<br/>Activate-Storage-Access: retry#59; reuse-for=("/foo")
+
+  Client->>Server: Sec-Fetch-Storage-Access: active<br/>Cookie: userid=123
+  Server-->>Client: HTTP/1.1 200 OK<br/><content>
+
+  note left of Client: Client begins fetching the /foo cross-site content
+  Client->>Server: Sec-Fetch-Storage-Access: active<br/>Cookie: userid=123
+  Server-->>Client: HTTP/1.1 200 OK<br/><content>
+
+  note left of Client: Client loads resource and continues loading document
+```
+
 ## Proposed headers
 
 ### Request headers
@@ -123,7 +145,8 @@ If the user agent sends `Sec-Fetch-Storage-Access: inactive` on a given network 
 ### Response headers
 
 ```
-Activate-Storage-Access: retry; allowed-origin="https://foo.bar"
+Activate-Storage-Access: retry; allowed-origin="https://embedder.example"; reuse-for=("/baz.html" "https://embeddee-origin.example/foo/bar")
+Activate-Storage-Access: retry; allowed-origin="https://embedder.example"
 Activate-Storage-Access: retry; allowed-origin=*
 Activate-Storage-Access: load
 ```
@@ -132,12 +155,15 @@ This is a [structured header](https://datatracker.ietf.org/doc/html/rfc8941) who
 * `retry`: the server requests that the user agent activate the `storage-access` permission, then retry the request.
   * The retried request must include the `Sec-Fetch-Storage-Access: active` header. (The user agent must ignore the token if permission is not already granted or if unpartitioned cookies are already accessible. In other words, the user agent must ignore the token if the previous request did not include the `Sec-Fetch-Storage-Access: inactive` header.)
   * The `retry` token must be accompanied by the `allowed-origin` [parameter](https://datatracker.ietf.org/doc/html/rfc8941#section-3.1.2-4), which specifies the request initiator that should be allowed to retry the request. (A wildcard parameter, i.e. `allowed-origin=*`, is allowed.) If the request initiator does not match the `allowed-origin` value, the user agent may ignore this header.
+  * The `retry` token may be accompanied by the `reuse-for` [inner-list](https://datatracker.ietf.org/doc/html/rfc8941#inner-list) [parameter](https://datatracker.ietf.org/doc/html/rfc8941#section-3.1.2-4), which allows the user agent to reuse the activation for the specified same-origin URLs (ignoring query parameters and URL fragment, i.e. only considering origin and path) or paths in subsequent requests, during the lifetime of the embedding document. Please read the [relevant security considerations](#reuse-for).
 
 If the request did not include `Sec-Fetch-Storage-Access: inactive` or `Sec-Fetch-Storage-Access: active`, the user agent may ignore this header (both tokens).
 
 If the response includes this header, the user agent may renew the `storage-access` permission associated with the request context, since this is a clear signal that the embedded site is relying on the permission.
 
 Note: it is tempting to try to use [Critical-CH](https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Critical-CH) to retry the request, but this usage would be inconsistent with existing usage and patterns for Critical-CH. The `Activate-Storage-Access: retry; allowed-origin=<origin>` header requests that the user agent _change_ some details about the request before retrying; whereas Critical-CH is designed to allow the server to request more metadata about the request, without modifying it. This proposal therefore does not rely on Critical-CH.
+
+Note: The `reuse-for` parameter is ignored for `load` response headers.
 
 ## Key scenarios
 
@@ -179,6 +205,18 @@ The principal way that the Storage Access API addresses these security concerns 
 
 This proposal uses a new forbidden name for the `Sec-Fetch-Storage-Access` header to prevent programmatic modification of the header value. This is primarily for reasons of coherence, rather than security, but there is a security reason to make this choice. If a script could modify the value of the header, it could lie to a server about the state of the `storage-access` permission in the requesting context and indicate that the state is `active`, even if the requesting context has not opted in to using the permission grant. This could mislead the server into inferring that the request context is more trusted/safe than it actually is (e.g., perhaps the requesting context has intentionally _not_ opted into accessing its cross-site cookies because it cannot conclude it's safe to do so). This could lead the server to make different decisions than it would have if it had received the correct header value (`none` or `inactive`). Thus the value of this header ought to be trustworthy, so it ought to be up to the user agent to set it.
 
+### `reuse-for`
+
+A `retry` header with `reuse-for` enables the embedding document to send subsequent requests to the server with unpartitioned cookies without going through the _`retry`_ flow again. Developers who enable the reuse of storage access activation should be aware of the associated risks, such as cross-site request forgery (CSRF) and [cross-site leaks](https://xsleaks.dev/), and only allowlist URLs which expect credentialed cross-site requests and handle them safely.
+
+* Reusability will stay valid for the lifetime of the embedding document.
+* Only the `allowed-origin` specified in the response is able to reuse the activation.
+* The URLs in the `reuse-for` parameter are resolved by [parsing](https://url.spec.whatwg.org/#concept-url-parser) them with the request’s URL as the [base URL](https://url.spec.whatwg.org/#concept-base-url). Example accepted values: "/bar", "bar", "/bar/", "./", "../../../etc/passwd", "/bar.html", "bar.js", "https://embeddee-origin.example/foo/bar". Note that "/bar" and "/bar/" are treated as different resources, even though some web servers treat them as the same.
+* The resolved URLs must be same-origin with the request’s URL.
+* When matching a request's URL with a previously specified list of `reuse-for`, to activate storage access, the URL’s query parameters and the URL fragment are ignored.
+* User Agents should ignore the `reuse-for` parameter when wildcards are used in the `allowed-origin` parameter.
+* User Agents should ignore the `reuse-for` parameter when `”null”` is used in the `allowed-origin` parameter.
+
 ## Privacy considerations
 
 This proposal simplifies some ways in which developers can use an API that allows access to cross-site data. However, it does not meaningfully change the privacy characteristics of the Storage Access API: sites are still able to ask for the ability to access cross-site cookies; user agents are still able to handle those requests how they see fit.
@@ -213,6 +251,55 @@ It is tempting to design this functionality such that it piggy-backs and/or inte
   * This would also mean that in order to fix an embedded widget on some page, the top-level site must perform some action to enable CORS; the embedded site alone would be unable to update the page and fix the widget. This is undesirable from a developer usability / composability standpoint.
 
 Therefore, CORS ought to be neither necessary nor sufficient for attaching unpartitioned cookies to a cross-site request. We will therefore design the unpartitioned-cookies-opt-in mechanism as a new thing, completely indepedent from CORS.
+
+### Activation reusability
+
+The following designs were considered as alternatives to the `reuse-for` parameter, to make a storage access activation reusable across requests.
+
+#### Sticky for destination origin
+
+One alternative is marking an activation “[sticky](https://github.com/privacycg/storage-access-headers/issues/6#issuecomment-1998826464)” for the entire origin of the request’s destination, using a header parameter like `sticky`:
+```
+Activate-Storage-Access: retry; allowed-origin="https://embedder.example"; sticky
+```
+This example would activate storage access for all subsequent requests from https://embedder.example to the origin replying with the sticky header. This stickiness would be valid for the lifetime of the document.
+
+This approach, however, is risky because one endpoint requesting a sticky activation would downgrade [security](#reuse-for) of all the endpoints on that origin.
+
+#### Sticky for destination URL only
+
+Another alternative is making the activation sticky for the specific URL of the request’s destination, with or without the query parameters.
+
+This approach is more secure than making an activation sticky for an entire origin but applications sending multiple requests to different endpoints would require multiple retries as described [here](https://github.com/privacycg/storage-access-headers/issues/6#issuecomment-2471620547).
+
+#### Reuse for a single URL/path
+
+Similarly to the proposed solution, we could introduce a header parameter that allows the browser to reuse an activation for a single specified path:
+```
+Activate-Storage-Access: retry; allowed-origin="https://embedder.example"; reuse-for="/baz.html"
+```
+This would allow an endpoint to activate storage access for a different endpoint, but making the parameter a list further increases the utility of it.
+
+##### With Wildcards
+
+Wildcards could be allowed either anywhere in the URL provided in `reuse-for`, or at the end of it only.
+Wildcards anywhere in the URL would provide the most flexibility but would be the most complicated and potentially fragile. Wildcards would also introduce some risk of developers creating overly broad allowlists which expose their services to cross-site vulnerabilities.
+
+##### Without Wildcards
+
+In this case, query parameters and URL fragments would be ignored. The URL provided in `reuse-for` could be used as an exact match, activating storage access for a single resource; or it can be interpreted as a directory, activating storage access for all of its subdirectories and resources.
+
+The trailing slash could be used to indicate whether to activate an entire directory (if present) or a specific resource (if absent), but this could be error-prone as a single character can drastically change the scope of the activation.
+
+If the provided path is treated as a directory, user agents might disallow stickiness outside of the directory of the request’s destination. E.g. `/~bob/image.png` might not ask for a sticky activation for `/` or `/~alice/`.
+
+The proposed solution uses a list of specific resources instead of a string that can be interpreted in different ways, to avoid unnecessary complexity and the potential risk of making an activation sticky for an entire directory.
+
+#### Sticky for Entity
+
+Alternatively, an enum could be provided for developers to decide whether they want the activation to be sticky for the entire origin, the URL of the request (ignoring the query parameters and URL fragment), or the directory.
+
+We chose to go with a list of specific URLs instead, to avoid the potential risk of making an activation sticky for an entire directory or the origin, which could unintentionally activate storage access for endpoints owned by different developers. A list of URLs could also provide more flexibility than an enum.
 
 ## Stakeholder feedback/opposition
 
