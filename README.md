@@ -7,6 +7,7 @@
 
 ## Goals
 
+* Expose metadata about the availability of unpartitioned cookies in a given network request.
 * Enable authenticated embedded functionality with lower latency/overhead when possible, by supporting HTTP request response headers related to the Storage Access API.
   * Provide a way to use existing permission grants during document load: https://github.com/privacycg/storage-access/issues/170.
   * Provide a way for the User Agent to indicate whether a network request comes from a context that has opted-in/activated storage access already: https://github.com/privacycg/storage-access/issues/130.
@@ -17,6 +18,9 @@
 ## Non-goals
 
 * Providing a non-JavaScript method of _requesting_ the `storage-access` permission is not a goal.
+* Exposing metadata about the partitionedness of non-cookie storage is not a goal.
+* Exposing metadata about whether [partitioned cookies](https://github.com/privacycg/CHIPS) are available (and if so, what the partition key is) is not a goal.
+    * For this use case, see https://github.com/privacycg/storage-partitioning/issues/32 and in particular https://github.com/w3c/webappsec-fetch-metadata/pull/89.
 
 ## Introduction
 
