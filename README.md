@@ -210,7 +210,7 @@ This proposal uses a new forbidden name for the `Sec-Fetch-Storage-Access` heade
 A `retry` header with `reuse-for` enables the embedding document to send subsequent requests to the server with unpartitioned cookies without going through the _`retry`_ flow again. Developers who enable the reuse of storage access activation should be aware of the associated risks, such as cross-site request forgery (CSRF) and [cross-site leaks](https://xsleaks.dev/), and only allowlist URLs which expect credentialed cross-site requests and handle them safely.
 
 * Reusability will stay valid for the lifetime of the embedding document.
-* Only the `allowed-origin` specified in the response is able to reuse the activation.
+* Only the `allowed-origin` specified in the response is able to reuse the activation. I.e., only subsequent requests whose initiator matches the `allowed-origin` can benefit from the reusable activation.
 * The URLs in the `reuse-for` parameter are resolved by [parsing](https://url.spec.whatwg.org/#concept-url-parser) them with the request’s URL as the [base URL](https://url.spec.whatwg.org/#concept-base-url). Example accepted values: "/bar", "bar", "/bar/", "./", "../../../etc/passwd", "/bar.html", "bar.js", "https://embeddee-origin.example/foo/bar". Note that "/bar" and "/bar/" are treated as different resources, even though some web servers treat them as the same.
 * The resolved URLs must be same-origin with the request’s URL.
 * When matching a request's URL with a previously specified list of `reuse-for`, to activate storage access, the URL’s query parameters and the URL fragment are ignored.
