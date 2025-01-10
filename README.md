@@ -163,7 +163,7 @@ If the response includes this header, the user agent may renew the `storage-acce
 
 Note: it is tempting to try to use [Critical-CH](https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Critical-CH) to retry the request, but this usage would be inconsistent with existing usage and patterns for Critical-CH. The `Activate-Storage-Access: retry; allowed-origin=<origin>` header requests that the user agent _change_ some details about the request before retrying; whereas Critical-CH is designed to allow the server to request more metadata about the request, without modifying it. This proposal therefore does not rely on Critical-CH.
 
-Note: The `reuse-for` parameter is ignored for `load` response headers.
+Note: The `load` token ignores any accompanying parameters.
 
 ## Key scenarios
 
