@@ -258,7 +258,7 @@ The following designs were considered as alternatives to the `reuse-for` paramet
 
 #### Sticky for destination origin
 
-One alternative is marking an activation “[sticky](https://github.com/privacycg/storage-access-headers/issues/6#issuecomment-1998826464)” for the entire origin of the request’s destination, using a header parameter like `sticky`:
+One alternative is marking an activation "[sticky](https://github.com/privacycg/storage-access-headers/issues/6#issuecomment-1998826464)" for the entire origin of the request’s destination, using a header parameter like `sticky`:
 ```
 Activate-Storage-Access: retry; allowed-origin="https://embedder.example"; sticky
 ```
