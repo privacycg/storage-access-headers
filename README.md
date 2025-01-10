@@ -254,52 +254,35 @@ Therefore, CORS ought to be neither necessary nor sufficient for attaching unpar
 
 ### Activation reusability
 
-The following designs were considered as alternatives to the `reuse-for` parameter, to make a storage access activation reusable across requests.
+The following alternatives were considered to allow the reuse of storage access activations across requests:
 
-#### Sticky for destination origin
-
-One alternative is marking an activation "[sticky](https://github.com/privacycg/storage-access-headers/issues/6#issuecomment-1998826464)" for the entire origin of the request’s destination, using a header parameter like `sticky`:
-```
-Activate-Storage-Access: retry; allowed-origin="https://embedder.example"; sticky
-```
-This example would activate storage access for all subsequent requests from https://embedder.example to the origin replying with the sticky header. This stickiness would be valid for the lifetime of the document.
-
-This approach, however, is risky because one endpoint requesting a sticky activation would downgrade [security](#reuse-for) of all the endpoints on that origin.
-
-#### Sticky for destination URL only
-
-Another alternative is making the activation sticky for the specific URL of the request’s destination, with or without the query parameters.
-
-This approach is more secure than making an activation sticky for an entire origin but applications sending multiple requests to different endpoints would require multiple retries as described [here](https://github.com/privacycg/storage-access-headers/issues/6#issuecomment-2471620547).
-
-#### Reuse for a single URL/path
-
-Similarly to the proposed solution, we could introduce a header parameter that allows the browser to reuse an activation for a single specified path:
-```
-Activate-Storage-Access: retry; allowed-origin="https://embedder.example"; reuse-for="/baz.html"
-```
-This would allow an endpoint to activate storage access for a different endpoint, but making the parameter a list further increases the utility of it.
-
-##### With Wildcards
-
-Wildcards could be allowed either anywhere in the URL provided in `reuse-for`, or at the end of it only.
+1. **Sticky for destination origin**
+   * One alternative is marking an activation "[sticky](https://github.com/privacycg/storage-access-headers/issues/6#issuecomment-1998826464)" for the entire origin of the request’s destination, using a header parameter like `sticky`:
+     ```
+     Activate-Storage-Access: retry; allowed-origin="https://embedder.example"; sticky
+     ```  
+     This example would activate storage access for all subsequent requests from https://embedder.example to the origin replying with the sticky header. This stickiness would be valid for the lifetime of the document.
+   * This approach, however, is risky because one endpoint requesting a sticky activation would downgrade [security](#reuse-for) of all the endpoints on that origin.
+1. **Sticky for destination URL only**
+   * Another alternative is making the activation sticky for the specific URL of the request’s destination, with or without the query parameters.
+   * This approach is more secure than making an activation sticky for an entire origin but applications sending multiple requests to different endpoints would require multiple retries as described [here](https://github.com/privacycg/storage-access-headers/issues/6#issuecomment-2471620547).
+1. **Reuse for a single URL/path**
+   * Similarly to the proposed solution, we could introduce a header parameter that allows the browser to reuse an activation for a single specified path:
+     ```
+     Activate-Storage-Access: retry; allowed-origin="https://embedder.example"; reuse-for="/baz.html"
+     ```
+   * This would allow an endpoint to activate storage access for a different endpoint, but making the parameter a list further increases the utility of it.
+   * **With Wildcards**
+     * Wildcards could be allowed either anywhere in the URL provided in `reuse-for`, or at the end of it only.
 Wildcards anywhere in the URL would provide the most flexibility but would be the most complicated and potentially fragile. Wildcards would also introduce some risk of developers creating overly broad allowlists which expose their services to cross-site vulnerabilities.
-
-##### Without Wildcards
-
-In this case, query parameters and URL fragments would be ignored. The URL provided in `reuse-for` could be used as an exact match, activating storage access for a single resource; or it can be interpreted as a directory, activating storage access for all of its subdirectories and resources.
-
-The trailing slash could be used to indicate whether to activate an entire directory (if present) or a specific resource (if absent), but this could be error-prone as a single character can drastically change the scope of the activation.
-
-If the provided path is treated as a directory, user agents might disallow stickiness outside of the directory of the request’s destination. E.g. `/~bob/image.png` might not ask for a sticky activation for `/` or `/~alice/`.
-
-The proposed solution uses a list of specific resources instead of a string that can be interpreted in different ways, to avoid unnecessary complexity and the potential risk of making an activation sticky for an entire directory.
-
-#### Sticky for Entity
-
-Alternatively, an enum could be provided for developers to decide whether they want the activation to be sticky for the entire origin, the URL of the request (ignoring the query parameters and URL fragment), or the directory.
-
-We chose to go with a list of specific URLs instead, to avoid the potential risk of making an activation sticky for an entire directory or the origin, which could unintentionally activate storage access for endpoints owned by different developers. A list of URLs could also provide more flexibility than an enum.
+   * **Without Wildcards**
+     * In this case, query parameters and URL fragments would be ignored. The URL provided in `reuse-for` could be used as an exact match, activating storage access for a single resource; or it can be interpreted as a directory, activating storage access for all of its subdirectories and resources.
+     * The trailing slash could be used to indicate whether to activate an entire directory (if present) or a specific resource (if absent), but this could be error-prone as a single character can drastically change the scope of the activation.
+     * If the provided path is treated as a directory, user agents might disallow stickiness outside of the directory of the request’s destination. E.g. `/~bob/image.png` might not ask for a sticky activation for `/` or `/~alice/`.
+     * The proposed solution uses a list of specific resources instead of a string that can be interpreted in different ways, to avoid unnecessary complexity and the potential risk of making an activation sticky for an entire directory.
+1. **Sticky for Entity**
+   * Alternatively, an enum could be provided for developers to decide whether they want the activation to be sticky for the entire origin, the URL of the request (ignoring the query parameters and URL fragment), or the directory.
+   * We chose to go with a list of specific URLs instead, to avoid the potential risk of making an activation sticky for an entire directory or the origin, which could unintentionally activate storage access for endpoints owned by different developers. A list of URLs could also provide more flexibility than an enum.
 
 ## Stakeholder feedback/opposition
 
