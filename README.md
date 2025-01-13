@@ -120,7 +120,7 @@ This is a [fetch metadata request header](https://developer.mozilla.org/en-US/do
 * `inactive`: the fetch's context has the `storage-access` permission, but has not opted into using it; and does not have unpartitioned cookie access through some other means.
 * `active`: the fetch's context has unpartitioned cookie access.
 
-The user agent may omit this header on same-site requests, since those requests cannot involve cross-site cookies. The user agent must include this header on cross-site requests.
+The user agent will omit this header on same-site requests, since those requests cannot involve cross-site cookies. The user agent must include this header on cross-site requests.
 
 If the user agent sends `Sec-Fetch-Storage-Access: inactive` on a given network request, it must also include the `Origin` header on that request.
 
@@ -135,9 +135,9 @@ This is a [structured header](https://datatracker.ietf.org/doc/html/rfc8941) who
 * `load`: the server requests that the user agent activate the `storage-access` permission before continuing with the load of the resource.
 * `retry`: the server requests that the user agent activate the `storage-access` permission, then retry the request.
   * The retried request must include the `Sec-Fetch-Storage-Access: active` header. (The user agent must ignore the token if permission is not already granted or if unpartitioned cookies are already accessible. In other words, the user agent must ignore the token if the previous request did not include the `Sec-Fetch-Storage-Access: inactive` header.)
-  * The `retry` token must be accompanied by the `allowed-origin` [parameter](https://datatracker.ietf.org/doc/html/rfc8941#section-3.1.2-4), which specifies the request initiator that should be allowed to retry the request. (A wildcard parameter, i.e. `allowed-origin=*`, is allowed.) If the request initiator does not match the `allowed-origin` value, the user agent may ignore this header.
+  * The `retry` token must be accompanied by the `allowed-origin` [parameter](https://datatracker.ietf.org/doc/html/rfc8941#section-3.1.2-4), which specifies the request initiator that should be allowed to retry the request. (A wildcard parameter, i.e. `allowed-origin=*`, is allowed.) If the request initiator does not match the `allowed-origin` value, the user agent should ignore this header.
 
-If the request did not include `Sec-Fetch-Storage-Access: inactive` or `Sec-Fetch-Storage-Access: active`, the user agent may ignore this header (both tokens).
+If the request did not include `Sec-Fetch-Storage-Access: inactive` or `Sec-Fetch-Storage-Access: active`, the user agent should ignore this header (both tokens).
 
 If the response includes this header, the user agent may renew the `storage-access` permission associated with the request context, since this is a clear signal that the embedded site is relying on the permission.
 
