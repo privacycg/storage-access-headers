@@ -216,7 +216,7 @@ A `retry` header with `reuse-for` enables the embedding document to send subsequ
 * The resolved URLs must be same-origin with the request’s URL, cross-origin URLs are ignored. If a mixed list is provided, only the same-origin URLs are considered.
 * When matching a subsequent request's URL with a previously specified list of URLs from `reuse-for`, the request URL’s query parameters and fragment are ignored.
 * User Agents should ignore the `reuse-for` parameter when the `allowed-origin` parameter is `*`.
-* User Agents should ignore the `reuse-for` parameter when `"null"` is used in the `allowed-origin` parameter.
+* User Agents should ignore the `reuse-for` parameter when the `allowed-origin` parameter is `"null"`.
 
 ## Privacy considerations
 
