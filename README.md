@@ -106,7 +106,7 @@ Browsers that do not support the proposed headers will still receive the appropr
 
 ### Retry with `reuse-for`
 
-Consider a Single-Page App (SPA) that authenticates with a third party then sends multiple requests to their APIs. Naively, Storage Access Headers (SAH) would require each request to be retried, effectively doubling the number of requests on page load. In the first `retry` response, however, the server can request the browser to make the storage activation reusable with the `reuse-for` header parameter. Subsequent requests to these URLs will have access to unpartitioned cookies for the lifetime of the document.
+Consider a Single-Page App (SPA) that authenticates with a third party then sends multiple requests to their APIs. Naively, Storage Access Headers (SAH) would require each request to be retried, effectively doubling the number of requests on page load. In the first `retry` response, however, the server can request the browser to make the storage activation reusable with the `reuse-for` header parameter. Subsequent requests to these URLs from the current document will have access to unpartitioned cookies for the lifetime of the document.
 
 ```mermaid
 sequenceDiagram
