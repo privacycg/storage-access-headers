@@ -7,6 +7,7 @@
 
 ## Goals
 
+* Expose metadata about the availability of unpartitioned cookies in a given network request.
 * Enable authenticated embedded functionality with lower latency/overhead when possible, by supporting HTTP request response headers related to the Storage Access API.
   * Provide a way to use existing permission grants during document load: https://github.com/privacycg/storage-access/issues/170.
   * Provide a way for the User Agent to indicate whether a network request comes from a context that has opted-in/activated storage access already: https://github.com/privacycg/storage-access/issues/130.
@@ -17,6 +18,9 @@
 ## Non-goals
 
 * Providing a non-JavaScript method of _requesting_ the `storage-access` permission is not a goal.
+* Exposing metadata about the partitionedness of non-cookie storage is not a goal.
+* Exposing metadata about whether [partitioned cookies](https://github.com/privacycg/CHIPS) are available (and if so, what the partition key is) is not a goal.
+    * For this use case, see https://github.com/privacycg/storage-partitioning/issues/32 and in particular https://github.com/w3c/webappsec-fetch-metadata/pull/89.
 
 ## Introduction
 
@@ -138,7 +142,7 @@ This is a [fetch metadata request header](https://developer.mozilla.org/en-US/do
 * `inactive`: the fetch's context has the `storage-access` permission, but has not opted into using it; and does not have unpartitioned cookie access through some other means.
 * `active`: the fetch's context has unpartitioned cookie access.
 
-The user agent may omit this header on same-site requests, since those requests cannot involve cross-site cookies. The user agent must include this header on cross-site requests.
+The user agent will omit this header on same-site requests, since those requests cannot involve cross-site cookies. The user agent must include this header on cross-site requests.
 
 If the user agent sends `Sec-Fetch-Storage-Access: inactive` on a given network request, it must also include the `Origin` header on that request.
 
@@ -154,10 +158,10 @@ This is a [structured header](https://datatracker.ietf.org/doc/html/rfc8941) who
 * `load`: the server requests that the user agent activate the `storage-access` permission before continuing with the load of the resource.
 * `retry`: the server requests that the user agent activate the `storage-access` permission, then retry the request.
   * The retried request must include the `Sec-Fetch-Storage-Access: active` header. (The user agent must ignore the token if permission is not already granted or if unpartitioned cookies are already accessible. In other words, the user agent must ignore the token if the previous request did not include the `Sec-Fetch-Storage-Access: inactive` header.)
-  * The `retry` token must be accompanied by the `allowed-origin` [parameter](https://datatracker.ietf.org/doc/html/rfc8941#section-3.1.2-4), which specifies the request initiator that should be allowed to retry the request. (A wildcard parameter, i.e. `allowed-origin=*`, is allowed.) If the request initiator does not match the `allowed-origin` value, the user agent may ignore this header.
+  * The `retry` token must be accompanied by the `allowed-origin` [parameter](https://datatracker.ietf.org/doc/html/rfc8941#section-3.1.2-4), which specifies the request initiator that should be allowed to retry the request. (A wildcard parameter, i.e. `allowed-origin=*`, is allowed.) If the request initiator does not match the `allowed-origin` value, the user agent should ignore this header.
   * The `retry` token may be accompanied by the `reuse-for` [inner-list](https://datatracker.ietf.org/doc/html/rfc8941#inner-list) [parameter](https://datatracker.ietf.org/doc/html/rfc8941#section-3.1.2-4), which allows the user agent to reuse the activation for the specified same-origin URLs (ignoring query parameters and URL fragment, i.e. only considering origin and path) or paths in subsequent requests, during the lifetime of the embedding document. Please read the [relevant security considerations](#reuse-for).
 
-If the request did not include `Sec-Fetch-Storage-Access: inactive` or `Sec-Fetch-Storage-Access: active`, the user agent may ignore this header (both tokens).
+If the request did not include `Sec-Fetch-Storage-Access: inactive` or `Sec-Fetch-Storage-Access: active`, the user agent should ignore this header (both tokens).
 
 If the response includes this header, the user agent may renew the `storage-access` permission associated with the request context, since this is a clear signal that the embedded site is relying on the permission.
 
