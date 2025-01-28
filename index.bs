@@ -177,10 +177,10 @@ semantics, servers SHOULD ignore this header if it contains an invalid value.
 
 <pre class="example" id="sec-fetch-storage-access-usage">
 // When the request's credentials mode is "`omit`", the header is omitted:
-<no-header>
+(no header sent in this case)
 
 // When the request is same-site, the header is omitted:
-<no-header>
+(no header sent in this case)
 
 // When the request has no access to unpartitioned cookies, the header's value is "<code>[=storage access status/none=]</code>":
 Sec-Fetch-Storage-Access: none
