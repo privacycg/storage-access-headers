@@ -20,7 +20,7 @@ Include Can I Use Panels: yes
 {
   "I-D.structured-field-values-for-http": {
     "authors": [ "Mark Nottingham", "Poul-Henning Kamp" ],
-    "href": "https://datatracker.ietf.org/doc/html/rfc8941",
+    "href": "https://datatracker.ietf.org/doc/html/rfc9651",
     "title": "Structured Field Values for HTTP",
     "status": "ID",
     "publisher": "IETF"
@@ -39,7 +39,7 @@ spec: storage-access; type: method; text: requestStorageAccess
 </pre>
 
 <pre class="anchors">
-urlPrefix: https://datatracker.ietf.org/doc/html/rfc8941; spec: I-D.structured-field-values-for-http
+urlPrefix: https://datatracker.ietf.org/doc/html/rfc9651; spec: I-D.structured-field-values-for-http
     type: dfn
         text: structured field; url: #
     for: structured field
