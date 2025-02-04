@@ -5,10 +5,10 @@
   <title>Storage Access Headers</title>
   <meta content="UD" name="w3c-status">
   <link href="https://www.w3.org/StyleSheets/TR/2021/W3C-UD" rel="stylesheet">
-  <meta content="Bikeshed version c67c745b1, updated Fri Jan 17 14:27:28 2025 -0800" name="generator">
+  <meta content="Bikeshed version 97a1608be, updated Mon Feb 3 16:09:34 2025 -0800" name="generator">
   <link href="https://cfredric.github.io/storage-access-headers" rel="canonical">
   <link href="https://www.w3.org/2008/site/images/favicon.ico" rel="icon">
-  <meta content="b346d9d6f0f6b6888a1056f8eeb352b395c5db20" name="revision">
+  <meta content="552279def1eca18c80155523573c6980fc88ded8" name="revision">
   <meta content="dark light" name="color-scheme">
   <link href="https://www.w3.org/StyleSheets/TR/2021/dark.css" media="(prefers-color-scheme: dark)" rel="stylesheet" type="text/css">
 <style>/* Boilerplate: style-autolinks */
@@ -750,7 +750,7 @@ dd:not(:last-child) > .wpt-tests-block:not([open]):last-child {
   <div class="head">
    <p data-fill-with="logo"><a class="logo" href="https://www.w3.org/"> <img alt="W3C" height="48" src="https://www.w3.org/StyleSheets/TR/2021/logos/W3C" width="72"> </a> </p>
    <h1 class="p-name no-ref" id="title">Storage Access Headers</h1>
-   <p id="w3c-state"><a href="https://www.w3.org/standards/types/#UD">Unofficial Proposal Draft</a>, <time class="dt-updated" datetime="2025-01-29">29 January 2025</time></p>
+   <p id="w3c-state"><a href="https://www.w3.org/standards/types/#UD">Unofficial Proposal Draft</a>, <time class="dt-updated" datetime="2025-02-04">4 February 2025</time></p>
    <details open>
     <summary>More details about this document</summary>
     <div data-fill-with="spec-metadata">
@@ -954,7 +954,7 @@ dd:not(:last-child) > .wpt-tests-block:not([open]):last-child {
    <p>The following sections define a request header and a response header. The request header exposes information about the <a data-link-type="dfn" href="https://fetch.spec.whatwg.org/#concept-request" id="ref-for-concept-request①⑤">request</a>’s access to cookies to a server. The response header allows a server to opt into accessing unpartitioned cookies on a particular request or when loading an <code><a data-link-type="element" href="https://html.spec.whatwg.org/multipage/iframe-embed-object.html#the-iframe-element" id="ref-for-the-iframe-element⑥">iframe</a></code>.</p>
    <h3 class="heading settled" data-level="4.1" id="sec-fetch-storage-access-header"><span class="secno">4.1. </span><span class="content">The <code>Sec-Fetch-Storage-Access</code> HTTP Request Header</span><a class="self-link" href="#sec-fetch-storage-access-header"></a></h3>
    <p>The <dfn class="dfn-paneled" data-dfn-type="http-header" data-export id="http-headerdef-sec-fetch-storage-access"><code>Sec-Fetch-Storage-Access</code></dfn> HTTP request header exposes a <a data-link-type="dfn" href="https://fetch.spec.whatwg.org/#concept-request" id="ref-for-concept-request①⑥">request</a>’s
-ability or inability to access cookies to a server. It is a <a data-link-type="dfn" href="https://datatracker.ietf.org/doc/html/rfc9651#" id="ref-for-something">Structured Field</a> <a data-link-type="dfn" href="https://datatracker.ietf.org/doc/html/rfc9651#name-items" id="ref-for-name-items">item</a> whose value MUST be a <a data-link-type="dfn" href="https://datatracker.ietf.org/doc/html/rfc9651#name-tokens" id="ref-for-name-tokens">token</a>. <a data-link-type="biblio" href="#biblio-i-dstructured-field-values-for-http" title="Structured Field Values for HTTP">[I-D.structured-field-values-for-http]</a> Its ABNF is:</p>
+ability or inability to access cookies to a server. It is a <a data-link-type="dfn" href="https://datatracker.ietf.org/doc/html/rfc9651#" id="ref-for-something">Structured Field</a> <a data-link-type="dfn" href="https://datatracker.ietf.org/doc/html/rfc9651#name-items" id="ref-for-name-items">item</a> whose value MUST be a <a data-link-type="dfn" href="https://datatracker.ietf.org/doc/html/rfc9651#name-tokens" id="ref-for-name-tokens">token</a>. <a data-link-type="biblio" href="#biblio-rfc9651" title="Structured Field Values for HTTP">[RFC9651]</a> Its ABNF is:</p>
 <pre>Sec-Fetch-Storage-Access = sf-token
 </pre>
    <p>Valid <code>Sec-Fetch-Storage-Access</code> values include "<code><a data-link-type="dfn" href="#storage-access-status-none" id="ref-for-storage-access-status-none③">none</a></code>", "<code><a data-link-type="dfn" href="#storage-access-status-inactive" id="ref-for-storage-access-status-inactive①">inactive</a></code>", and
@@ -999,7 +999,7 @@ Sec-Fetch-Storage-Access: active
    <h3 class="heading settled" data-level="4.2" id="activate-storage-access-header"><span class="secno">4.2. </span><span class="content">The <code>Activate-Storage-Access</code> HTTP Response Header</span><a class="self-link" href="#activate-storage-access-header"></a></h3>
    <p>The <dfn class="dfn-paneled" data-dfn-type="http-header" data-export id="http-headerdef-activate-storage-access"><code>Activate-Storage-Access</code></dfn> HTTP response header
 allows a server to opt in to accessing its unpartitioned cookies in a cross-site request
-context. It is a <a data-link-type="dfn" href="https://datatracker.ietf.org/doc/html/rfc9651#" id="ref-for-something②">Structured Field</a> <a data-link-type="dfn" href="https://datatracker.ietf.org/doc/html/rfc9651#name-items" id="ref-for-name-items①">item</a> whose value MUST be a <a data-link-type="dfn" href="https://datatracker.ietf.org/doc/html/rfc9651#name-tokens" id="ref-for-name-tokens②">token</a>. <a data-link-type="biblio" href="#biblio-i-dstructured-field-values-for-http" title="Structured Field Values for HTTP">[I-D.structured-field-values-for-http]</a> Its ABNF is:</p>
+context. It is a <a data-link-type="dfn" href="https://datatracker.ietf.org/doc/html/rfc9651#" id="ref-for-something②">Structured Field</a> <a data-link-type="dfn" href="https://datatracker.ietf.org/doc/html/rfc9651#name-items" id="ref-for-name-items①">item</a> whose value MUST be a <a data-link-type="dfn" href="https://datatracker.ietf.org/doc/html/rfc9651#name-tokens" id="ref-for-name-tokens②">token</a>. <a data-link-type="biblio" href="#biblio-rfc9651" title="Structured Field Values for HTTP">[RFC9651]</a> Its ABNF is:</p>
 <pre>Activate-Storage-Access = sf-item
 </pre>
    <p>Valid <code>Activate-Storage-Access</code> values include "<code>load</code>" and "<code>retry</code>".</p>
@@ -1392,14 +1392,6 @@ Activate-Storage-Access: retry; allowed-origin=*
      <li><span class="dfn-paneled" id="c63519ed">top-level origin</span>
     </ul>
    <li>
-    <a data-link-type="biblio">[I-D.structured-field-values-for-http]</a> defines the following terms:
-    <ul>
-     <li><span class="dfn-paneled" id="78be99b7">item</span>
-     <li><span class="dfn-paneled" id="b7ff5535">string</span>
-     <li><span class="dfn-paneled" id="83c9f26e">structured field</span>
-     <li><span class="dfn-paneled" id="dca20afd">token</span>
-    </ul>
-   <li>
     <a data-link-type="biblio">[INFRA]</a> defines the following terms:
     <ul>
      <li><span class="dfn-paneled" id="53275e46">append</span>
@@ -1425,6 +1417,14 @@ Activate-Storage-Access: retry; allowed-origin=*
     <ul>
      <li><span class="dfn-paneled" id="c7141347">Should request be allowed to use feature?</span>
      <li><span class="dfn-paneled" id="cc890cc1">policy-controlled feature</span>
+    </ul>
+   <li>
+    <a data-link-type="biblio">[RFC9651]</a> defines the following terms:
+    <ul>
+     <li><span class="dfn-paneled" id="78be99b7">item</span>
+     <li><span class="dfn-paneled" id="b7ff5535">string</span>
+     <li><span class="dfn-paneled" id="83c9f26e">structured field</span>
+     <li><span class="dfn-paneled" id="dca20afd">token</span>
     </ul>
    <li>
     <a data-link-type="biblio">[SECURE-CONTEXTS]</a> defines the following terms:
@@ -1460,8 +1460,6 @@ Activate-Storage-Access: retry; allowed-origin=*
    <dd>Mike West. <a href="https://w3c.github.io/webappsec-fetch-metadata/"><cite>Fetch Metadata Request Headers</cite></a>. URL: <a href="https://w3c.github.io/webappsec-fetch-metadata/">https://w3c.github.io/webappsec-fetch-metadata/</a>
    <dt id="biblio-html">[HTML]
    <dd>Anne van Kesteren; et al. <a href="https://html.spec.whatwg.org/multipage/"><cite>HTML Standard</cite></a>. Living Standard. URL: <a href="https://html.spec.whatwg.org/multipage/">https://html.spec.whatwg.org/multipage/</a>
-   <dt id="biblio-i-dstructured-field-values-for-http">[I-D.structured-field-values-for-http]
-   <dd>Mark Nottingham; Poul-Henning Kamp. <a href="https://datatracker.ietf.org/doc/html/rfc9651"><cite>Structured Field Values for HTTP</cite></a>. ID. URL: <a href="https://datatracker.ietf.org/doc/html/rfc9651">https://datatracker.ietf.org/doc/html/rfc9651</a>
    <dt id="biblio-infra">[INFRA]
    <dd>Anne van Kesteren; Domenic Denicola. <a href="https://infra.spec.whatwg.org/"><cite>Infra Standard</cite></a>. Living Standard. URL: <a href="https://infra.spec.whatwg.org/">https://infra.spec.whatwg.org/</a>
    <dt id="biblio-permissions">[PERMISSIONS]
@@ -1474,6 +1472,8 @@ Activate-Storage-Access: retry; allowed-origin=*
    <dd>G. Klyne; M. Nottingham; J. Mogul. <a href="https://www.rfc-editor.org/rfc/rfc3864"><cite>Registration Procedures for Message Header Fields</cite></a>. September 2004. Best Current Practice. URL: <a href="https://www.rfc-editor.org/rfc/rfc3864">https://www.rfc-editor.org/rfc/rfc3864</a>
    <dt id="biblio-rfc9110">[RFC9110]
    <dd>R. Fielding, Ed.; M. Nottingham, Ed.; J. Reschke, Ed.. <a href="https://httpwg.org/specs/rfc9110.html"><cite>HTTP Semantics</cite></a>. June 2022. Internet Standard. URL: <a href="https://httpwg.org/specs/rfc9110.html">https://httpwg.org/specs/rfc9110.html</a>
+   <dt id="biblio-rfc9651">[RFC9651]
+   <dd>Mark Nottingham; Poul-Henning Kamp. <a href="https://datatracker.ietf.org/doc/html/rfc9651"><cite>Structured Field Values for HTTP</cite></a>. PS. URL: <a href="https://datatracker.ietf.org/doc/html/rfc9651">https://datatracker.ietf.org/doc/html/rfc9651</a>
    <dt id="biblio-secure-contexts">[SECURE-CONTEXTS]
    <dd>Mike West. <a href="https://w3c.github.io/webappsec-secure-contexts/"><cite>Secure Contexts</cite></a>. URL: <a href="https://w3c.github.io/webappsec-secure-contexts/">https://w3c.github.io/webappsec-secure-contexts/</a>
    <dt id="biblio-storage-access">[STORAGE-ACCESS]
@@ -2177,10 +2177,10 @@ let refsData = {
 "#storage-access-status-active": {"displayText":"active","export":true,"for_":["storage access status"],"level":"","normative":true,"shortname":"storage-access-headers","spec":"storage-access-headers","status":"local","text":"active","type":"dfn","url":"#storage-access-status-active"},
 "#storage-access-status-inactive": {"displayText":"inactive","export":true,"for_":["storage access status"],"level":"","normative":true,"shortname":"storage-access-headers","spec":"storage-access-headers","status":"local","text":"inactive","type":"dfn","url":"#storage-access-status-inactive"},
 "#storage-access-status-none": {"displayText":"none","export":true,"for_":["storage access status"],"level":"","normative":true,"shortname":"storage-access-headers","spec":"storage-access-headers","status":"local","text":"none","type":"dfn","url":"#storage-access-status-none"},
-"https://datatracker.ietf.org/doc/html/rfc9651#": {"displayText":"structured field","export":true,"for_":[],"level":"","normative":true,"shortname":"i-d.structured-field-values-for-http","spec":"i-d.structured-field-values-for-http","status":"anchor-block","text":"structured field","type":"dfn","url":"https://datatracker.ietf.org/doc/html/rfc9651#"},
-"https://datatracker.ietf.org/doc/html/rfc9651#name-items": {"displayText":"item","export":true,"for_":["structured field"],"level":"","normative":true,"shortname":"i-d.structured-field-values-for-http","spec":"i-d.structured-field-values-for-http","status":"anchor-block","text":"item","type":"dfn","url":"https://datatracker.ietf.org/doc/html/rfc9651#name-items"},
-"https://datatracker.ietf.org/doc/html/rfc9651#name-strings": {"displayText":"string","export":true,"for_":["structured field"],"level":"","normative":true,"shortname":"i-d.structured-field-values-for-http","spec":"i-d.structured-field-values-for-http","status":"anchor-block","text":"string","type":"dfn","url":"https://datatracker.ietf.org/doc/html/rfc9651#name-strings"},
-"https://datatracker.ietf.org/doc/html/rfc9651#name-tokens": {"displayText":"token","export":true,"for_":["structured field"],"level":"","normative":true,"shortname":"i-d.structured-field-values-for-http","spec":"i-d.structured-field-values-for-http","status":"anchor-block","text":"token","type":"dfn","url":"https://datatracker.ietf.org/doc/html/rfc9651#name-tokens"},
+"https://datatracker.ietf.org/doc/html/rfc9651#": {"displayText":"structured field","export":true,"for_":[],"level":"","normative":true,"shortname":"rfc9651","spec":"rfc9651","status":"anchor-block","text":"structured field","type":"dfn","url":"https://datatracker.ietf.org/doc/html/rfc9651#"},
+"https://datatracker.ietf.org/doc/html/rfc9651#name-items": {"displayText":"item","export":true,"for_":["structured field"],"level":"","normative":true,"shortname":"rfc9651","spec":"rfc9651","status":"anchor-block","text":"item","type":"dfn","url":"https://datatracker.ietf.org/doc/html/rfc9651#name-items"},
+"https://datatracker.ietf.org/doc/html/rfc9651#name-strings": {"displayText":"string","export":true,"for_":["structured field"],"level":"","normative":true,"shortname":"rfc9651","spec":"rfc9651","status":"anchor-block","text":"string","type":"dfn","url":"https://datatracker.ietf.org/doc/html/rfc9651#name-strings"},
+"https://datatracker.ietf.org/doc/html/rfc9651#name-tokens": {"displayText":"token","export":true,"for_":["structured field"],"level":"","normative":true,"shortname":"rfc9651","spec":"rfc9651","status":"anchor-block","text":"token","type":"dfn","url":"https://datatracker.ietf.org/doc/html/rfc9651#name-tokens"},
 "https://dom.spec.whatwg.org/#concept-document": {"displayText":"document","export":true,"for_":[],"level":"1","normative":true,"shortname":"dom","spec":"dom","status":"current","text":"document","type":"dfn","url":"https://dom.spec.whatwg.org/#concept-document"},
 "https://fetch.spec.whatwg.org/#append-a-request-origin-header": {"displayText":"append a request Origin header","export":true,"for_":[],"level":"","normative":true,"shortname":"storage-access-headers","spec":"","status":"anchor-block","text":"append a request origin header","type":"dfn","url":"https://fetch.spec.whatwg.org/#append-a-request-origin-header"},
 "https://fetch.spec.whatwg.org/#byte-serializing-a-request-origin": {"displayText":"byte-serializing a request origin","export":true,"for_":[],"level":"","normative":true,"shortname":"storage-access-headers","spec":"","status":"anchor-block","text":"byte-serializing a request origin","type":"dfn","url":"https://fetch.spec.whatwg.org/#byte-serializing-a-request-origin"},
