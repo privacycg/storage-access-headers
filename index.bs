@@ -18,11 +18,11 @@ Include Can I Use Panels: yes
 </pre>
 <pre class="biblio">
 {
-  "I-D.structured-field-values-for-http": {
+  "RFC9651": {
     "authors": [ "Mark Nottingham", "Poul-Henning Kamp" ],
     "href": "https://datatracker.ietf.org/doc/html/rfc9651",
     "title": "Structured Field Values for HTTP",
-    "status": "ID",
+    "status": "PS",
     "publisher": "IETF"
   },
   "mnot-designing-headers": {
@@ -39,7 +39,7 @@ spec: storage-access; type: method; text: requestStorageAccess
 </pre>
 
 <pre class="anchors">
-urlPrefix: https://datatracker.ietf.org/doc/html/rfc9651; spec: I-D.structured-field-values-for-http
+urlPrefix: https://datatracker.ietf.org/doc/html/rfc9651; spec: RFC9651
     type: dfn
         text: structured field; url: #
     for: structured field
@@ -165,7 +165,7 @@ The `Sec-Fetch-Storage-Access` HTTP Request Header {#sec-fetch-storage-access-he
 
 The <dfn http-header>`Sec-Fetch-Storage-Access`</dfn> HTTP request header exposes a [=request=]'s
 ability or inability to access cookies to a server. It is a [=Structured Field=] [=structured field/item=] whose value MUST be a
-[=structured field/token=]. [[!I-D.structured-field-values-for-http]] Its ABNF is:
+[=structured field/token=]. [[!RFC9651]] Its ABNF is:
 
 ```
 Sec-Fetch-Storage-Access = sf-token
@@ -215,7 +215,7 @@ The `Activate-Storage-Access` HTTP Response Header {#activate-storage-access-hea
 The <dfn http-header>`Activate-Storage-Access`</dfn> HTTP response header
 allows a server to opt in to accessing its unpartitioned cookies in a cross-site request
 context. It is a [=Structured Field=] [=structured field/item=] whose value MUST be a [=structured
-field/token=]. [[!I-D.structured-field-values-for-http]] Its ABNF is:
+field/token=]. [[!RFC9651]] Its ABNF is:
 
 ```
 Activate-Storage-Access = sf-item
