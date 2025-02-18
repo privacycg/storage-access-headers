@@ -220,7 +220,7 @@ Therefore, CORS ought to be neither necessary nor sufficient for attaching unpar
 
 ## Stakeholder feedback/opposition
 
-* Chrome: Implementing
+* Chrome: [Shipping](https://groups.google.com/a/chromium.org/g/blink-dev/c/gERgwZfN_-E/m/XiwCTvwaAgAJ)
 * Firefox: TBD
 * Safari: TBD
 * Edge: TBD
