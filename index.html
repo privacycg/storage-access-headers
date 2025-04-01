@@ -5,10 +5,10 @@
   <title>Storage Access Headers</title>
   <meta content="UD" name="w3c-status">
   <link href="https://www.w3.org/StyleSheets/TR/2021/W3C-UD" rel="stylesheet">
-  <meta content="Bikeshed version f5998b114, updated Tue Feb 18 08:22:15 2025 -0800" name="generator">
+  <meta content="Bikeshed version b25686b9f, updated Fri Mar 14 14:15:20 2025 -0700" name="generator">
   <link href="https://cfredric.github.io/storage-access-headers" rel="canonical">
   <link href="https://www.w3.org/2008/site/images/favicon.ico" rel="icon">
-  <meta content="a8691dc5533dd16426a3f9bf18f17f108ef28c08" name="revision">
+  <meta content="6eb693df3f530b882bcae0d3d94702fac4f5c218" name="revision">
   <meta content="dark light" name="color-scheme">
   <link href="https://www.w3.org/StyleSheets/TR/2021/dark.css" media="(prefers-color-scheme: dark)" rel="stylesheet" type="text/css">
 <style>/* Boilerplate: style-autolinks */
@@ -750,7 +750,7 @@ dd:not(:last-child) > .wpt-tests-block:not([open]):last-child {
   <div class="head">
    <p data-fill-with="logo"><a class="logo" href="https://www.w3.org/"> <img alt="W3C" height="48" src="https://www.w3.org/StyleSheets/TR/2021/logos/W3C" width="72"> </a> </p>
    <h1 class="p-name no-ref" id="title">Storage Access Headers</h1>
-   <p id="w3c-state"><a href="https://www.w3.org/standards/types/#UD">Unofficial Proposal Draft</a>, <time class="dt-updated" datetime="2025-02-18">18 February 2025</time></p>
+   <p id="w3c-state"><a href="https://www.w3.org/standards/types/#UD">Unofficial Proposal Draft</a>, <time class="dt-updated" datetime="2025-04-01">1 April 2025</time></p>
    <details open>
     <summary>More details about this document</summary>
     <div data-fill-with="spec-metadata">
@@ -954,9 +954,7 @@ dd:not(:last-child) > .wpt-tests-block:not([open]):last-child {
    <p>The following sections define a request header and a response header. The request header exposes information about the <a data-link-type="dfn" href="https://fetch.spec.whatwg.org/#concept-request" id="ref-for-concept-request①⑤">request</a>’s access to cookies to a server. The response header allows a server to opt into accessing unpartitioned cookies on a particular request or when loading an <code><a data-link-type="element" href="https://html.spec.whatwg.org/multipage/iframe-embed-object.html#the-iframe-element" id="ref-for-the-iframe-element⑥">iframe</a></code>.</p>
    <h3 class="heading settled" data-level="4.1" id="sec-fetch-storage-access-header"><span class="secno">4.1. </span><span class="content">The <code>Sec-Fetch-Storage-Access</code> HTTP Request Header</span><a class="self-link" href="#sec-fetch-storage-access-header"></a></h3>
    <p>The <dfn class="dfn-paneled" data-dfn-type="http-header" data-export id="http-headerdef-sec-fetch-storage-access"><code>Sec-Fetch-Storage-Access</code></dfn> HTTP request header exposes a <a data-link-type="dfn" href="https://fetch.spec.whatwg.org/#concept-request" id="ref-for-concept-request①⑥">request</a>’s
-ability or inability to access cookies to a server. It is a <a data-link-type="dfn" href="https://datatracker.ietf.org/doc/html/rfc9651#" id="ref-for-something">Structured Field</a> <a data-link-type="dfn" href="https://datatracker.ietf.org/doc/html/rfc9651#name-items" id="ref-for-name-items">item</a> whose value MUST be a <a data-link-type="dfn" href="https://datatracker.ietf.org/doc/html/rfc9651#name-tokens" id="ref-for-name-tokens">token</a>. <a data-link-type="biblio" href="#biblio-rfc9651" title="Structured Field Values for HTTP">[RFC9651]</a> Its ABNF is:</p>
-<pre>Sec-Fetch-Storage-Access = sf-token
-</pre>
+ability or inability to access cookies to a server. It is a <a data-link-type="dfn" href="https://datatracker.ietf.org/doc/html/rfc9651#" id="ref-for-something">Structured Field</a> <a data-link-type="dfn" href="https://datatracker.ietf.org/doc/html/rfc9651#name-items" id="ref-for-name-items">item</a> which is a <a data-link-type="dfn" href="https://datatracker.ietf.org/doc/html/rfc9651#name-tokens" id="ref-for-name-tokens">token</a>. <a data-link-type="biblio" href="#biblio-rfc9651" title="Structured Field Values for HTTP">[RFC9651]</a></p>
    <p>Valid <code>Sec-Fetch-Storage-Access</code> values include "<code><a data-link-type="dfn" href="#storage-access-status-none" id="ref-for-storage-access-status-none③">none</a></code>", "<code><a data-link-type="dfn" href="#storage-access-status-inactive" id="ref-for-storage-access-status-inactive①">inactive</a></code>", and
 "<code><a data-link-type="dfn" href="#storage-access-status-active" id="ref-for-storage-access-status-active①">active</a></code>". In order to support forward-compatibility with as-yet-unknown
 semantics, servers SHOULD ignore this header if it contains an invalid value.</p>
@@ -999,10 +997,8 @@ Sec-Fetch-Storage-Access: active
    <h3 class="heading settled" data-level="4.2" id="activate-storage-access-header"><span class="secno">4.2. </span><span class="content">The <code>Activate-Storage-Access</code> HTTP Response Header</span><a class="self-link" href="#activate-storage-access-header"></a></h3>
    <p>The <dfn class="dfn-paneled" data-dfn-type="http-header" data-export id="http-headerdef-activate-storage-access"><code>Activate-Storage-Access</code></dfn> HTTP response header
 allows a server to opt in to accessing its unpartitioned cookies in a cross-site request
-context. It is a <a data-link-type="dfn" href="https://datatracker.ietf.org/doc/html/rfc9651#" id="ref-for-something②">Structured Field</a> <a data-link-type="dfn" href="https://datatracker.ietf.org/doc/html/rfc9651#name-items" id="ref-for-name-items①">item</a> whose value MUST be a <a data-link-type="dfn" href="https://datatracker.ietf.org/doc/html/rfc9651#name-tokens" id="ref-for-name-tokens②">token</a>. <a data-link-type="biblio" href="#biblio-rfc9651" title="Structured Field Values for HTTP">[RFC9651]</a> Its ABNF is:</p>
-<pre>Activate-Storage-Access = sf-item
-</pre>
-   <p>Valid <code>Activate-Storage-Access</code> values include "<code>load</code>" and "<code>retry</code>".</p>
+context. It is a <a data-link-type="dfn" href="https://datatracker.ietf.org/doc/html/rfc9651#" id="ref-for-something②">Structured Field</a> <a data-link-type="dfn" href="https://datatracker.ietf.org/doc/html/rfc9651#name-items" id="ref-for-name-items①">item</a> which is a <a data-link-type="dfn" href="https://datatracker.ietf.org/doc/html/rfc9651#name-tokens" id="ref-for-name-tokens②">token</a>. <a data-link-type="biblio" href="#biblio-rfc9651" title="Structured Field Values for HTTP">[RFC9651]</a></p>
+   <p>Valid <code>Activate-Storage-Access</code> values include <code>load</code> and <code>retry</code>.</p>
    <p>The following parameter is defined:</p>
    <ul>
     <li data-md>
@@ -2325,7 +2321,12 @@ function hideRefHint(refHint) {
 function showRefHint(link) {
     if(link.classList.contains("dfn-link")) return;
     const url = link.getAttribute("href");
-    const ref = refsData[url];
+    const refHintKey = link.getAttribute("data-refhint-key");
+    let key = url;
+    if(refHintKey) {
+        key = refHintKey + "_" + url;
+    }
+    const ref = refsData[key];
     if(!ref) return;
 
     hideAllRefHints(); // Only display one at this time.
