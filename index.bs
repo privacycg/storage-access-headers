@@ -164,12 +164,8 @@ The `Sec-Fetch-Storage-Access` HTTP Request Header {#sec-fetch-storage-access-he
 -----------------------------------------------------------------
 
 The <dfn http-header>`Sec-Fetch-Storage-Access`</dfn> HTTP request header exposes a [=request=]'s
-ability or inability to access cookies to a server. It is a [=Structured Field=] [=structured field/item=] whose value MUST be a
-[=structured field/token=]. [[!RFC9651]] Its ABNF is:
-
-```
-Sec-Fetch-Storage-Access = sf-token
-```
+ability or inability to access cookies to a server. It is a [=Structured Field=] [=structured field/item=] which is a
+[=structured field/token=]. [[!RFC9651]]
 
 Valid `Sec-Fetch-Storage-Access` values include "<code>[=storage access status/none=]</code>", "<code>[=storage access status/inactive=]</code>", and
 "<code>[=storage access status/active=]</code>". In order to support forward-compatibility with as-yet-unknown
@@ -214,14 +210,10 @@ The `Activate-Storage-Access` HTTP Response Header {#activate-storage-access-hea
 
 The <dfn http-header>`Activate-Storage-Access`</dfn> HTTP response header
 allows a server to opt in to accessing its unpartitioned cookies in a cross-site request
-context. It is a [=Structured Field=] [=structured field/item=] whose value MUST be a [=structured
-field/token=]. [[!RFC9651]] Its ABNF is:
+context. It is a [=Structured Field=] [=structured field/item=] which is a [=structured
+field/token=]. [[!RFC9651]]
 
-```
-Activate-Storage-Access = sf-item
-```
-
-Valid `Activate-Storage-Access` values include "`load`" and "`retry`".
+Valid `Activate-Storage-Access` values include `load` and `retry`.
 
 The following parameter is defined:
 
