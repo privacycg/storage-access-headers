@@ -331,8 +331,6 @@ The rest of the algorithm is unmodified.
     1. Return the result of running [=main fetch=] given |fetchParams| and |recursive|.
 </div>
 
-The rest of the algorithm is unmodified.
-
 Integration with HTML {#html-integration}
 =========================================
 
