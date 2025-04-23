@@ -122,17 +122,17 @@ A <dfn>storage access status</dfn> is one of "<dfn for="storage access status">n
 
 <div algorithm>
     The <dfn for=request>storage access status</dfn> of a [=request=] |request| is the [=storage access status=]-or-null returned by running the following steps:
-        1. If the user agent's cookie store would attach cookies with the `SameSite=Strict` attribute to |request|, return null. [[!COOKIES]]
+        1. If the user agent's cookie store would attach cookies with the `SameSite=Strict` attribute to |request|, then return null. [[!COOKIES]]
         1. Let |allowed| be a [=boolean=], initially set to the result of [=determining whether the user agent's cookie store allows unpartitioned cookies to be accessed=] given |request|'s [=request/url=], |request|'s [=request/client=], and |request|'s [=request/eligible for storage-access=].
-        1. If |allowed| is true, return "<code>[=storage access status/active=]</code>".
-        1. If |request|'s [=request/eligible for storage-access=] is "<code>[=storage access eligibility/eligible=]</code>", return "<code>[=storage access status/none=]</code>".
+        1. If |allowed| is true, then return "<code>[=storage access status/active=]</code>".
+        1. If |request|'s [=request/eligible for storage-access=] is "<code>[=storage access eligibility/eligible=]</code>", then return "<code>[=storage access status/none=]</code>".
 
             Note: the "`storage-access`" [=policy-controlled feature=] was checked before setting |request|'s [=request/eligible for storage-access=] to true.
 
         1. Let |featureIsAllowed| the result of running [$Should request be allowed to use feature?$] given "<code>storage-access</code>" and |request|.
-        1. If |featureIsAllowed| is false, return "<code>[=storage access status/none=]</code>".
-        1. Set |allowed| to the result of [=determining whether the user agent's cookie store allows unpartitioned cookies to be accessed=] given |request|'s [=request/url=], |request|'s [=request/client=], and `true`.
-        1. If |allowed| is true, return "<code>[=storage access status/inactive=]</code>".
+        1. If |featureIsAllowed| is false, then return "<code>[=storage access status/none=]</code>".
+        1. Set |allowed| to the result of [=determining whether the user agent's cookie store allows unpartitioned cookies to be accessed=] given |request|'s [=request/url=], |request|'s [=request/client=], and "<code>[=storage access eligibility/eligible=]</code>".
+        1. If |allowed| is true, then return "<code>[=storage access status/inactive=]</code>".
 
             Note: |allowed| will be true in the above step if the [=permission store entry=] obtained by [=getting a permission store entry=] given a {{PermissionDescriptor}} with {{PermissionDescriptor/name}} initialized to "`storage-access`" and a [=permission key=] of <code>(the site [=obtain a site|obtained=] from [=request=]'s [=request/client=]'s [=environment/top-level origin=], the site [=obtain a site|obtained=] from [=request=]'s [=request/url=]'s [=url/origin=])</code> has a [=permission store entry/state=] of "`granted`". Otherwise, |allowed| will remain false.
 
@@ -145,15 +145,10 @@ A <dfn>storage access status</dfn> is one of "<dfn for="storage access status">n
         1. Let |destination site| be the the result of [=obtaining a site=] from |url|'s [=url/origin=].
         1. Let |key| be <code>(|top level site|, |destination site|)</code>.
         1. Let |allowed| be the result of [=determining whether the user agent explicitly allows unpartitioned cookie access=] given |key|.
-        1. If |allowed| is true, return true.
-        1. Return false if all of the following conditions are false:
-            * |storage access eligibility| is "<code>[=storage access eligibility/eligible=]</code>"
-            * |environment|'s [=environment/has storage access=] is true and the site [=obtain a site|obtained=] from |environment|'s [=environment settings object/origin=] and the site [=obtain a site|obtained=] from |url|'s [=url/origin=] are [=same site=]
-
-                Issue: This condition ought to check a boolean that is updated after cross-site HTTP redirects. I.e., it ought to read a boolean derived from the |environment|'s [=environment/has storage access=], not that value itself. See [storage-access#210](https://github.com/privacycg/storage-access/issues/210).
-
+        1. If |allowed| is true, then return true.
+        1. If |storage access eligibility| is not "<code>[=storage access eligibility/eligible=]</code>", then return false.
         1. Let |entry| be the result of  [=getting a permission store entry=] given a {{PermissionDescriptor}} with {{PermissionDescriptor/name}} initialized to "`storage-access`" and a [=permission key=] of |key|.
-        1. If |entry|'s [=permission store entry/state=] is not "<code>[=permission/granted=]</code>", return false.
+        1. If |entry|'s [=permission store entry/state=] is not "<code>[=permission/granted=]</code>", then return false.
         1. Return true.
 </div>
 
@@ -335,17 +330,6 @@ The rest of the algorithm is unmodified.
     1. Let |recursive| be true.
     1. Return the result of running [=main fetch=] given |fetchParams| and |recursive|.
 </div>
-
-## HTTP-redirect-fetch ## {#http-redirect-fetch}
-
-Insert a new step after step 17 in [=HTTP-redirect fetch=]:
-
-<div algorithm="modified HTTP-redirect fetch">
-    18. If |request|'s [=request/eligible for storage-access=] is "<code>[=storage access eligibility/eligible=]</code>" and <var ignore>locationURL</var>'s [=url/origin=] is not [=same origin=] with |request|'s [=request/url=]'s [=url/origin=], set |request|'s [=request/eligible for storage-access=] to "<code>[=storage access eligibility/ineligible=]</code>".
-</div>
-
-
-The rest of the algorithm is unmodified.
 
 Integration with HTML {#html-integration}
 =========================================
