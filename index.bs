@@ -35,7 +35,7 @@ Include Can I Use Panels: yes
 
 <pre class="link-defaults">
 spec: infra; type: dfn; text: user agent
-spec: storage-access; type: method; text: requestStorageAccess
+spec: storage-access; type: method; text:requestStorageAccess()
 </pre>
 
 <pre class="anchors">
