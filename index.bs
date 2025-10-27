@@ -2,11 +2,13 @@
 Title: Storage Access Headers
 Shortname: storage-access-headers
 Level: None
-Status: w3c/UD
-Repository: cfredric/storage-access-headers
-URL: https://cfredric.github.io/storage-access-headers
+Group: privacycg
+Status: CG-DRAFT
+Repository: privacycg/storage-access-headers
+URL: https://privacycg.github.io/storage-access-headers
 Editor: Chris Fredrickson, Google https://google.com, cfredric@google.com
 Abstract: This document defines a pair of request and response headers that aim to give servers information about whether unpartitioned cookies were (or could be) included on a request, and provide the ability for servers to allow those cookies to be sent (if the user has already relaxed the privacy boundary via the Storage Access API).
+Text Macro: LICENSE <a href=https://creativecommons.org/licenses/by/4.0/>Creative Commons Attribution 4.0 International License</a>
 Markup Shorthands: markdown yes, css no
 Complain About: accidental-2119 yes, missing-example-ids yes
 Assume Explicit For: yes
