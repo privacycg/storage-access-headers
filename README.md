@@ -221,7 +221,7 @@ Therefore, CORS ought to be neither necessary nor sufficient for attaching unpar
 ## Stakeholder feedback/opposition
 
 * Chrome: [Shipping](https://groups.google.com/a/chromium.org/g/blink-dev/c/gERgwZfN_-E/m/XiwCTvwaAgAJ)
-* Firefox: [Positive](https://github.com/mozilla/standards-positions/issues/1084)
+* Firefox: [Positive](https://github.com/mozilla/standards-positions/issues/1084), [prototyping](https://groups.google.com/a/mozilla.org/g/dev-platform/c/OPmJiLLZdak/m/bps7Ti0UAgAJ)
 * Safari: [Support](https://github.com/WebKit/standards-positions/issues/412)
 * Edge: TBD
 * Web developers: Positive ([feature request](https://github.com/privacycg/storage-access/issues/170), [feature request](https://github.com/privacycg/storage-access/issues/130), [feature request](https://github.com/privacycg/storage-access/issues/189))
