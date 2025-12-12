@@ -58,7 +58,7 @@ spec: storage-access; urlPrefix: https://privacycg.github.io/storage-access/
             text: has storage access; url: #environment-has-storage-access
     for: source snapshot params
         type: dfn
-            text: environment id; url: source-snapsnot-params-environment-id
+            text: environment id; url: source-snapshot-params-environment-id
     type: dfn
         text: determine whether the user agent explicitly allows unpartitioned cookie access; url: #determine-whether-the-user-agent-explicitly-allows-unpartitioned-cookie-access
         text: storage access eligibility; url: #storage-access-eligibility
@@ -74,7 +74,7 @@ urlPrefix: https://fetch.spec.whatwg.org/
     type: dfn
         text: append a request Origin header; url: #append-a-request-origin-header
         for: response
-            text: has-cross-origin-redirects; url: #response-has-cross-origin-redirects
+            text: redirect taint; url: #response-redirect-taint
         text: main fetch; url: #concept-main-fetch
         text: fetch params; url: #fetch-params
         text: byte-serializing a request origin; url: #byte-serializing-a-request-origin
@@ -347,7 +347,7 @@ In particular, modify the changes when creating the request's [=request/reserved
         1. If |response| is not null and the result of [=performing a storage access load check=] given |request| and |response| is success, return true.
         1. If <var ignore>sourceSnapshotParams</var>'s [=source snapshot params/environment id=] does not equal <var ignore>navigable</var>'s [=navigable/active document=]'s [=relevant settings object=]'s [=environment/id=], return false.
         1. If <var ignore>originalURL</var>'s [=url/origin=] is not [=same origin=] with <var ignore>currentURL</var>'s [=url/origin=], return false.
-        1. If |response| is not null and |response|'s [=response/has-cross-origin-redirects=] is true, return false.
+        1. If |response| is not null and |response|'s [=response/redirect taint=] is not "`same-origin`", return false.
         1. Return true.
     1. Set |request|'s [=request/reserved client=]'s [=environment/has storage access=] to the result of executing |compute has storage access|.
 </div>
