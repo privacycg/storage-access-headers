@@ -4,10 +4,10 @@
   <title>Storage Access Headers</title>
   <meta content="width=device-width" name="viewport">
   <link href="https://www.w3.org/StyleSheets/TR/2021/cg-draft" rel="stylesheet">
-  <meta content="Bikeshed version 3f621ba99, updated Mon Jul 28 15:38:36 2025 -0700" name="generator">
+  <meta content="Bikeshed version 3c53a5b02, updated Thu Nov 27 17:03:30 2025 +0000" name="generator">
   <link href="https://privacycg.github.io/storage-access-headers" rel="canonical">
   <link href="https://www.w3.org/2008/site/images/favicon.ico" rel="icon">
-  <meta content="166697d2106705de5ac9958af8f714c165d3b39c" name="revision">
+  <meta content="116a665ddaade5604aaf8df651945b83a84b4b34" name="revision">
   <meta content="dark light" name="color-scheme">
   <link href="https://www.w3.org/StyleSheets/TR/2021/dark.css" media="(prefers-color-scheme: dark)" rel="stylesheet" type="text/css">
 <style>/* Boilerplate: style-autolinks */
@@ -320,7 +320,7 @@ body {
 }
 .invalid.example:not(.no-marker)::before,
 .illegal.example:not(.no-marker)::before {
-    content: "Invalid Example" counter(example);
+    content: "Invalid Example " counter(example);
 }
 
 figcaption {
@@ -748,8 +748,8 @@ dd:not(:last-child) > .wpt-tests-block:not([open]):last-child {
  <body>
   <header>
    <h1 class="no-ref" id="title">Storage Access Headers</h1>
-   <h2 class="no-num no-toc no-ref heading settled" id="subtitle"><span class="content">Draft Community Group Report,
-  <time datetime="2025-11-02">2 November 2025</time></span></h2>
+   <h2 class="heading no-num no-ref no-toc settled" id="subtitle"><span class="content">Draft Community Group Report,
+  <time datetime="2025-12-17">17 December 2025</time></span></h2>
    <div data-fill-with="spec-metadata">
     <dl>
      <dt>This version:
@@ -757,7 +757,7 @@ dd:not(:last-child) > .wpt-tests-block:not([open]):last-child {
      <dt>Issue Tracking:
      <dd><a href="https://github.com/privacycg/storage-access-headers/issues/">GitHub</a>
      <dt class="editor">Editor:
-     <dd class="editor p-author h-card vcard"><a class="p-name fn u-email email" href="mailto:cfredric@google.com">Chris Fredrickson</a> (<a class="p-org org" href="https://google.com">Google</a>)
+     <dd class="editor h-card p-author vcard"><a class="email fn p-name u-email" href="mailto:cfredric@google.com">Chris Fredrickson</a> (<a class="org p-org" href="https://google.com">Google</a>)
     </dl>
    </div>
    <div data-fill-with="warning"></div>
@@ -770,10 +770,10 @@ Contributions to this document are made under the <a href="https://www.w3.org/co
    <hr title="Separator for header">
   </header>
   <div data-fill-with="abstract">
-   <h2 class="no-num no-toc no-ref heading settled" id="abstract"><span class="content">Abstract</span></h2>
+   <h2 class="heading no-num no-ref no-toc settled" id="abstract"><span class="content">Abstract</span></h2>
    <p>This document defines a pair of request and response headers that aim to give servers information about whether unpartitioned cookies were (or could be) included on a request, and provide the ability for servers to allow those cookies to be sent (if the user has already relaxed the privacy boundary via the Storage Access API).</p>
   </div>
-  <h2 class="no-num no-toc no-ref heading settled" id="status"><span class="content">Status of this document</span></h2>
+  <h2 class="heading no-num no-ref no-toc settled" id="status"><span class="content">Status of this document</span></h2>
   <div data-fill-with="status">
    <p>It was published by the <a href="http://www.w3.org/community/privacycg/">Privacy Community Group</a>.
 Please note that under the <a href="http://www.w3.org/community/about/agreements/cla/">W3C Community Contributor License Agreement (CLA)</a> there is a limited opt-out and other conditions apply.
@@ -781,8 +781,8 @@ Learn more about <a href="http://www.w3.org/community/">W3C Community and Busine
   </div>
   <div data-fill-with="at-risk"></div>
   <nav data-fill-with="table-of-contents" id="toc">
-   <h2 class="no-num no-toc no-ref" id="contents">Table of Contents</h2>
-   <ol class="toc" role="directory">
+   <h2 class="no-num no-ref no-toc" id="contents">Table of Contents</h2>
+   <ol class="toc">
     <li><a href="#intro"><span class="secno">1</span> <span class="content">Introduction</span></a>
     <li><a href="#infra"><span class="secno">2</span> <span class="content">Infra</span></a>
     <li><a href="#request-infrastructure"><span class="secno">3</span> <span class="content">Storage-Access Request Infrastructure</span></a>
@@ -1272,8 +1272,8 @@ This proposal uses a new forbidden name for the `<code><a data-link-type="http-h
    <p>Thanks to Johann Hofmann, Artur Janc, Ben VanderSloot, Dom Farolino, Matt Menke, Adam Rice, and Maks Orlovich, who all provided valuable insight and support in the design of this mechanism.</p>
   </main>
   <div data-fill-with="conformance">
-   <h2 class="no-ref no-num heading settled" id="w3c-conformance"><span class="content">Conformance</span><a class="self-link" href="#w3c-conformance"></a></h2>
-   <h3 class="no-ref no-num heading settled" id="w3c-conventions"><span class="content">Document conventions</span><a class="self-link" href="#w3c-conventions"></a></h3>
+   <h2 class="heading no-num no-ref settled" id="w3c-conformance"><span class="content">Conformance</span><a class="self-link" href="#w3c-conformance"></a></h2>
+   <h3 class="heading no-num no-ref settled" id="w3c-conventions"><span class="content">Document conventions</span><a class="self-link" href="#w3c-conventions"></a></h3>
    <p>Conformance requirements are expressed
     with a combination of descriptive assertions
     and RFC 2119 terminology.
@@ -1317,8 +1317,8 @@ This proposal uses a new forbidden name for the `<code><a data-link-type="http-h
    </details>
   </div>
   <script src="https://www.w3.org/scripts/TR/2021/fixup.js"></script>
-  <h2 class="no-num no-ref heading settled" id="index"><span class="content">Index</span><a class="self-link" href="#index"></a></h2>
-  <h3 class="no-num no-ref heading settled" id="index-defined-here"><span class="content">Terms defined by this specification</span><a class="self-link" href="#index-defined-here"></a></h3>
+  <h2 class="heading no-num no-ref settled" id="index"><span class="content">Index</span><a class="self-link" href="#index"></a></h2>
+  <h3 class="heading no-num no-ref settled" id="index-defined-here"><span class="content">Terms defined by this specification</span><a class="self-link" href="#index-defined-here"></a></h3>
   <ul class="index">
    <li><a href="#http-headerdef-activate-storage-access">Activate-Storage-Access</a><span>, in § 4.2</span>
    <li><a href="#storage-access-status-active">active</a><span>, in § 3</span>
@@ -1340,7 +1340,7 @@ This proposal uses a new forbidden name for the `<code><a data-link-type="http-h
      <li><a href="#request-storage-access-status">dfn for request</a><span>, in § 3</span>
     </ul>
   </ul>
-  <h3 class="no-num no-ref heading settled" id="index-defined-elsewhere"><span class="content">Terms defined by reference</span><a class="self-link" href="#index-defined-elsewhere"></a></h3>
+  <h3 class="heading no-num no-ref settled" id="index-defined-elsewhere"><span class="content">Terms defined by reference</span><a class="self-link" href="#index-defined-elsewhere"></a></h3>
   <ul class="index">
    <li>
     <a data-link-type="biblio">[]</a> defines the following terms:
@@ -1455,8 +1455,8 @@ This proposal uses a new forbidden name for the `<code><a data-link-type="http-h
      <li><span class="dfn-paneled" id="dcffbccd">URL</span>
     </ul>
   </ul>
-  <h2 class="no-num no-ref heading settled" id="references"><span class="content">References</span><a class="self-link" href="#references"></a></h2>
-  <h3 class="no-num no-ref heading settled" id="normative"><span class="content">Normative References</span><a class="self-link" href="#normative"></a></h3>
+  <h2 class="heading no-num no-ref settled" id="references"><span class="content">References</span><a class="self-link" href="#references"></a></h2>
+  <h3 class="heading no-num no-ref settled" id="normative"><span class="content">Normative References</span><a class="self-link" href="#normative"></a></h3>
   <dl>
    <dt id="biblio-cookies">[COOKIES]
    <dd>A. Barth. <a href="https://httpwg.org/specs/rfc6265.html"><cite>HTTP State Management Mechanism</cite></a>. April 2011. Proposed Standard. URL: <a href="https://httpwg.org/specs/rfc6265.html">https://httpwg.org/specs/rfc6265.html</a>
@@ -1489,7 +1489,7 @@ This proposal uses a new forbidden name for the `<code><a data-link-type="http-h
    <dt id="biblio-url">[URL]
    <dd>Anne van Kesteren. <a href="https://url.spec.whatwg.org/"><cite>URL Standard</cite></a>. Living Standard. URL: <a href="https://url.spec.whatwg.org/">https://url.spec.whatwg.org/</a>
   </dl>
-  <h3 class="no-num no-ref heading settled" id="informative"><span class="content">Informative References</span><a class="self-link" href="#informative"></a></h3>
+  <h3 class="heading no-num no-ref settled" id="informative"><span class="content">Informative References</span><a class="self-link" href="#informative"></a></h3>
   <dl>
    <dt id="biblio-mnot-designing-headers">[MNOT-DESIGNING-HEADERS]
    <dd>Mark Nottingham. <a href="https://www.mnot.net/blog/2018/11/27/header_compression"><cite>Designing Headers for HTTP Compression</cite></a>. URL: <a href="https://www.mnot.net/blog/2018/11/27/header_compression">https://www.mnot.net/blog/2018/11/27/header_compression</a>
